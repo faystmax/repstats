@@ -1,0 +1,17 @@
+group 'org.ams.repstats'
+version '0.1'
+
+apply plugin: 'java'
+
+ext.jgitVersion = '3.4.1.201406201815-r'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'commons-io:commons-io:2.4'
+}

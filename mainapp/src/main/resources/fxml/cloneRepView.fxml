@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="center" prefHeight="136.0" prefWidth="365.0" xmlns="http://javafx.com/javafx/8.0.112"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ams.repstats.gui.CloneRepViewController">
+    <padding>
+        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0"/>
+    </padding>
+    <columnConstraints>
+        <ColumnConstraints/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+    </rowConstraints>
+    <children>
+        <VBox prefHeight="100.0" prefWidth="320.0" spacing="15.0">
+            <children>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Введите URL репозитория"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+                <TextField fx:id="tbURL" text="https://github.com/"/>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <Button fx:id="btChoose" mnemonicParsing="false" onAction="#ChooseButtonAction"
+                                prefHeight="25.0" prefWidth="64.0" text="Выбор "/>
+                        <Region/>
+                        <ProgressBar fx:id="pbDownload" prefHeight="28.0" prefWidth="153.0" progress="0.0">
+                            <padding>
+                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+                            </padding>
+                        </ProgressBar>
+                        <Region/>
+                        <Button fx:id="btExit" mnemonicParsing="false" onAction="#ExitButtonAction" prefHeight="25.0"
+                                prefWidth="64.0" text="Закрыть"/>
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+            </padding>
+        </VBox>
+    </children>
+
+</GridPane>
