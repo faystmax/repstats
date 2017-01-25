@@ -1,4 +1,5 @@
 rootProject.name = 'repstats'
 include 'gitwrapper'
 include 'mainapp'
+include 'svnwrapper'
 

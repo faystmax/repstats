@@ -11,5 +11,7 @@ repositories {
 
 dependencies {
     compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
+    compile "net.sf.beezle.sushi:sushi:2.7.0"
+    compile "org.tmatesoft.svnkit:svnkit-cli:1.8.14"
 
 }

@@ -30,3 +30,14 @@ subprojects {
 task wrapper(type: Wrapper) {
     gradleVersion = "1.12"
 }
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
+}
+
