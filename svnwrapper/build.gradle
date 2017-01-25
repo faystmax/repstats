@@ -3,15 +3,11 @@ version '0.1'
 
 apply plugin: 'java'
 
-ext.jgitVersion = '3.4.1.201406201815-r'
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
     compile "net.sf.beezle.sushi:sushi:2.7.0"
-    compile "org.tmatesoft.svnkit:svnkit-cli:1.8.14"
-
+    compile group: 'org.tmatesoft.svnkit', name: 'svnkit', version: '1.7.8'
 }
