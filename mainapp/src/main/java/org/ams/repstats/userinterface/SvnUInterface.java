@@ -1,5 +1,9 @@
 package org.ams.repstats.userinterface;
 
+import com.oneandone.sales.svnstats.FileStats;
+import com.oneandone.sales.svnstats.connectors.Repository;
+import com.oneandone.sales.svnstats.connectors.svnkit.SvnRepository;
+import com.oneandone.sales.svnstats.model.Revision;
 import com.selesse.gitwrapper.Author;
 import com.selesse.gitwrapper.Commit;
 import org.slf4j.Logger;
@@ -8,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.table.TableModel;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -18,14 +23,38 @@ import java.util.Collection;
 public class SvnUInterface implements UInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(SvnUInterface.class);
 
+    private String svnPath = null;
+    private Repository repository;
+    private List<Revision> revisions;
+    private FileStats fileStats;
+
     @Override
-    public boolean сhooseProjectDirectory(String Path) {
-        return false;
+    public boolean сhooseProjectDirectory(String svnPath) {
+        try {
+            this.svnPath = svnPath;
+            Repository repository = createRepository(this.svnPath);
+
+        } catch (Exception ex) {
+            LOGGER.error("Error: {} is an invalid svn root", this.svnPath);
+            return false;
+        }
+        return true;
+    }
+
+    private Repository createRepository(String svnPath) {
+        return new SvnRepository(svnPath);
     }
 
     @Override
     public boolean startProjectAnalyze() {
-        return false;
+        try {
+            this.revisions = repository.fetchRevisions(0, -1); //default
+            this.fileStats = new FileStats(revisions);
+
+        } catch (Exception e) {
+            LOGGER.error("Error while starting svn project analyze");
+        }
+        return true;
     }
 
     @Override
@@ -35,7 +64,7 @@ public class SvnUInterface implements UInterface {
 
     @Override
     public String getRepName() {
-        return null;
+        return repository.;
     }
 
     @Override

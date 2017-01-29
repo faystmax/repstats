@@ -3,10 +3,9 @@ package org.ams.repstats.userinterface;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Files;
 import com.selesse.gitwrapper.*;
-import org.ams.repstats.git.BranchAnalyzer;
-import org.ams.repstats.git.BranchDetails;
+import com.selesse.gitwrapper.git.BranchAnalyzer;
+import com.selesse.gitwrapper.git.BranchDetails;
 import org.ams.repstats.graph.DiffChart;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,7 +113,7 @@ public class GitUInterface implements UInterface {
                 img = ImageIO.read(in);
                 return img;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("Error while creating Chart");
             }
         }
         return null;
@@ -150,10 +149,8 @@ public class GitUInterface implements UInterface {
             branchAnalyzer = new BranchAnalyzer(gitRoot, branchName);
             branchDetails = branchAnalyzer.getBranchDetails();
 
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("Error while starting git project analyze");
         }
         return true;
     }

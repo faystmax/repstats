@@ -5,6 +5,10 @@ apply plugin: 'application'
 
 mainClassName = 'org.ams.repstats.MainApp'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile project(':gitwrapper')
     compile project(':svnwrapper')

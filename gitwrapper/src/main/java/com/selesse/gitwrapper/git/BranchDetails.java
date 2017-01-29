@@ -1,4 +1,4 @@
-package org.ams.repstats.git;
+package com.selesse.gitwrapper.git;
 
 import com.google.common.collect.*;
 import com.selesse.gitwrapper.*;

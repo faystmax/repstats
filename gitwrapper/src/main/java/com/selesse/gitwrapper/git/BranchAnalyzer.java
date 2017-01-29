@@ -1,4 +1,4 @@
-package org.ams.repstats.git;
+package com.selesse.gitwrapper.git;
 
 import com.selesse.gitwrapper.*;
 import org.eclipse.jgit.api.errors.GitAPIException;

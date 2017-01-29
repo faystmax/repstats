@@ -34,6 +34,7 @@ public class App extends Cli implements Command {
     public static void main(String[] args) {
         String[] args2 = new String[1];
         args2[0] = "https://max:444/svn/test/";
+
        /* String[] args2= new String[5];
         args2[0]="-username";
         args2[1]="max";
