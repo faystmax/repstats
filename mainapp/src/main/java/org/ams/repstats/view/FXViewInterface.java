@@ -179,6 +179,7 @@ public class FXViewInterface extends ViewInterfaceAbstract {
      */
     @Override
     public void start() {
+        projectDir = new File(tbProject.getText());
         if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath()) == true) {
             ShowAlert("Ошибка", "Выбрана неверная директория!");
             this.setStart(false);

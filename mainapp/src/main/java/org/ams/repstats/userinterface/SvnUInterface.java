@@ -64,7 +64,7 @@ public class SvnUInterface implements UInterface {
 
     @Override
     public String getRepName() {
-        return repository.;
+        return null;
     }
 
     @Override
