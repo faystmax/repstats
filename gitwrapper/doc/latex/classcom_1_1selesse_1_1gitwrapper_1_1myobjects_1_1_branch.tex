@@ -1,0 +1,131 @@
+\hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch}{}\section{com.\+selesse.\+gitwrapper.\+myobjects.\+Branch Class Reference}
+\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch}\index{com.\+selesse.\+gitwrapper.\+myobjects.\+Branch@{com.\+selesse.\+gitwrapper.\+myobjects.\+Branch}}
+
+
+Ветка коммитов Git.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit}{Commit} $>$ \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_adaccf954960eb975eaadb039158f0cc1}{get\+Commits} ()  throws Git\+A\+P\+I\+Exception, I\+O\+Exception 
+\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_abfed85fe8f4604fc77cdb184e176db2c}{get\+Name} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Repository \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_a8f6120f7811607f19fc5e97353713c27}{repository}
+\begin{DoxyCompactList}\small\item\em Ссылка на репозиторий \end{DoxyCompactList}\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_a9ec52c3aeb9e0f61a6bbc702285be865}{name}
+\begin{DoxyCompactList}\small\item\em Имя ветки \end{DoxyCompactList}\item 
+List$<$ \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit}{Commit} $>$ \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_ab687c3c9069725a9b3d47ad2a8c78d6b}{rev\+Commit\+List}
+\begin{DoxyCompactList}\small\item\em Все коммиты этой ветки \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ветка коммитов Git. 
+
+\begin{DoxyAuthor}{Author}
+faystmax 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+5 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+18 февраля 2017 года 
+\end{DoxyDate}
+Хранит необходимую информацию о конкретной ветке репозитория. 
+
+Definition at line 24 of file Branch.\+java.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_adaccf954960eb975eaadb039158f0cc1}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_adaccf954960eb975eaadb039158f0cc1}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}!get\+Commits@{get\+Commits}}
+\index{get\+Commits@{get\+Commits}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}}
+\subsubsection{\texorpdfstring{get\+Commits()}{getCommits()}}
+{\footnotesize\ttfamily List$<$\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit}{Commit}$>$ com.\+selesse.\+gitwrapper.\+myobjects.\+Branch.\+get\+Commits (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws Git\+A\+P\+I\+Exception, I\+O\+Exception}
+
+Извлекаем коммиты указанной ветки из репозитория.
+
+\begin{DoxyReturn}{Returns}
+список коммитов, выбранной ветки в выбранном репозитории. Вернёт пустой List, если ветки нет вы выбранном репозитории. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Git\+A\+P\+I\+Exception} & ошибка при взаимодействии с Git Api. \\
+\hline
+{\em I\+O\+Exception} & ошибка чтения репозитория. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 51 of file Branch.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_abfed85fe8f4604fc77cdb184e176db2c}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_abfed85fe8f4604fc77cdb184e176db2c}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}!get\+Name@{get\+Name}}
+\index{get\+Name@{get\+Name}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}}
+\subsubsection{\texorpdfstring{get\+Name()}{getName()}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Branch.\+get\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает имя ветки.
+
+\begin{DoxyReturn}{Returns}
+имя ветки. 
+\end{DoxyReturn}
+
+
+Definition at line 100 of file Branch.\+java.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_a9ec52c3aeb9e0f61a6bbc702285be865}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_a9ec52c3aeb9e0f61a6bbc702285be865}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}!name@{name}}
+\index{name@{name}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}}
+\subsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Branch.\+name\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Имя ветки 
+
+
+
+Definition at line 27 of file Branch.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_a8f6120f7811607f19fc5e97353713c27}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_a8f6120f7811607f19fc5e97353713c27}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}!repository@{repository}}
+\index{repository@{repository}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}}
+\subsubsection{\texorpdfstring{repository}{repository}}
+{\footnotesize\ttfamily Repository com.\+selesse.\+gitwrapper.\+myobjects.\+Branch.\+repository\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Ссылка на репозиторий 
+
+
+
+Definition at line 26 of file Branch.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_ab687c3c9069725a9b3d47ad2a8c78d6b}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch_ab687c3c9069725a9b3d47ad2a8c78d6b}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}!rev\+Commit\+List@{rev\+Commit\+List}}
+\index{rev\+Commit\+List@{rev\+Commit\+List}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Branch}}
+\subsubsection{\texorpdfstring{rev\+Commit\+List}{revCommitList}}
+{\footnotesize\ttfamily List$<$\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit}{Commit}$>$ com.\+selesse.\+gitwrapper.\+myobjects.\+Branch.\+rev\+Commit\+List\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Все коммиты этой ветки 
+
+
+
+Definition at line 28 of file Branch.\+java.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+gitwrapper/src/main/java/com/selesse/gitwrapper/myobjects/\hyperlink{_branch_8java}{Branch.\+java}\end{DoxyCompactItemize}

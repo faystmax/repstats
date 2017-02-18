@@ -69,12 +69,12 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
 
-        if (args.length == 2 && args[0].equals("fx") && args[1].equals("git")) {
+        if (args.length == 2 && args[0].equals("fx") && args[1].equals("analyzer")) {
             MainApp.uInterface = factory.create(TypeUInterface.git);
             MainApp.viewInterface = new FXViewInterface();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
             launch(args);
-        } else if (args.length == 2 && args[0].equals("c") && args[1].equals("git")) {
+        } else if (args.length == 2 && args[0].equals("c") && args[1].equals("analyzer")) {
             MainApp.uInterface = factory.create(TypeUInterface.git);
             MainApp.viewInterface = new ConsoleViewInterface(MainApp.uInterface);
             MainApp.viewInterface.start();

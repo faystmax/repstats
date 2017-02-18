@@ -1,0 +1,236 @@
+\hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file}{}\section{com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File Class Reference}
+\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file}\index{com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File@{com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File}}
+
+
+Git Файл.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_af9e37b604b38b68e11755b0327b7a730}{Git\+File} (String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a2dd95a7e30e954c75cb4db8a36abcb0c}{path}, File\+Mode \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a0d5165c79ab41bf64904905063080306}{file\+Mode}, byte\mbox{[}$\,$\mbox{]} bytes)
+\item 
+int \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a8d9ecf33f1bdbceec250adbdca2bf609}{get\+Number\+Of\+Lines} ()
+\item 
+List$<$ String $>$ \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a1a9cb4eadbb990f97b7776bb679e7d9d}{get\+Contents} ()
+\item 
+boolean \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_ad2c4b1b9a9f6571c9a9a47067ec4acbf}{is\+Binary} ()
+\item 
+File\+Mode \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_ae8b6e352a81657771f17c92bb80b98b3}{get\+File\+Mode} ()
+\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a4f5eaae50401f2e91539efe4236bea03}{get\+Path} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a2dd95a7e30e954c75cb4db8a36abcb0c}{path}
+\begin{DoxyCompactList}\small\item\em Полный путь до файла \end{DoxyCompactList}\item 
+File\+Mode \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a0d5165c79ab41bf64904905063080306}{file\+Mode}
+\begin{DoxyCompactList}\small\item\em Тип файла \end{DoxyCompactList}\item 
+boolean \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a6ffbe324cf2df788c533cfc25130b0fe}{is\+Binary}
+\begin{DoxyCompactList}\small\item\em Если бинариник -\/ истина, иначе -\/ ложь \end{DoxyCompactList}\item 
+byte \mbox{[}$\,$\mbox{]} \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_adfd9d90077af28121d47ac5f73666175}{byte\+Contents}
+\begin{DoxyCompactList}\small\item\em Содержание файла \end{DoxyCompactList}\item 
+List$<$ String $>$ \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_aa1f90a5b9ff9b6b885411ea81fbd0759}{contents}
+\begin{DoxyCompactList}\small\item\em Список строк фала \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Git Файл. 
+
+\begin{DoxyAuthor}{Author}
+faystmax 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+5 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+18 февраля 2017 года 
+\end{DoxyDate}
+Хранит необходимую информацию о файле репозитория. 
+
+Definition at line 18 of file Git\+File.\+java.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_af9e37b604b38b68e11755b0327b7a730}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_af9e37b604b38b68e11755b0327b7a730}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!Git\+File@{Git\+File}}
+\index{Git\+File@{Git\+File}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{Git\+File()}{GitFile()}}
+{\footnotesize\ttfamily com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+Git\+File (\begin{DoxyParamCaption}\item[{String}]{path,  }\item[{File\+Mode}]{file\+Mode,  }\item[{byte \mbox{[}$\,$\mbox{]}}]{bytes }\end{DoxyParamCaption})}
+
+Инициализирует analyzer файл.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Полный путь до файла \\
+\hline
+{\em file\+Mode} & Тип файла \\
+\hline
+{\em bytes} & Содержание файла \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 33 of file Git\+File.\+java.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a1a9cb4eadbb990f97b7776bb679e7d9d}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a1a9cb4eadbb990f97b7776bb679e7d9d}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!get\+Contents@{get\+Contents}}
+\index{get\+Contents@{get\+Contents}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{get\+Contents()}{getContents()}}
+{\footnotesize\ttfamily List$<$String$>$ com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+get\+Contents (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает массив строк файла. Если уже был построен ранее -\/ возвращаем его.\+Иначе формируем его на основе содержимого файла(byte\+Contents), разбивая его на строки.
+
+\begin{DoxyReturn}{Returns}
+список строк файла 
+\end{DoxyReturn}
+
+
+Definition at line 59 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_ae8b6e352a81657771f17c92bb80b98b3}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_ae8b6e352a81657771f17c92bb80b98b3}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!get\+File\+Mode@{get\+File\+Mode}}
+\index{get\+File\+Mode@{get\+File\+Mode}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{get\+File\+Mode()}{getFileMode()}}
+{\footnotesize\ttfamily File\+Mode com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+get\+File\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает тип файла.
+
+\begin{DoxyReturn}{Returns}
+тип файла (из внешнего пакета) 
+\end{DoxyReturn}
+
+
+Definition at line 86 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a8d9ecf33f1bdbceec250adbdca2bf609}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a8d9ecf33f1bdbceec250adbdca2bf609}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!get\+Number\+Of\+Lines@{get\+Number\+Of\+Lines}}
+\index{get\+Number\+Of\+Lines@{get\+Number\+Of\+Lines}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{get\+Number\+Of\+Lines()}{getNumberOfLines()}}
+{\footnotesize\ttfamily int com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+get\+Number\+Of\+Lines (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Получаем количество строк в файле. По сути просто вызывает \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a1a9cb4eadbb990f97b7776bb679e7d9d}{get\+Contents()} и берёт его размер. В итоге получаем количество строк
+
+\begin{DoxyReturn}{Returns}
+число строк 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a1a9cb4eadbb990f97b7776bb679e7d9d}{get\+Contents()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 48 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a4f5eaae50401f2e91539efe4236bea03}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a4f5eaae50401f2e91539efe4236bea03}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!get\+Path@{get\+Path}}
+\index{get\+Path@{get\+Path}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{get\+Path()}{getPath()}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+get\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает полный путь до файла.
+
+\begin{DoxyReturn}{Returns}
+путь до файла. 
+\end{DoxyReturn}
+
+
+Definition at line 95 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_ad2c4b1b9a9f6571c9a9a47067ec4acbf}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_ad2c4b1b9a9f6571c9a9a47067ec4acbf}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!is\+Binary@{is\+Binary}}
+\index{is\+Binary@{is\+Binary}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{is\+Binary()}{isBinary()}}
+{\footnotesize\ttfamily boolean com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+is\+Binary (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Является ли файл бинарником
+
+\begin{DoxyReturn}{Returns}
+истинна -\/ бинарник, иначе -\/ нет. 
+\end{DoxyReturn}
+
+
+Definition at line 77 of file Git\+File.\+java.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_adfd9d90077af28121d47ac5f73666175}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_adfd9d90077af28121d47ac5f73666175}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!byte\+Contents@{byte\+Contents}}
+\index{byte\+Contents@{byte\+Contents}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{byte\+Contents}{byteContents}}
+{\footnotesize\ttfamily byte \mbox{[}$\,$\mbox{]} com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+byte\+Contents\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Содержание файла 
+
+
+
+Definition at line 23 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_aa1f90a5b9ff9b6b885411ea81fbd0759}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_aa1f90a5b9ff9b6b885411ea81fbd0759}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!contents@{contents}}
+\index{contents@{contents}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{contents}{contents}}
+{\footnotesize\ttfamily List$<$String$>$ com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+contents\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Список строк фала 
+
+
+
+Definition at line 24 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a0d5165c79ab41bf64904905063080306}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a0d5165c79ab41bf64904905063080306}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!file\+Mode@{file\+Mode}}
+\index{file\+Mode@{file\+Mode}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{file\+Mode}{fileMode}}
+{\footnotesize\ttfamily File\+Mode com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+file\+Mode\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Тип файла 
+
+
+
+Definition at line 21 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a6ffbe324cf2df788c533cfc25130b0fe}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a6ffbe324cf2df788c533cfc25130b0fe}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!is\+Binary@{is\+Binary}}
+\index{is\+Binary@{is\+Binary}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{is\+Binary}{isBinary}}
+{\footnotesize\ttfamily boolean com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+is\+Binary\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Если бинариник -\/ истина, иначе -\/ ложь 
+
+
+
+Definition at line 22 of file Git\+File.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a2dd95a7e30e954c75cb4db8a36abcb0c}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_file_a2dd95a7e30e954c75cb4db8a36abcb0c}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}!path@{path}}
+\index{path@{path}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+File}}
+\subsubsection{\texorpdfstring{path}{path}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+File.\+path\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Полный путь до файла 
+
+
+
+Definition at line 20 of file Git\+File.\+java.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+gitwrapper/src/main/java/com/selesse/gitwrapper/myobjects/\hyperlink{_git_file_8java}{Git\+File.\+java}\end{DoxyCompactItemize}

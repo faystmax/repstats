@@ -1,7 +1,7 @@
 package org.ams.repstats.userinterface;
 
-import com.selesse.gitwrapper.Author;
-import com.selesse.gitwrapper.Commit;
+import com.selesse.gitwrapper.myobjects.Author;
+import com.selesse.gitwrapper.myobjects.Commit;
 
 import javax.swing.table.TableModel;
 import java.awt.image.BufferedImage;

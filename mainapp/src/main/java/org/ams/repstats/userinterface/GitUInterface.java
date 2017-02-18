@@ -2,9 +2,9 @@ package org.ams.repstats.userinterface;
 
 import com.google.common.collect.Multimap;
 import com.google.common.io.Files;
-import com.selesse.gitwrapper.*;
-import com.selesse.gitwrapper.git.BranchAnalyzer;
-import com.selesse.gitwrapper.git.BranchDetails;
+import com.selesse.gitwrapper.analyzer.BranchAnalyzer;
+import com.selesse.gitwrapper.analyzer.BranchDetails;
+import com.selesse.gitwrapper.myobjects.*;
 import org.ams.repstats.graph.DiffChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,7 +150,7 @@ public class GitUInterface implements UInterface {
             branchDetails = branchAnalyzer.getBranchDetails();
 
         } catch (Exception e) {
-            LOGGER.error("Error while starting git project analyze");
+            LOGGER.error("Error while starting analyzer project analyze");
         }
         return true;
     }

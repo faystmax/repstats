@@ -1,6 +1,6 @@
 package org.ams.repstats.graph;
 
-import com.selesse.gitwrapper.CommitDiff;
+import com.selesse.gitwrapper.myobjects.CommitDiff;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;

@@ -1,0 +1,301 @@
+\hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff}{}\section{com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff Class Reference}
+\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff}\index{com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff@{com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff}}
+
+
+Cущность изменённого файла при коммите.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a08bf17949cc65d48f54ee30e3a42b759}{Commit\+Diff} (Repository \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a82ab668a6a057bb64cff861ed0cdd63d}{repository}, Diff\+Entry diff\+Entry)  throws I\+O\+Exception 
+\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a301cc511d088b29379be88230d6249df}{get\+Old\+Path} ()
+\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a9bc976d1c8dedcd8ff314ec3403d4c7a}{get\+New\+Path} ()
+\item 
+int \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_ab09f25be8f406c82ae2e26889f821136}{get\+Lines\+Added} ()
+\item 
+int \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a377307b41a13cac2e7886320e7d60196}{get\+Lines\+Removed} ()
+\item 
+Diff\+Entry.\+Change\+Type \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a4c7a8245ef85e81ea1e1dae4ac3dcf90}{get\+Change\+Type} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a1c992f15988559996bbbab6f54eee4ef}{calculate\+Lines} (Diff\+Entry diff\+Entry)  throws I\+O\+Exception 
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Repository \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a82ab668a6a057bb64cff861ed0cdd63d}{repository}
+\begin{DoxyCompactList}\small\item\em Ссылка на репозиторий \end{DoxyCompactList}\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_aa5b0895b867f3ee6b2bc17dde20913a4}{old\+Path}
+\begin{DoxyCompactList}\small\item\em Ссылка на старый путь файла \end{DoxyCompactList}\item 
+String \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_adcf2a268f52faea2ad5d488151a88e1e}{new\+Path}
+\begin{DoxyCompactList}\small\item\em Ссылка на новый путь файла \end{DoxyCompactList}\item 
+int \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_ac9d1f8154df2606a12e2aa212072b0c4}{lines\+Added}
+\begin{DoxyCompactList}\small\item\em Строк добавлено \end{DoxyCompactList}\item 
+int \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_accb6b5cbe673f6266f27a665e362ba48}{lines\+Removed}
+\begin{DoxyCompactList}\small\item\em Строк удалено \end{DoxyCompactList}\item 
+Diff\+Entry.\+Change\+Type \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a93a1fcbb21bc42c97397f6f500a9002b}{change\+Type}
+\begin{DoxyCompactList}\small\item\em Тип изминения \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final Logger \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a6b58939c69fdcca2335aade2d3256582}{L\+O\+G\+G\+ER} = Logger\+Factory.\+get\+Logger(Commit\+Diff.\+class)
+\begin{DoxyCompactList}\small\item\em Ссылка на логгер \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Cущность изменённого файла при коммите. 
+
+\begin{DoxyAuthor}{Author}
+faystmax 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+5 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+18 февраля 2017 года 
+\end{DoxyDate}
+Представляет собой сущность изменённого файла при коммите. Хранит информацию о том что сделали с файлом при коммитею. 
+
+Definition at line 23 of file Commit\+Diff.\+java.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a08bf17949cc65d48f54ee30e3a42b759}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a08bf17949cc65d48f54ee30e3a42b759}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!Commit\+Diff@{Commit\+Diff}}
+\index{Commit\+Diff@{Commit\+Diff}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{Commit\+Diff()}{CommitDiff()}}
+{\footnotesize\ttfamily com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+Commit\+Diff (\begin{DoxyParamCaption}\item[{Repository}]{repository,  }\item[{Diff\+Entry}]{diff\+Entry }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Инициализируетт \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff}{Commit\+Diff} из Diff\+Entry(org.\+eclipse.\+jgit.\+diff.\+Diff\+Entry)
+
+
+\begin{DoxyParams}{Parameters}
+{\em repository} & ссылка на репозиторий \\
+\hline
+{\em diff\+Entry} & сущность изминённого файла \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & ошибка при чтении репозитория \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a1c992f15988559996bbbab6f54eee4ef}{calculate\+Lines(\+Diff\+Entry)} 
+\end{DoxySeeAlso}
+
+
+Definition at line 41 of file Commit\+Diff.\+java.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a1c992f15988559996bbbab6f54eee4ef}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a1c992f15988559996bbbab6f54eee4ef}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!calculate\+Lines@{calculate\+Lines}}
+\index{calculate\+Lines@{calculate\+Lines}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{calculate\+Lines()}{calculateLines()}}
+{\footnotesize\ttfamily void com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+calculate\+Lines (\begin{DoxyParamCaption}\item[{Diff\+Entry}]{diff\+Entry }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [private]}}
+
+Просчитывает количество добавленный и удалённых строк и пишет в логгер. Изменяет значение переменных lines\+Added и lines\+Removed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em diff\+Entry} & сущность изминённого файла \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & ошибка при чтении репозитория \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 59 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a4c7a8245ef85e81ea1e1dae4ac3dcf90}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a4c7a8245ef85e81ea1e1dae4ac3dcf90}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!get\+Change\+Type@{get\+Change\+Type}}
+\index{get\+Change\+Type@{get\+Change\+Type}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{get\+Change\+Type()}{getChangeType()}}
+{\footnotesize\ttfamily Diff\+Entry.\+Change\+Type com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+get\+Change\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает тип изминения файла
+
+\begin{DoxyReturn}{Returns}
+тип изминения файла 
+\end{DoxyReturn}
+
+
+Definition at line 134 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_ab09f25be8f406c82ae2e26889f821136}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_ab09f25be8f406c82ae2e26889f821136}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!get\+Lines\+Added@{get\+Lines\+Added}}
+\index{get\+Lines\+Added@{get\+Lines\+Added}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{get\+Lines\+Added()}{getLinesAdded()}}
+{\footnotesize\ttfamily int com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+get\+Lines\+Added (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает кол-\/во добавленных строк
+
+\begin{DoxyReturn}{Returns}
+кол-\/во добавленных строк 
+\end{DoxyReturn}
+
+
+Definition at line 116 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a377307b41a13cac2e7886320e7d60196}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a377307b41a13cac2e7886320e7d60196}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!get\+Lines\+Removed@{get\+Lines\+Removed}}
+\index{get\+Lines\+Removed@{get\+Lines\+Removed}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{get\+Lines\+Removed()}{getLinesRemoved()}}
+{\footnotesize\ttfamily int com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+get\+Lines\+Removed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает кол-\/во добавленных строк
+
+\begin{DoxyReturn}{Returns}
+кол-\/во добавленных строк 
+\end{DoxyReturn}
+
+
+Definition at line 125 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a9bc976d1c8dedcd8ff314ec3403d4c7a}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a9bc976d1c8dedcd8ff314ec3403d4c7a}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!get\+New\+Path@{get\+New\+Path}}
+\index{get\+New\+Path@{get\+New\+Path}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{get\+New\+Path()}{getNewPath()}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+get\+New\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает новый путь до файла.
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 107 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a301cc511d088b29379be88230d6249df}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a301cc511d088b29379be88230d6249df}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!get\+Old\+Path@{get\+Old\+Path}}
+\index{get\+Old\+Path@{get\+Old\+Path}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{get\+Old\+Path()}{getOldPath()}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+get\+Old\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Возвращает старый путь до файла.
+
+\begin{DoxyReturn}{Returns}
+Old\+Path 
+\end{DoxyReturn}
+
+
+Definition at line 98 of file Commit\+Diff.\+java.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a93a1fcbb21bc42c97397f6f500a9002b}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a93a1fcbb21bc42c97397f6f500a9002b}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!change\+Type@{change\+Type}}
+\index{change\+Type@{change\+Type}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{change\+Type}{changeType}}
+{\footnotesize\ttfamily Diff\+Entry.\+Change\+Type com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+change\+Type\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Тип изминения 
+
+
+
+Definition at line 31 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_ac9d1f8154df2606a12e2aa212072b0c4}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_ac9d1f8154df2606a12e2aa212072b0c4}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!lines\+Added@{lines\+Added}}
+\index{lines\+Added@{lines\+Added}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{lines\+Added}{linesAdded}}
+{\footnotesize\ttfamily int com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+lines\+Added\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Строк добавлено 
+
+
+
+Definition at line 29 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_accb6b5cbe673f6266f27a665e362ba48}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_accb6b5cbe673f6266f27a665e362ba48}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!lines\+Removed@{lines\+Removed}}
+\index{lines\+Removed@{lines\+Removed}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{lines\+Removed}{linesRemoved}}
+{\footnotesize\ttfamily int com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+lines\+Removed\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Строк удалено 
+
+
+
+Definition at line 30 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a6b58939c69fdcca2335aade2d3256582}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a6b58939c69fdcca2335aade2d3256582}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!L\+O\+G\+G\+ER@{L\+O\+G\+G\+ER}}
+\index{L\+O\+G\+G\+ER@{L\+O\+G\+G\+ER}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{L\+O\+G\+G\+ER}{LOGGER}}
+{\footnotesize\ttfamily final Logger com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+L\+O\+G\+G\+ER = Logger\+Factory.\+get\+Logger(Commit\+Diff.\+class)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Ссылка на логгер 
+
+
+
+Definition at line 24 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_adcf2a268f52faea2ad5d488151a88e1e}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_adcf2a268f52faea2ad5d488151a88e1e}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!new\+Path@{new\+Path}}
+\index{new\+Path@{new\+Path}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{new\+Path}{newPath}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+new\+Path\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Ссылка на новый путь файла 
+
+
+
+Definition at line 28 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_aa5b0895b867f3ee6b2bc17dde20913a4}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_aa5b0895b867f3ee6b2bc17dde20913a4}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!old\+Path@{old\+Path}}
+\index{old\+Path@{old\+Path}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{old\+Path}{oldPath}}
+{\footnotesize\ttfamily String com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+old\+Path\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Ссылка на старый путь файла 
+
+
+
+Definition at line 27 of file Commit\+Diff.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a82ab668a6a057bb64cff861ed0cdd63d}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit_diff_a82ab668a6a057bb64cff861ed0cdd63d}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}!repository@{repository}}
+\index{repository@{repository}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Commit\+Diff}}
+\subsubsection{\texorpdfstring{repository}{repository}}
+{\footnotesize\ttfamily Repository com.\+selesse.\+gitwrapper.\+myobjects.\+Commit\+Diff.\+repository\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Ссылка на репозиторий 
+
+
+
+Definition at line 26 of file Commit\+Diff.\+java.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+gitwrapper/src/main/java/com/selesse/gitwrapper/myobjects/\hyperlink{_commit_diff_8java}{Commit\+Diff.\+java}\end{DoxyCompactItemize}

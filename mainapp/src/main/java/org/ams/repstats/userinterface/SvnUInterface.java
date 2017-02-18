@@ -4,8 +4,8 @@ import com.oneandone.sales.svnstats.FileStats;
 import com.oneandone.sales.svnstats.connectors.Repository;
 import com.oneandone.sales.svnstats.connectors.svnkit.SvnRepository;
 import com.oneandone.sales.svnstats.model.Revision;
-import com.selesse.gitwrapper.Author;
-import com.selesse.gitwrapper.Commit;
+import com.selesse.gitwrapper.myobjects.Author;
+import com.selesse.gitwrapper.myobjects.Commit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

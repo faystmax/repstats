@@ -1,6 +1,6 @@
 package org.ams.repstats.view;
 
-import com.selesse.gitwrapper.Author;
+import com.selesse.gitwrapper.myobjects.Author;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;

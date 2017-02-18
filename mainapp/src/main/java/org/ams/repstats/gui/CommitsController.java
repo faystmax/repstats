@@ -1,7 +1,7 @@
 package org.ams.repstats.gui;
 
-import com.selesse.gitwrapper.Author;
-import com.selesse.gitwrapper.Commit;
+import com.selesse.gitwrapper.myobjects.Author;
+import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

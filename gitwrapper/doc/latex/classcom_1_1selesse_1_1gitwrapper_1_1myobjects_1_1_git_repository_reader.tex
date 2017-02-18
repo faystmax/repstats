@@ -1,0 +1,117 @@
+\hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader}{}\section{com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+Repository\+Reader Class Reference}
+\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader}\index{com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+Repository\+Reader@{com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+Repository\+Reader}}
+
+
+Класс предназначен для чтения репозитоия.  
+
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static boolean \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a734f08d9550fd1add83ab661ca390f3a}{is\+Valid\+Git\+Root} (String path)
+\item 
+static \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository}{Git\+Repository} \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a1222bafab6af4b53b886a900351faaa6}{load\+Repository} (File directory)  throws I\+O\+Exception 
+\item 
+static \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit}{Commit} \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a757d33ee7433b695d6963c7809116ab9}{load\+Last\+Commit} (\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository}{Git\+Repository} git\+Repository, \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch}{Branch} branch)  throws I\+O\+Exception 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Класс предназначен для чтения репозитоия. 
+
+\begin{DoxyAuthor}{Author}
+faystmax 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+5 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+18 февраля 2017 года 
+\end{DoxyDate}
+Не хранит в себе никакой информации.\+Представляет собой набор статичных методов для взаимодействия с репозиторием. 
+
+Definition at line 20 of file Git\+Repository\+Reader.\+java.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a734f08d9550fd1add83ab661ca390f3a}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a734f08d9550fd1add83ab661ca390f3a}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader}!is\+Valid\+Git\+Root@{is\+Valid\+Git\+Root}}
+\index{is\+Valid\+Git\+Root@{is\+Valid\+Git\+Root}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader}}
+\subsubsection{\texorpdfstring{is\+Valid\+Git\+Root()}{isValidGitRoot()}}
+{\footnotesize\ttfamily static boolean com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+Repository\+Reader.\+is\+Valid\+Git\+Root (\begin{DoxyParamCaption}\item[{String}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Проверка казанного пути на analyzer репозиторий. Проверяет является ли указанный путь папкой и есть ли в нём скрытка директория .analyzer
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & полный путь до репозитория \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+истинна вверный путь,иначе ложь 
+\end{DoxyReturn}
+
+
+Definition at line 30 of file Git\+Repository\+Reader.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a757d33ee7433b695d6963c7809116ab9}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a757d33ee7433b695d6963c7809116ab9}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader}!load\+Last\+Commit@{load\+Last\+Commit}}
+\index{load\+Last\+Commit@{load\+Last\+Commit}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader}}
+\subsubsection{\texorpdfstring{load\+Last\+Commit()}{loadLastCommit()}}
+{\footnotesize\ttfamily static \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_commit}{Commit} com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+Repository\+Reader.\+load\+Last\+Commit (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository}{Git\+Repository}}]{git\+Repository,  }\item[{\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_branch}{Branch}}]{branch }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Возвращает последний коммит в указанном репозитории по указанной ветке.
+
+
+\begin{DoxyParams}{Parameters}
+{\em git\+Repository} & ссылка на репозиторий \\
+\hline
+{\em branch} & имя ветки \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+последний коммит 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & ошибка при неправильном пути до репозитория analyzer \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 66 of file Git\+Repository\+Reader.\+java.
+
+\mbox{\Hypertarget{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a1222bafab6af4b53b886a900351faaa6}\label{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a1222bafab6af4b53b886a900351faaa6}} 
+\index{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader}!load\+Repository@{load\+Repository}}
+\index{load\+Repository@{load\+Repository}!com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader@{com\+::selesse\+::gitwrapper\+::myobjects\+::\+Git\+Repository\+Reader}}
+\subsubsection{\texorpdfstring{load\+Repository()}{loadRepository()}}
+{\footnotesize\ttfamily static \hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository}{Git\+Repository} com.\+selesse.\+gitwrapper.\+myobjects.\+Git\+Repository\+Reader.\+load\+Repository (\begin{DoxyParamCaption}\item[{File}]{directory }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Возвращает ссылку на репозиторий по указанному пути. При этом проверяет указанный путь на наличие в ней репозитория analyzer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em directory} & директория \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ссылку на репозиторий 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & ошибка при неправильном пути до репозитория \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcom_1_1selesse_1_1gitwrapper_1_1myobjects_1_1_git_repository_reader_a734f08d9550fd1add83ab661ca390f3a}{is\+Valid\+Git\+Root(\+String)} 
+\end{DoxySeeAlso}
+
+
+Definition at line 49 of file Git\+Repository\+Reader.\+java.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+gitwrapper/src/main/java/com/selesse/gitwrapper/myobjects/\hyperlink{_git_repository_reader_8java}{Git\+Repository\+Reader.\+java}\end{DoxyCompactItemize}
