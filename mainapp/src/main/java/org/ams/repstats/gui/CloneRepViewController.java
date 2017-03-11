@@ -18,7 +18,7 @@ import java.io.FileFilter;
 
 /**
  * Created with IntelliJ IDEA
- * User: Максим
+ * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 02.01.2017
  * Time: 16:00
  */

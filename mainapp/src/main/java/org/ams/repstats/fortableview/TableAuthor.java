@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Created with IntelliJ IDEA
- * User: Максим
+ * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 05.01.2017
  * Time: 20:22
  */

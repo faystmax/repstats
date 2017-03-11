@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  * Created with IntelliJ IDEA
- * User: Максим
+ * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 07.01.2017
  * Time: 12:58
  */

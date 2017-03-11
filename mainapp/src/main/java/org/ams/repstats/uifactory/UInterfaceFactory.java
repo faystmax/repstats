@@ -6,7 +6,7 @@ import org.ams.repstats.userinterface.UInterface;
 
 /**
  * Created with IntelliJ IDEA
- * User: Максим
+ * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 10.01.2017
  * Time: 11:14
  */

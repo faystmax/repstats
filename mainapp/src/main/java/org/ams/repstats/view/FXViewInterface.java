@@ -32,7 +32,7 @@ import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA
- * User: Максим
+ * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 25.12.2016
  * Time: 16:00
  */

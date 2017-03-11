@@ -22,7 +22,7 @@ import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA
- * User: Максим
+ * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 27.12.2016
  * Time: 10:38
  */
