@@ -12,4 +12,5 @@ repositories {
 dependencies {
     compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
 
+    testCompile 'commons-io:commons-io:2.4'
 }
