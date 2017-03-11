@@ -24,7 +24,7 @@ public class GitFile {
     private List<String> contents;      ///< Список строк фала
 
     /**
-     * Инициализирует analyzer файл.
+     * Инициализирует git файл.
      *
      * @param path     Полный путь до файла
      * @param fileMode Тип файла

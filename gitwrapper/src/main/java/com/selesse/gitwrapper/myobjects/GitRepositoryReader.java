@@ -20,9 +20,9 @@ import java.io.IOException;
 public class GitRepositoryReader {
 
     /**
-     * Проверка казанного пути на analyzer репозиторий.
+     * Проверка казанного пути на git репозиторий.
      * Проверяет является ли указанный путь папкой и есть ли в нём
-     * скрытка директория .analyzer
+     * скрытка директория .git
      *
      * @param path полный путь до репозитория
      * @return истинна вверный путь,иначе ложь
@@ -33,13 +33,13 @@ public class GitRepositoryReader {
             return false;
         }
 
-        File gitDirectoryInRoot = new File(gitRoot, ".analyzer");
+        File gitDirectoryInRoot = new File(gitRoot, ".git");
         return gitDirectoryInRoot.isDirectory();
     }
 
     /**
      * Возвращает ссылку на репозиторий по указанному пути.
-     * При этом проверяет указанный путь на наличие в ней репозитория analyzer.
+     * При этом проверяет указанный путь на наличие в ней репозитория git.
      *
      * @param directory директория
      * @return ссылку на репозиторий
@@ -61,7 +61,7 @@ public class GitRepositoryReader {
      * @param gitRepository ссылка на репозиторий
      * @param branch        имя ветки
      * @return последний коммит
-     * @throws IOException ошибка при неправильном пути до репозитория analyzer
+     * @throws IOException ошибка при неправильном пути до репозитория git
      */
     public static Commit loadLastCommit(GitRepository gitRepository, Branch branch) throws IOException {
         Repository repository = gitRepository.getRepository();

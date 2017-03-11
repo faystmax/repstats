@@ -26,7 +26,7 @@ public class FileModes {
         } else if (fileMode.equals(FileMode.SYMLINK)) {
             return "symlink";
         } else if (fileMode.equals(FileMode.GITLINK)) {
-            return "analyzer link";
+            return "git link";
         } else {
             return fileMode.toString();
         }

@@ -18,7 +18,7 @@ public class GitRepository {
     private Repository repository;      ///< ссылка на репозиторий
 
     /**
-     * Инициализируем analyzer репозиторий.
+     * Инициализируем git репозиторий.
      *
      * @param repository ссылка на репозиторий.Класс из внешнего пакета.
      */
