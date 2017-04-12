@@ -155,6 +155,22 @@ public class GitUInterface implements UInterface {
         return true;
     }
 
+    /**
+     * Закрываем репозиторий
+     */
+    @Override
+    public void closeRepository() {
+        try {
+            File gitRoot = new File(gitPath);
+            LOGGER.debug("Closing git Repository in {}", gitRoot.getAbsolutePath());
+            branchDetails.closeRepository();
+
+        } catch (Exception e) {
+            LOGGER.error("Error while closing git Repository");
+        }
+    }
+
+
     @Override
     public Author getAuthorByName(String name) {
         for (Author author : branchDetails.getAuthorToCommitMap().keySet()) {

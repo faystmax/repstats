@@ -18,6 +18,8 @@ public interface UInterface {
 
     boolean startProjectAnalyze();
 
+    public void closeRepository();
+
     BufferedImage getChart();
 
     String getRepName();
@@ -33,4 +35,6 @@ public interface UInterface {
     Author getAuthorByName(String name);
 
     Collection<Commit> getLastCommits(Author author);
+
+
 }

@@ -124,6 +124,11 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
 
     }
 
+    @Override
+    public void closeRepository() {
+        // TODO
+    }
+
     public void writeMenu() {
         System.out.println("Меню:");
         System.out.println("1.Выбор репозитория.");

@@ -58,6 +58,11 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
+    public void closeRepository() {
+        // TODO
+    }
+
+    @Override
     public BufferedImage getChart() {
         return null;
     }

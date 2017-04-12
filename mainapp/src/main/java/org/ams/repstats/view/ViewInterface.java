@@ -20,5 +20,7 @@ public interface ViewInterface {
 
     void start();
 
+    void closeRepository();
+
     void setUInterface(UInterface uInterface);
 }

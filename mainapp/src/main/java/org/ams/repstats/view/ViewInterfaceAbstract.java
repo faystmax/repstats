@@ -43,4 +43,5 @@ public abstract class ViewInterfaceAbstract implements ViewInterface {
     public void setStart(boolean start) {
         isStart = start;
     }
+
 }

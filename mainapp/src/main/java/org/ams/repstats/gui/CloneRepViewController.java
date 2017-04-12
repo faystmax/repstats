@@ -1,6 +1,5 @@
 package org.ams.repstats.gui;
 
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,12 +8,13 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.ams.repstats.mytask.myTask;
 import org.ams.repstats.view.FXViewInterface;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA
@@ -23,6 +23,7 @@ import java.io.FileFilter;
  * Time: 16:00
  */
 public class CloneRepViewController {
+
     @FXML
     public ProgressBar pbDownload;
     @FXML
@@ -31,48 +32,51 @@ public class CloneRepViewController {
     private Button btChoose;
     @FXML
     private TextField tbURL;
+
     //Ссылка на родительский контроллер
-    private FXViewInterface fxViewInterface;
-    private boolean isStart = false;
+    private FXViewInterface fxViewInterface;    ///< ссылка на родителя
+    private boolean isStart = false;            ///< флаг начала
 
-    Task task = new Task<Void>() {
-        @Override
-        public Void call() {
-            try {
-                Git git = Git.cloneRepository()
-                        .setURI(tbURL.getText())
-                        .setDirectory(new File("./cloneRep"))
-                        .call();
-            } catch (GitAPIException e) {
-                e.printStackTrace();
-            }
-            fxViewInterface.setNewRepDirectory(new File("./cloneRep"));
-            updateProgress(1, 1);
-            this.done();
-            return null;
-        }
-    };
+    /**
+     * Task для подкачки  внешнего репозитория
+     */
+    private myTask task;
 
 
+    /**
+     * Инициализация родительского окна
+     * Для последующей
+     *
+     * @param fxViewInterface
+     */
     public void setFxViewInterface(FXViewInterface fxViewInterface) {
         this.fxViewInterface = fxViewInterface;
     }
 
+    /**
+     * закрытие окна
+     *
+     * @param event
+     */
     public void ExitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * @param event
+     */
     public void ChooseButtonAction(ActionEvent event) {
         if (isStart == false) {
             isStart = true;
             try {
                 pbDownload.setProgress(-1.0);
-                //delete(new File("./cloneRep"));
                 File dir = new File("./cloneRep");
                 if (dir.exists()) {
+                    fxViewInterface.setNewRepDirectory(null);
                     deleteRecursive(dir);
                 }
+                task = new myTask(this, fxViewInterface, tbURL);
                 pbDownload.progressProperty().bind(task.progressProperty());
                 new Thread(task).start();
             } catch (Exception e) {
@@ -81,7 +85,19 @@ public class CloneRepViewController {
         }
     }
 
-    public static void deleteRecursive(File path) {
+    /**
+     * Удаление дирректории рекурсивно
+     *
+     * @param path
+     */
+    public void deleteRecursive(File path) {
+        try {
+            Git git = Git.open(path);
+            git.getRepository().close();
+            this.fxViewInterface.closeRepository();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         path.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -103,8 +119,7 @@ public class CloneRepViewController {
      * @param title
      * @param text
      */
-
-    private void ShowAlert(String title, String text) {
+    public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         // Get the Stage.
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -117,23 +132,4 @@ public class CloneRepViewController {
         alert.setContentText(text);
         alert.showAndWait();
     }
-
-    /**
-     * Рекурсивное удаление папки и файлов в ней
-     *
-     * @param file
-     */
-    public void delete(File file) {
-        if (!file.exists())
-            return;
-        if (file.isDirectory()) {
-            for (File f : file.listFiles())
-                delete(f);
-            file.delete();
-        } else {
-            file.delete();
-        }
-    }
-
-
 }

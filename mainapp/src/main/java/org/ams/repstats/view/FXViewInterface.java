@@ -171,7 +171,11 @@ public class FXViewInterface extends ViewInterfaceAbstract {
 
     public void setNewRepDirectory(File file) {
         projectDir = file;
-        tbProject.setText(file.getAbsolutePath());
+        if (projectDir != null) {
+            tbProject.setText(file.getAbsolutePath());
+        } else {
+            tbProject.setText("");
+        }
     }
 
     /**
@@ -196,6 +200,11 @@ public class FXViewInterface extends ViewInterfaceAbstract {
         showMainInf();
         ShowAvtors();
         ShowAllFiles();
+    }
+
+    @Override
+    public void closeRepository() {
+        this.getuInterface().closeRepository();
     }
 
     @Override

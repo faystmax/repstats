@@ -175,5 +175,10 @@ public class BranchDetails {
                 .result();
     }
 
-
+    /**
+     * Закрываем репозиторий
+     */
+    public void closeRepository() {
+        repository.close();
+    }
 }

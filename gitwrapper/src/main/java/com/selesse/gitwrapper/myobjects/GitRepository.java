@@ -57,4 +57,11 @@ public class GitRepository {
     public List<CommitDiff> getCommitDiffs(Commit commit) throws IOException {
         return CommitDiffs.getCommitDiffs(repository, commit);
     }
+
+    /**
+     * Закрываем репозиторий
+     */
+    public void close() {
+        repository.close();
+    }
 }

@@ -25,6 +25,7 @@ public class BranchAnalyzer {
     private final File gitRoot;         ///< ссылка корень директории git
     private final String branchName;    ///< имя ветки
 
+
     /**
      * Инициализирует BranchAnalyzer.
      * Не проверяет наличие указанной ветки в репозитории.
