@@ -53,7 +53,7 @@ public class MainApp extends Application {
         try {
             // Загружаем корневой макет из fxml файла.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("fxml/view.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("fxml/statsView.fxml"));
             GridPane rootLayout = loader.load();
 
             // Отображаем сцену, содержащую корневой макет.

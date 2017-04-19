@@ -27,11 +27,11 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
     public void ChooseProjectAction() {
         System.out.println("Введите путь к репозиторию:");
         String input = in.nextLine();
-        if (!getuInterface().сhooseProjectDirectory(input) == true) {
+        if (!getuInterface().сhooseProjectDirectory(input)) {
             System.out.println("Ошибка! Выбрана невернаяя дирректория.");
             return;
         }
-        if (!getuInterface().startProjectAnalyze() == true) {
+        if (!getuInterface().startProjectAnalyze()) {
             System.out.println("Ошибка анализа файлов проекта!");
             this.setStart(false);
         } else {
