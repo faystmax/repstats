@@ -1,4 +1,4 @@
-package org.ams.repstats.view;
+package org.ams.repstats.controllers;
 
 import com.selesse.gitwrapper.myobjects.Author;
 import javafx.collections.FXCollections;
@@ -19,11 +19,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.repstats.fortableview.TableAuthor;
 import org.ams.repstats.fortableview.TableFiles;
-import org.ams.repstats.gui.AboutController;
-import org.ams.repstats.gui.CloneRepViewController;
-import org.ams.repstats.gui.CommitsController;
 import org.ams.repstats.userinterface.GitUInterface;
 import org.ams.repstats.userinterface.SvnUInterface;
+import org.ams.repstats.view.ViewInterfaceAbstract;
 
 import javax.swing.table.TableModel;
 import java.awt.image.BufferedImage;
@@ -36,7 +34,9 @@ import java.io.IOException;
  * Date: 25.12.2016
  * Time: 16:00
  */
-public class FXViewInterface extends ViewInterfaceAbstract {
+public class FXViewInterfaceController extends ViewInterfaceAbstract {
+
+    //region <<К омпоненты UI
     @FXML
     private MenuItem btAbout;
     @FXML
@@ -88,6 +88,8 @@ public class FXViewInterface extends ViewInterfaceAbstract {
     @FXML
     private Button btStart;
     @FXML
+    //endregion
+
     private DirectoryChooser directoryChooser;
     File projectDir;
 
@@ -106,7 +108,7 @@ public class FXViewInterface extends ViewInterfaceAbstract {
                 });
     }
 
-
+    // TODO  в будущем
     public void showChartOnImageView() {
         BufferedImage img = getuInterface().getChart();
         WritableImage wimg = new WritableImage(img.getWidth(), img.getHeight());
@@ -114,37 +116,7 @@ public class FXViewInterface extends ViewInterfaceAbstract {
         imageView.setImage(wimg);
     }
 
-    public void ButtonAboutAction() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("fxml/about.fxml"));
-            GridPane rootLayout = null;
 
-            rootLayout = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("О Программе");
-            stage.setScene(new Scene(rootLayout, 345, 160));
-            stage.getIcons().add(new Image("gitIcon.png"));
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            //Инициализируем
-            AboutController controller = loader.getController();
-
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * выход
-     *
-     * @param event
-     */
-    public void ExitButtonAction(ActionEvent event) {
-        System.exit(0);
-    }
 
 
     /**
@@ -159,7 +131,7 @@ public class FXViewInterface extends ViewInterfaceAbstract {
             tbProject.setText("");
             return;
         }
-        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath()) == true) {
+        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
             ShowAlert("Ошибка", "Выбрана неверная директория!");
             return;
         }
@@ -179,12 +151,12 @@ public class FXViewInterface extends ViewInterfaceAbstract {
     }
 
     /**
-     * Кнопка начала работы
+     * Кнопка начала анализа
      */
     @Override
     public void start() {
         projectDir = new File(tbProject.getText());
-        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath()) == true) {
+        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
             ShowAlert("Ошибка", "Выбрана неверная директория!");
             this.setStart(false);
             return;
@@ -258,8 +230,8 @@ public class FXViewInterface extends ViewInterfaceAbstract {
     /**
      * Отображаем Окно с ошибкой
      *
-     * @param title
-     * @param text
+     * @param title - заголовок
+     * @param text - текст сообщения
      */
     private void ShowAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -278,15 +250,15 @@ public class FXViewInterface extends ViewInterfaceAbstract {
 
     /**
      * Подгружаем внешний репозиторий
-     *
-     * @param event
+     * Для этого открываем соответствующеее диалоговое окно
+     * @param event - событие
      */
     public void OutRepButtonAction(ActionEvent event) {
 
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("fxml/cloneRepView.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("view/cloneRepView.fxml"));
             GridPane rootLayout = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Удалённый репозиторий");
@@ -297,7 +269,7 @@ public class FXViewInterface extends ViewInterfaceAbstract {
 
             //Инициализируем
             CloneRepViewController controller = loader.getController();
-            controller.setFxViewInterface(this);
+            controller.setFxViewInterfaceController(this);
 
             stage.showAndWait();
 
@@ -307,9 +279,9 @@ public class FXViewInterface extends ViewInterfaceAbstract {
     }
 
     /**
-     * показать коммиты
+     * Показать коммиты автора
      *
-     * @param event
+     * @param event - событие
      */
     public void ShowCommitsButtonAction(ActionEvent event) {
         if (isStart()) {
@@ -324,7 +296,7 @@ public class FXViewInterface extends ViewInterfaceAbstract {
 
 
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getClassLoader().getResource("fxml/сommitsView.fxml"));
+                loader.setLocation(getClass().getClassLoader().getResource("view/сommitsView.fxml"));
                 GridPane rootLayout = loader.load();
 
                 Stage stage = new Stage();

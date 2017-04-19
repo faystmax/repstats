@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.ams.repstats.controllers.RootController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Файл">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Настройки"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem fx:id="ButtonAboutAction" mnemonicParsing="false" onAction="#ExitButtonAction"
+                                  text="Закрыть"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Статистика">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Статистика Команд"/>
+                        <MenuItem mnemonicParsing="false" text="Статистика Разработчика"/>
+                        <MenuItem mnemonicParsing="false" text="Статистика по проекту"/>
+                        <MenuItem mnemonicParsing="false" text="Групповая статистика"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Администрирование">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Команда"/>
+                        <MenuItem mnemonicParsing="false" text="Разработчики"/>
+                        <MenuItem mnemonicParsing="false" text="Проекты"/>
+                        <MenuItem mnemonicParsing="false" text="Репозитории"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Помощь">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#ButtonAboutAction" text="О программе"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>

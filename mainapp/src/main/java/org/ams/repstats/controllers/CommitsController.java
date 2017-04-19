@@ -1,4 +1,4 @@
-package org.ams.repstats.gui;
+package org.ams.repstats.controllers;
 
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Commit;

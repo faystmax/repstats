@@ -2,8 +2,8 @@ package org.ams.repstats.mytask;
 
 import javafx.concurrent.Task;
 import javafx.scene.control.TextField;
-import org.ams.repstats.gui.CloneRepViewController;
-import org.ams.repstats.view.FXViewInterface;
+import org.ams.repstats.controllers.CloneRepViewController;
+import org.ams.repstats.controllers.FXViewInterfaceController;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
@@ -16,12 +16,12 @@ import java.io.File;
  */
 public class myTask extends Task {
     private CloneRepViewController controller;
-    private FXViewInterface fxViewInterface;
+    private FXViewInterfaceController fxViewInterfaceController;
     private TextField tbURL;
 
-    public myTask(CloneRepViewController controller, FXViewInterface fxViewInterface, TextField tbURL) {
+    public myTask(CloneRepViewController controller, FXViewInterfaceController fxViewInterfaceController, TextField tbURL) {
         this.controller = controller;
-        this.fxViewInterface = fxViewInterface;
+        this.fxViewInterfaceController = fxViewInterfaceController;
         this.tbURL = tbURL;
     }
 
@@ -34,7 +34,7 @@ public class myTask extends Task {
                     .setDirectory(new File("./cloneRep"))
                     .call();
             git.getRepository().close();
-            fxViewInterface.setNewRepDirectory(new File("./cloneRep"));
+            fxViewInterfaceController.setNewRepDirectory(new File("./cloneRep"));
             updateProgress(1, 1);
         } catch (Exception e) {
             e.printStackTrace();

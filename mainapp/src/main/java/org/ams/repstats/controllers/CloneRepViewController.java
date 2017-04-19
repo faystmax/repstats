@@ -1,4 +1,4 @@
-package org.ams.repstats.gui;
+package org.ams.repstats.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.ams.repstats.mytask.myTask;
-import org.ams.repstats.view.FXViewInterface;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
@@ -34,7 +33,7 @@ public class CloneRepViewController {
     private TextField tbURL;
 
     //Ссылка на родительский контроллер
-    private FXViewInterface fxViewInterface;    ///< ссылка на родителя
+    private FXViewInterfaceController fxViewInterfaceController;    ///< ссылка на родителя
     private boolean isStart = false;            ///< флаг начала
 
     /**
@@ -47,10 +46,10 @@ public class CloneRepViewController {
      * Инициализация родительского окна
      * Для последующей
      *
-     * @param fxViewInterface
+     * @param fxViewInterfaceController
      */
-    public void setFxViewInterface(FXViewInterface fxViewInterface) {
-        this.fxViewInterface = fxViewInterface;
+    public void setFxViewInterfaceController(FXViewInterfaceController fxViewInterfaceController) {
+        this.fxViewInterfaceController = fxViewInterfaceController;
     }
 
     /**
@@ -73,10 +72,10 @@ public class CloneRepViewController {
                 pbDownload.setProgress(-1.0);
                 File dir = new File("./cloneRep");
                 if (dir.exists()) {
-                    fxViewInterface.setNewRepDirectory(null);
+                    fxViewInterfaceController.setNewRepDirectory(null);
                     deleteRecursive(dir);
                 }
-                task = new myTask(this, fxViewInterface, tbURL);
+                task = new myTask(this, fxViewInterfaceController, tbURL);
                 pbDownload.progressProperty().bind(task.progressProperty());
                 new Thread(task).start();
             } catch (Exception e) {
@@ -94,7 +93,7 @@ public class CloneRepViewController {
         try {
             Git git = Git.open(path);
             git.getRepository().close();
-            this.fxViewInterface.closeRepository();
+            this.fxViewInterfaceController.closeRepository();
         } catch (IOException e) {
             e.printStackTrace();
         }

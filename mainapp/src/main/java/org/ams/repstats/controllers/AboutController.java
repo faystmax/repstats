@@ -1,4 +1,4 @@
-package org.ams.repstats.gui;
+package org.ams.repstats.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

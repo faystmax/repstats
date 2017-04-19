@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <GridPane alignment="center" prefHeight="136.0" prefWidth="365.0" xmlns="http://javafx.com/javafx/8.0.112"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ams.repstats.gui.CloneRepViewController">
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ams.repstats.controllers.CloneRepViewController">
     <padding>
         <Insets bottom="10.0" left="25.0" right="25.0" top="10.0"/>
     </padding>

@@ -4,13 +4,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.ams.repstats.controllers.FXViewInterfaceController;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.userinterface.UInterface;
 import org.ams.repstats.view.ConsoleViewInterface;
-import org.ams.repstats.view.FXViewInterface;
 import org.ams.repstats.view.ViewInterface;
 
 import java.io.IOException;
@@ -23,27 +24,22 @@ import java.io.IOException;
  */
 public class MainApp extends Application {
 
-    private static ViewInterface viewInterface;
-    private static UInterface uInterface;            //мост для Фасада
-    private static UInterfaceFactory factory = new UInterfaceFactory();
+    private static UInterfaceFactory factory = new UInterfaceFactory();         ///< Фабрика для UInterface
+    private static ViewInterface viewInterface;                                 ///< Bнтерфейс - консоль,gui
+    private static UInterface uInterface;                                       ///< Vост для Фасада
 
-    public MainApp() {
-        uInterface = factory.create(TypeUInterface.git);
-        viewInterface = new FXViewInterface();
-        viewInterface.setUInterface(uInterface);
-    }
-
-    public MainApp(ViewInterface viewInterface, UInterface uInterface) {
-        MainApp.viewInterface = viewInterface;
-        MainApp.uInterface = uInterface;
-        MainApp.viewInterface.setUInterface(MainApp.uInterface);
-    }
+    private Stage primaryStage;                                                 ///< Главный каркас
+    private BorderPane rootLayout;                                              ///< Родительский Layout
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Git Statistics");
-        primaryStage.getIcons().add(new Image("gitIcon.png"));
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Git Statistics");
+        this.primaryStage.getIcons().add(new Image("gitIcon.png"));
+
+        // TODO настройку открытия определённого окна при загрузке прилжения
         initRootLayout(primaryStage);
+        showStats();
     }
 
     /**
@@ -53,25 +49,57 @@ public class MainApp extends Application {
         try {
             // Загружаем корневой макет из fxml файла.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("fxml/statsView.fxml"));
-            GridPane rootLayout = loader.load();
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/rootLayout.fxml"));
+            rootLayout = (BorderPane) loader.load();
 
             // Отображаем сцену, содержащую корневой макет.
-            primaryStage.setScene(new Scene(rootLayout, 900, 500));
-            ViewInterface controller = loader.getController();
-            controller.setUInterface(MainApp.uInterface);
-
+            primaryStage.setScene(new Scene(rootLayout));
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
+    /**
+     * Показывает в корневом статистику
+     */
+    public void showStats() {
+        try {
+            // Загружаем сведения об адресатах.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/statsView.fxml"));
+            AnchorPane statsView = (AnchorPane) loader.load();
 
+            // Ставим интерфейс в зависимости от моста
+            ViewInterface controller = loader.getController();
+            controller.setUInterface(MainApp.uInterface);
+
+            // Помещаем сведения об адресатах в центр корневого макета.
+            rootLayout.setCenter(statsView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Возвращает главную сцену.
+     *
+     * @return
+     */
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    /**
+     * Точка входа
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
         if (args.length == 2 && args[0].equals("fx") && args[1].equals("analyzer")) {
             MainApp.uInterface = factory.create(TypeUInterface.git);
-            MainApp.viewInterface = new FXViewInterface();
+            MainApp.viewInterface = new FXViewInterfaceController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
             launch(args);
         } else if (args.length == 2 && args[0].equals("c") && args[1].equals("analyzer")) {
@@ -80,7 +108,7 @@ public class MainApp extends Application {
             MainApp.viewInterface.start();
         } else {
             MainApp.uInterface = factory.create(TypeUInterface.git);
-            MainApp.viewInterface = new FXViewInterface();
+            MainApp.viewInterface = new FXViewInterfaceController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
             launch(args);
         }
