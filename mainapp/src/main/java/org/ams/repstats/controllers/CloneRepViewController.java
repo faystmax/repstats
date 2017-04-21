@@ -8,7 +8,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.ams.repstats.mytask.myTask;
+import org.ams.repstats.controllers.mytask.myDownloadRepTask;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
@@ -23,6 +23,7 @@ import java.io.IOException;
  */
 public class CloneRepViewController {
 
+    //region <<<  элементы UI
     @FXML
     public ProgressBar pbDownload;
     @FXML
@@ -31,15 +32,15 @@ public class CloneRepViewController {
     private Button btChoose;
     @FXML
     private TextField tbURL;
+    //endregion
 
-    //Ссылка на родительский контроллер
     private FXViewInterfaceController fxViewInterfaceController;    ///< ссылка на родителя
-    private boolean isStart = false;            ///< флаг начала
+    private boolean isStart = false;                                ///< флаг начала
 
     /**
      * Task для подкачки  внешнего репозитория
      */
-    private myTask task;
+    private myDownloadRepTask task;
 
 
     /**
@@ -55,7 +56,7 @@ public class CloneRepViewController {
     /**
      * закрытие окна
      *
-     * @param event
+     * @param event - событие
      */
     public void ExitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
@@ -63,19 +64,18 @@ public class CloneRepViewController {
     }
 
     /**
-     * @param event
+     * @param event - событие
      */
     public void ChooseButtonAction(ActionEvent event) {
-        if (isStart == false) {
+        if (!isStart) {
             isStart = true;
             try {
-                pbDownload.setProgress(-1.0);
                 File dir = new File("./cloneRep");
                 if (dir.exists()) {
                     fxViewInterfaceController.setNewRepDirectory(null);
                     deleteRecursive(dir);
                 }
-                task = new myTask(this, fxViewInterfaceController, tbURL);
+                task = new myDownloadRepTask(this, fxViewInterfaceController, tbURL);
                 pbDownload.progressProperty().bind(task.progressProperty());
                 new Thread(task).start();
             } catch (Exception e) {
@@ -85,9 +85,19 @@ public class CloneRepViewController {
     }
 
     /**
+     * ошибка подкачки репозитория
+     */
+    public void downloadError() {
+        this.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
+                " либо у вас отсутствует подключение к интернету");
+        isStart = false;
+    }
+
+
+    /**
      * Удаление дирректории рекурсивно
      *
-     * @param path
+     * @param path - путь для удаления
      */
     public void deleteRecursive(File path) {
         try {
@@ -112,11 +122,12 @@ public class CloneRepViewController {
         path.delete();
     }
 
+
     /**
      * Отображаем Окно с ошибкой
      *
-     * @param title
-     * @param text
+     * @param title - заголовок
+     * @param text - текст ошибки
      */
     public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -131,4 +142,6 @@ public class CloneRepViewController {
         alert.setContentText(text);
         alert.showAndWait();
     }
+
+
 }

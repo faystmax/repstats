@@ -28,6 +28,7 @@ subprojects {
         compile 'ch.qos.logback:logback-classic:1.1.2'
         compile 'com.google.guava:guava:18.+'
         compile 'org.slf4j:slf4j-api:1.7.5'
+        compile 'mysql:mysql-connector-java:5.1.41'
 
         testCompile 'junit:junit:4.11'
         testCompile 'org.easytesting:fest-assert-core:2.0M10'

@@ -7,25 +7,87 @@ package org.ams.repstats;
  * Time: 0:38
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 
 public class MysqlConnector {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnector.class); ///< ссылка на логер
+
     // JDBC URL, username and password of MySQL server
-    private static final String url = "jdbc:mysql://localhost:3306/uprcompany";
+    private static final String url = "jdbc:mysql://localhost:3306/gitstats";
     private static final String user = "root";
     private static final String password = "";
+    private static final String driverName = "com.mysql.jdbc.Driver";
 
     // JDBC variables for opening and managing connection
-    private static Connection con;
-    private static Statement stmt;
-    private static ResultSet rs;
+    private static Connection myConn = null;
+    private static PreparedStatement myStmt = null;
+    private static ResultSet myRs = null;
 
+    /**
+     * Инициализирует соединение с БД
+     *
+     * @return Connection to database
+     */
+    public static Connection getConnection() {
+        if (myConn == null) {
+            try {
+                Class.forName(driverName);
+
+                // Get a connection to database
+                myConn = DriverManager.getConnection(url, user, password);
+
+            } catch (ClassNotFoundException ex) {
+                LOGGER.error("Driver not found.");
+            } catch (SQLException ex) {
+                LOGGER.error("Failed to create the database connection.");
+            }
+        }
+        return myConn;
+    }
+
+    /**
+     * Prepare statement
+     *
+     * @param query
+     * @return PreparedStatement для заполнения параметров
+     * @throws SQLException - ошибка запроса
+     */
+    public static PreparedStatement prepeareStmt(String query) throws SQLException {
+        myStmt = myConn.prepareStatement(query);
+        return myStmt;
+    }
+
+    /**
+     * Execute SQL query
+     *
+     * @return ResultSet
+     * @throws SQLException - ошибка запроса
+     */
+    public static ResultSet executeQuery() throws SQLException {
+        myRs = myStmt.executeQuery();
+        myStmt.close();
+        return myRs;
+    }
+
+    /**
+     * Execute SQL update
+     *
+     * @return ResultSet
+     * @throws SQLException - ошибка запроса
+     */
+    public static int executeUpdate() throws SQLException {
+        int rowUpdated = myStmt.executeUpdate();
+        myStmt.close();
+        return rowUpdated;
+    }
+
+/*
     public static void main(String[] args) throws SQLException {
 
-        Connection myConn = null;
-        PreparedStatement myStmt = null;
-        ResultSet myRs = null;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -56,5 +118,5 @@ public class MysqlConnector {
                 myConn.close();
             }
         }
-    }
+    }*/
 }

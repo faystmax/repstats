@@ -107,6 +107,7 @@ public class MainApp extends Application {
             MainApp.viewInterface = new ConsoleViewInterface(MainApp.uInterface);
             MainApp.viewInterface.start();
         } else {
+            MysqlConnector.getConnection();
             MainApp.uInterface = factory.create(TypeUInterface.git);
             MainApp.viewInterface = new FXViewInterfaceController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
