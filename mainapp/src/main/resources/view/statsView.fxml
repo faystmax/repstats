@@ -11,14 +11,14 @@
                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                    AnchorPane.topAnchor="0.0">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0">
                     <children>
                         <HBox prefHeight="68.0" prefWidth="898.0" spacing="15.0" AnchorPane.bottomAnchor="0.0"
                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <ChoiceBox fx:id="choiceBox" prefHeight="25.0" prefWidth="91.0"/>
-                                <TextField fx:id="tbProject" prefHeight="25.0" prefWidth="143.0"
-                                           promptText="Путь к папке" HBox.hgrow="ALWAYS"/>
+                                <TextField fx:id="tbProject" prefHeight="25.0" promptText="Путь к папке"
+                                           HBox.hgrow="ALWAYS"/>
                                 <Button fx:id="btChoose" alignment="CENTER_RIGHT" mnemonicParsing="false"
                                         onAction="#ChooseProjectAction" text="Выбрать папку"/>
                                 <Button fx:id="btOutRep" mnemonicParsing="false" onAction="#OutRepButtonAction"

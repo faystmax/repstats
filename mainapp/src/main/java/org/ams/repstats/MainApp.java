@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.ams.repstats.controllers.FXViewInterfaceController;
+import org.ams.repstats.controllers.RootController;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.userinterface.UInterface;
@@ -51,6 +52,12 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(this.getClass().getClassLoader().getResource("view/rootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
+
+            // Посылаем в контроллер к rootLayout основной каркас приложения
+            // для последующей смене сцен
+            RootController controller = loader.getController();
+            controller.setPrimaryStage(primaryStage);
+            controller.setRootLayout(rootLayout);
 
             // Отображаем сцену, содержащую корневой макет.
             primaryStage.setScene(new Scene(rootLayout));

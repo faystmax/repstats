@@ -26,10 +26,10 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Администрирование">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Команда"/>
-                        <MenuItem mnemonicParsing="false" text="Разработчики"/>
-                        <MenuItem mnemonicParsing="false" text="Проекты"/>
-                        <MenuItem mnemonicParsing="false" text="Репозитории"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showAdminTeam" text="Команда"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showAdminDevelopers" text="Разработчики"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showAdminProjects" text="Проекты"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showAdminRepository" text="Репозитории"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
