@@ -8,7 +8,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.ams.repstats.controllers.mytask.myDownloadRepTask;
+import org.ams.repstats.controllers.mytask.MyDownloadRepTask;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
@@ -37,17 +37,12 @@ public class CloneRepViewController {
     private FXViewInterfaceController fxViewInterfaceController;    ///< ссылка на родителя
     private boolean isStart = false;                                ///< флаг начала
 
-    /**
-     * Task для подкачки  внешнего репозитория
-     */
-    private myDownloadRepTask task;
-
 
     /**
      * Инициализация родительского окна
      * Для последующей
      *
-     * @param fxViewInterfaceController
+     * @param fxViewInterfaceController -контроллер род. окна
      */
     public void setFxViewInterfaceController(FXViewInterfaceController fxViewInterfaceController) {
         this.fxViewInterfaceController = fxViewInterfaceController;
@@ -58,7 +53,7 @@ public class CloneRepViewController {
      *
      * @param event - событие
      */
-    public void ExitButtonAction(ActionEvent event) {
+    public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
@@ -66,7 +61,7 @@ public class CloneRepViewController {
     /**
      * @param event - событие
      */
-    public void ChooseButtonAction(ActionEvent event) {
+    public void chooseButtonAction(ActionEvent event) {
         if (!isStart) {
             isStart = true;
             try {
@@ -75,7 +70,10 @@ public class CloneRepViewController {
                     fxViewInterfaceController.setNewRepDirectory(null);
                     deleteRecursive(dir);
                 }
-                task = new myDownloadRepTask(this, fxViewInterfaceController, tbURL);
+                /*
+      Task для подкачки  внешнего репозитория
+     */
+                MyDownloadRepTask task = new MyDownloadRepTask(this, fxViewInterfaceController, tbURL);
                 pbDownload.progressProperty().bind(task.progressProperty());
                 new Thread(task).start();
             } catch (Exception e) {

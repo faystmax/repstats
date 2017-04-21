@@ -54,7 +54,7 @@
                             </HBox.margin>
                         </DatePicker>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="btExit" mnemonicParsing="false" onAction="#ExitButtonAction" text="Закрыть"/>
+                        <Button fx:id="btExit" mnemonicParsing="false" onAction="#exitButtonAction" text="Закрыть"/>
                     </children>
                 </HBox>
             </children>

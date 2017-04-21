@@ -53,6 +53,7 @@ public class SvnUInterface implements UInterface {
 
         } catch (Exception e) {
             LOGGER.error("Error while starting svn project analyze");
+            return false;
         }
         return true;
     }

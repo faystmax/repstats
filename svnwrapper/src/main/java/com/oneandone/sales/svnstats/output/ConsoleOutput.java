@@ -74,7 +74,7 @@ public class ConsoleOutput implements Output {
 
                 if (file.dependenciesUpdated().size() > 0) {
                     result.append("        Updated Dependencies:\n");
-                    Map<String, Integer> dependenciesCount = new HashMap<String, Integer>();
+                    Map<String, Integer> dependenciesCount = new HashMap<>();
                     for (String dependency : file.dependenciesUpdated()) {
                         if (dependenciesCount.containsKey(dependency)) {
                             dependenciesCount.put(dependency, dependenciesCount.get(dependency) + 1);

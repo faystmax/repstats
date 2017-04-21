@@ -10,11 +10,11 @@ import org.ams.repstats.userinterface.UInterface;
  */
 public interface ViewInterface {
 
-    void ChooseProjectAction();
+    void chooseProjectAction();
 
-    void ShowAllFiles();
+    void showAllFiles();
 
-    void ShowAvtors();
+    void showAvtors();
 
     void showMainInf();
 

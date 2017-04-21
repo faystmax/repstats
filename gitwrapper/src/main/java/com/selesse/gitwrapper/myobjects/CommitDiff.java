@@ -102,7 +102,7 @@ public class CommitDiff {
     /**
      * Возвращает новый путь до файла.
      *
-     * @return
+     * @return - новый путь до файла
      */
     public String getNewPath() {
         return newPath;

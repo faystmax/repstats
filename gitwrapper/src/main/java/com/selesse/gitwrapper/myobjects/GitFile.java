@@ -20,8 +20,9 @@ public class GitFile {
     private String path;                ///< Полный путь до файла
     private FileMode fileMode;          ///< Тип файла
     private boolean isBinary;           ///< Если бинариник - истина, иначе - ложь
-    private byte[] byteContents;        ///< Содержание файла
-    private List<String> contents;      ///< Список строк фала
+    //private byte[] byteContents;        ///< Содержание файла
+    //private List<String> contents;      ///< Список строк файла
+    private int numberOfLines;          ///< Кол-во строк кода
 
     /**
      * Инициализирует git файл.
@@ -34,7 +35,9 @@ public class GitFile {
         this.path = path;
         this.fileMode = fileMode;
         this.isBinary = RawText.isBinary(bytes);
-        this.byteContents = bytes;
+
+        numberOfLines = getContents(bytes).size();
+
     }
 
     /**
@@ -43,10 +46,9 @@ public class GitFile {
      * В итоге получаем количество строк
      *
      * @return число строк
-     * @see #getContents()
      */
     public int getNumberOfLines() {
-        return getContents().size();
+        return numberOfLines;
     }
 
     /**
@@ -56,15 +58,14 @@ public class GitFile {
      *
      * @return список строк файла
      */
-    public List<String> getContents() {
-        if (contents == null) {
-            try {
-                // UTF-8 is the only encoding, ever, right?
-                String fileContents = new String(byteContents, "UTF-8");
-                contents = Splitter.onPattern("\r?\n").splitToList(fileContents);
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalArgumentException("Error reading file: " + path);
-            }
+    public List<String> getContents(byte[] byteContents) {
+        List<String> contents = null;
+        try {
+            // UTF-8 is the only encoding, ever, right?
+            String fileContents = new String(byteContents, "UTF-8");
+            contents = Splitter.onPattern("\r?\n").splitToList(fileContents);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Error reading file: " + path);
         }
         return contents;
     }

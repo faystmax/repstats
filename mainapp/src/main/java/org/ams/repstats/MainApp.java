@@ -92,7 +92,7 @@ public class MainApp extends Application {
     /**
      * Возвращает главную сцену.
      *
-     * @return
+     * @return - главную сцену
      */
     public Stage getPrimaryStage() {
         return primaryStage;
@@ -101,7 +101,7 @@ public class MainApp extends Application {
     /**
      * Точка входа
      *
-     * @param args
+     * @param args - аргументы из командной строки
      */
     public static void main(String[] args) {
         if (args.length == 2 && args[0].equals("fx") && args[1].equals("analyzer")) {

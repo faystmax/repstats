@@ -12,7 +12,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Настройки"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="ButtonAboutAction" mnemonicParsing="false" onAction="#ExitButtonAction"
+                        <MenuItem fx:id="buttonAboutAction" mnemonicParsing="false" onAction="#exitButtonAction"
                                   text="Закрыть"/>
                     </items>
                 </Menu>
@@ -34,7 +34,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#ButtonAboutAction" text="О программе"/>
+                        <MenuItem mnemonicParsing="false" onAction="#buttonAboutAction" text="О программе"/>
                     </items>
                 </Menu>
             </menus>

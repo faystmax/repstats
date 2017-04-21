@@ -18,7 +18,7 @@ public interface UInterface {
 
     boolean startProjectAnalyze();
 
-    public void closeRepository();
+    void closeRepository();
 
     BufferedImage getChart();
 

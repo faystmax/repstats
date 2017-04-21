@@ -123,7 +123,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
      * Кнопка выбора директории
      */
     @Override
-    public void ChooseProjectAction() {
+    public void chooseProjectAction() {
         directoryChooser = new DirectoryChooser();
         projectDir = directoryChooser.showDialog(null);
         //выход если ничего не выбрали
@@ -135,9 +135,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
             ShowAlert("Ошибка", "Выбрана неверная директория!");
             return;
         }
-        if (projectDir != null) {
-            setNewRepDirectory(projectDir);
-        }
+        setNewRepDirectory(projectDir);
 
     }
 
@@ -161,7 +159,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
             this.setStart(false);
             return;
         }
-        if (!getuInterface().startProjectAnalyze() == true) {
+        if (!getuInterface().startProjectAnalyze()) {
             ShowAlert("Ошибка", "Ошибка анализа файлов проекта!");
             this.setStart(false);
         } else {
@@ -170,8 +168,8 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
 
         //showChartOnImageView();
         showMainInf();
-        ShowAvtors();
-        ShowAllFiles();
+        showAvtors();
+        showAllFiles();
     }
 
     @Override
@@ -180,7 +178,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
     }
 
     @Override
-    public void ShowAllFiles() {
+    public void showAllFiles() {
         clmnPath.setCellValueFactory(new PropertyValueFactory<>("path"));
         clmnIsBinary.setCellValueFactory(new PropertyValueFactory<>("isBinary"));
         clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
@@ -197,7 +195,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
     }
 
     @Override
-    public void ShowAvtors() {
+    public void showAvtors() {
         clmnAvtorName.setCellValueFactory(new PropertyValueFactory<>("name"));
         clmnCommitCount.setCellValueFactory(new PropertyValueFactory<>("commitCount"));
         clmnLinesAdd.setCellValueFactory(new PropertyValueFactory<>("linesAdded"));

@@ -151,6 +151,7 @@ public class GitUInterface implements UInterface {
 
         } catch (Exception e) {
             LOGGER.error("Error while starting analyzer project analyze");
+            return false;
         }
         return true;
     }

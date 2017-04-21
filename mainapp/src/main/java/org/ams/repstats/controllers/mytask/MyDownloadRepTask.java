@@ -17,14 +17,14 @@ import java.io.File;
  * Date: 10.04.2017
  * Time: 0:06
  */
-public class myDownloadRepTask extends Task {
-    private static final Logger LOGGER = LoggerFactory.getLogger(myDownloadRepTask.class); ///< ссылка на логер
+public class MyDownloadRepTask extends Task {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyDownloadRepTask.class); ///< ссылка на логер
 
     private CloneRepViewController controller;
     private FXViewInterfaceController fxViewInterfaceController;
     private TextField tbURL;
 
-    public myDownloadRepTask(CloneRepViewController controller, FXViewInterfaceController fxViewInterfaceController, TextField tbURL) {
+    public MyDownloadRepTask(CloneRepViewController controller, FXViewInterfaceController fxViewInterfaceController, TextField tbURL) {
         this.controller = controller;
         this.fxViewInterfaceController = fxViewInterfaceController;
         this.tbURL = tbURL;
@@ -40,22 +40,16 @@ public class myDownloadRepTask extends Task {
                     .setDirectory(new File("./cloneRep"))
                     .call();
             git.getRepository().close();
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    fxViewInterfaceController.setNewRepDirectory(new File("./cloneRep"));
-                    updateProgress(1, 1);
-                }
+            Platform.runLater(() -> {
+                fxViewInterfaceController.setNewRepDirectory(new File("./cloneRep"));
+                updateProgress(1, 1);
             });
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             //оповещаем родительское окно об ошибке
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.downloadError();
-                    updateProgress(0, 1);
-                }
+            Platform.runLater(() -> {
+                controller.downloadError();
+                updateProgress(0, 1);
             });
         } finally {
             this.done();

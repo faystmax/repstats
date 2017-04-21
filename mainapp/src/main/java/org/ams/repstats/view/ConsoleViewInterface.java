@@ -24,7 +24,7 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
     }
 
     @Override
-    public void ChooseProjectAction() {
+    public void chooseProjectAction() {
         System.out.println("Введите путь к репозиторию:");
         String input = in.nextLine();
         if (!getuInterface().сhooseProjectDirectory(input)) {
@@ -40,7 +40,7 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
     }
 
     @Override
-    public void ShowAllFiles() {
+    public void showAllFiles() {
         if (checkStart()) {
             System.out.println("Путь                                                                   Бинарник   Кол-во строк ");
             TableModel allFiles = getuInterface().getAllFiles();
@@ -55,7 +55,7 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
     }
 
     @Override
-    public void ShowAvtors() {
+    public void showAvtors() {
         if (checkStart()) {
             System.out.println("Имя        Кол-во коммитов   Строк добавлено  Строк удалено    Чистый вклад ");
             TableModel authors = getuInterface().getAuthors();
@@ -105,20 +105,22 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
             String input = in.nextLine();
             switch (input) {
                 case "1":
-                    ChooseProjectAction();
+                    chooseProjectAction();
                     break;
                 case "2":
                     showMainInf();
                     break;
                 case "3":
-                    ShowAvtors();
+                    showAvtors();
                     break;
                 case "4":
-                    ShowAllFiles();
+                    showAllFiles();
                     break;
                 case "5":
                     flag = false;
                     break;
+                default:
+                    System.out.println("Не верный ввод!");
             }
         }
 

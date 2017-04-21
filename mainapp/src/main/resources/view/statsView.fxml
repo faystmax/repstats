@@ -20,7 +20,7 @@
                                 <TextField fx:id="tbProject" prefHeight="25.0" promptText="Путь к папке"
                                            HBox.hgrow="ALWAYS"/>
                                 <Button fx:id="btChoose" alignment="CENTER_RIGHT" mnemonicParsing="false"
-                                        onAction="#ChooseProjectAction" text="Выбрать папку"/>
+                                        onAction="#chooseProjectAction" text="Выбрать папку"/>
                                 <Button fx:id="btOutRep" mnemonicParsing="false" onAction="#OutRepButtonAction"
                                         text="Выбрать внешний репозиторий"/>
                                 <Button fx:id="btStart" mnemonicParsing="false" onAction="#start" text="Запуск"/>

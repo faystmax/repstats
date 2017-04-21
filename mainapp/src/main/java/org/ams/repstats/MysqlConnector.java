@@ -1,16 +1,16 @@
 package org.ams.repstats;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.*;
+
 /**
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 20.04.2017
  * Time: 0:38
  */
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.sql.*;
 
 public class MysqlConnector {
 
@@ -52,7 +52,7 @@ public class MysqlConnector {
     /**
      * Prepare statement
      *
-     * @param query
+     * @param query - строка запроса
      * @return PreparedStatement для заполнения параметров
      * @throws SQLException - ошибка запроса
      */

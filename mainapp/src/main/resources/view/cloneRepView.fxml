@@ -27,7 +27,7 @@
                 <TextField fx:id="tbURL" text="https://github.com/"/>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button fx:id="btChoose" mnemonicParsing="false" onAction="#ChooseButtonAction"
+                        <Button fx:id="btChoose" mnemonicParsing="false" onAction="#chooseButtonAction"
                                 prefHeight="25.0" prefWidth="64.0" text="Выбор "/>
                         <Region/>
                         <ProgressBar fx:id="pbDownload" prefHeight="28.0" prefWidth="153.0" progress="0.0">
@@ -36,7 +36,7 @@
                             </padding>
                         </ProgressBar>
                         <Region/>
-                        <Button fx:id="btExit" mnemonicParsing="false" onAction="#ExitButtonAction" prefHeight="25.0"
+                        <Button fx:id="btExit" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="25.0"
                                 prefWidth="64.0" text="Закрыть"/>
                     </children>
                 </HBox>

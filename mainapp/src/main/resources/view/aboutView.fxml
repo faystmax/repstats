@@ -7,7 +7,7 @@
 <AnchorPane prefHeight="149.0" prefWidth="396.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.AboutController">
     <children>
-        <Button fx:id="btExit" layoutX="434.0" layoutY="110.0" mnemonicParsing="false" onAction="#ExitButtonAction"
+        <Button fx:id="btExit" layoutX="434.0" layoutY="110.0" mnemonicParsing="false" onAction="#exitButtonAction"
                 prefHeight="25.0" prefWidth="68.0" text="Закрыть" textAlignment="CENTER" AnchorPane.bottomAnchor="14.0"
                 AnchorPane.rightAnchor="14.0"/>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="160.0" layoutY="6.0" text="RepStats"

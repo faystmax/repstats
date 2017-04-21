@@ -105,13 +105,11 @@ public class RootController {
     /**
      * Окно "О программе"
      */
-    public void ButtonAboutAction() {
+    public void buttonAboutAction() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("view/aboutView.fxml"));
-            AnchorPane aboutLayout = null;
-
-            aboutLayout = loader.load();
+            AnchorPane aboutLayout = loader.load();
 
             Stage stage = new Stage();
             stage.setTitle("О Программе");
@@ -131,7 +129,7 @@ public class RootController {
      *
      * @param event - событие
      */
-    public void ExitButtonAction(ActionEvent event) {
+    public void exitButtonAction(ActionEvent event) {
         System.exit(0);
     }
 }

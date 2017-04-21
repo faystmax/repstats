@@ -123,6 +123,8 @@ public class SvnRepository implements Repository {
             case 'D':
                 changedPath.type(ChangeType.DELETED);
                 break;
+            default:
+                changedPath.type(null);
         }
 
         return changedPath;
