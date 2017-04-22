@@ -50,11 +50,11 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="635.0">
                     <children>
-                        <TableView editable="true" layoutX="8.0" prefHeight="262.0" prefWidth="690.0"
-                                   AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                        <TableView fx:id="developersTable" editable="true" layoutX="8.0" prefHeight="262.0"
+                                   prefWidth="690.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
                                    AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="10.0">
                             <columns>
-                                <TableColumn fx:id="developersTable" prefWidth="75.0" text="Участники команды">
+                                <TableColumn prefWidth="75.0" text="Участники команды">
                                     <columns>
                                         <TableColumn fx:id="developerFamClmn" prefWidth="75.0" text="Фамилия"/>
                                         <TableColumn fx:id="developerNameClmn" prefWidth="75.0" text="Имя"/>
@@ -73,11 +73,12 @@
                               AnchorPane.rightAnchor="14.0">
                             <children>
                                 <Button layoutX="431.0" layoutY="261.0" mnemonicParsing="false"
-                                        text="Удалить участника из команды"/>
-                                <Button layoutX="431.0" layoutY="297.0" mnemonicParsing="false" prefHeight="25.0"
+                                        onAction="#delDeveloperFromTeam" text="Удалить участника из команды"/>
+                                <Button layoutX="431.0" layoutY="297.0" mnemonicParsing="false"
+                                        onAction="#addNewDevelopersInTeamButtonAction" prefHeight="25.0"
                                         prefWidth="187.0" text="Добавить нового участника"/>
                                 <Button layoutX="431.0" layoutY="334.0" mnemonicParsing="false"
-                                        text="Добавить участника в команду"/>
+                                        onAction="#developerInTeamAddButtonAction" text="Добавить участника в команду"/>
                             </children>
                         </VBox>
                     </children>

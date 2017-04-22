@@ -2,28 +2,23 @@ package org.ams.repstats.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
 import org.ams.repstats.Utils;
 import org.ams.repstats.fortableview.DeveloperTable;
-import org.ams.repstats.fortableview.TeamTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,21 +27,14 @@ import java.util.HashMap;
 /**
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
- * Date: 22.04.2017
- * Time: 11:41
+ * Date: 23.04.2017
+ * Time: 0:09
  */
-public class TeamEditController {
+public class DeveloperInTeamAddControlller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamEditController.class); ///< ссылка на логер
 
-    @FXML
-    private TableView teamTable;
-    @FXML
-    private TableColumn teamNameClmn;
-    @FXML
-    private TableColumn teamTechnolClmn;
-    @FXML
-    private TableView developersTable;
+    //region << UI Компоненты
     @FXML
     private TableColumn developerFamClmn;
     @FXML
@@ -59,23 +47,19 @@ public class TeamEditController {
     private TableColumn developerPhoneClmn;
     @FXML
     private TableColumn developerRoleClmn;
+    @FXML
+    private TableView developersTable;
+    @FXML
+    private Button btExit;
+    //endregion
 
-
-    private HashMap<Integer, String> roles;    ///< id_role - name
+    private TeamEditController teamEditController;
+    private HashMap<Integer, String> roles;         ///< id_role - name
 
     @FXML
     public void initialize() {
-        showAllTeams();
         configureDevelopersTable();
-        // добавили listener`a
-        teamTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
-                showDevelopersInTeam(id_team);
-            }
-        });
-
-
+        showDevelopersInTeam();
     }
 
     /**
@@ -300,132 +284,6 @@ public class TeamEditController {
     }
 
     /**
-     * Заполняем таблицу с командами
-     */
-    private void showAllTeams() {
-
-        // region << Инициализируем колонки таблицы
-        // Имя
-        //Utils.configureStringColumnTeamTable(teamNameClmn,"name",MysqlConnector.updateNameTeam,LOGGER);
-        teamNameClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("name"));
-        teamNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
-        teamNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-                        //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
-                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
-                            // обновляем колонку
-                            teamNameClmn.setVisible(false);
-                            teamNameClmn.setVisible(true);
-                            return;
-                        }
-                        //обновляем в базе
-                        try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateNameTeam);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, changeable.getId());
-                            int newId = MysqlConnector.executeUpdate();
-                            changeable.setName(t.getNewValue());
-                        } catch (SQLException e) {
-                            LOGGER.error((e.getMessage()));
-                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
-                                    "", e);
-                        }
-                    }
-                }
-        );
-        // Технология
-        //Utils.configureStringColumnTeamTable(teamTechnolClmn,"technology",MysqlConnector.updateTechnTeam,LOGGER);
-        teamTechnolClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("technology"));
-        teamTechnolClmn.setCellFactory(TextFieldTableCell.forTableColumn());
-        teamTechnolClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-                        //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
-                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
-                            // обновляем колонку
-                            teamTechnolClmn.setVisible(false);
-                            teamTechnolClmn.setVisible(true);
-                            return;
-                        }
-                        //обновляем в базе
-                        try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateTechnTeam);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, changeable.getId());
-                            int newId = MysqlConnector.executeUpdate();
-                            changeable.setTechnology(t.getNewValue());
-                        } catch (SQLException e) {
-                            LOGGER.error((e.getMessage()));
-                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
-                                    "", e);
-                        }
-                    }
-                }
-        );
-        //endregion
-
-        // Извлекаем данные из базы
-        try {
-            MysqlConnector.prepeareStmt(MysqlConnector.selectAllTeams);
-            ResultSet rs = MysqlConnector.executeQuery();
-
-            ObservableList<TeamTable> data = FXCollections.observableArrayList();
-            while (rs.next()) {
-                data.add(new TeamTable(rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3)));
-            }
-            MysqlConnector.closeStmt();
-
-            teamTable.setItems(data);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-
-    /**
-     * Заполняем таблицу с разработчиками команды
-     */
-    private void showDevelopersInTeam(int idTeam) {
-
-        // Извлекаем данные из базы
-        try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectDevelopersInTeam);
-            preparedStatement.setInt(1, idTeam);
-            ResultSet rs = MysqlConnector.executeQuery();
-
-            ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
-            while (rs.next()) {
-                //String role_name =
-                data.add(new DeveloperTable(rs.getInt(1),
-                        rs.getString(3),
-                        rs.getString(2),
-                        rs.getString(4),
-                        rs.getInt(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getString(8),
-                        rs.getString(9)));
-            }
-            MysqlConnector.closeStmt();
-
-            developersTable.setItems(data);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
      * Считываем все роли в Хеш
      */
     private void readAllRoles() {
@@ -447,161 +305,53 @@ public class TeamEditController {
     }
 
     /**
-     * Добавляем  команду
+     * Заполняем таблицу со всеми разработчиками
      */
-    public void addTeamButtonAction() {
-        String newTeam = "Новая команда";
-        String newTecnology = "...";
+    private void showDevelopersInTeam() {
+
+        // Извлекаем данные из базы
         try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewTeam);
-            preparedStatement.setString(1, newTeam);
-            preparedStatement.setString(2, newTecnology);
-            MysqlConnector.executeUpdate();
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithNull);
+            ResultSet rs = MysqlConnector.executeQuery();
 
-            int newId = MysqlConnector.getinsertId();
-            TeamTable elem = new TeamTable(newId, "Новая команда", "...");
-            teamTable.getItems().add(elem);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-
-    }
-
-    /**
-     * Удаляем команду
-     */
-    public void delTeamButtonAction() {
-        int selectedIndex = teamTable.getSelectionModel().getSelectedIndex();
-        int selectedId = ((TeamTable) teamTable.getSelectionModel().getSelectedItem()).getId();
-        try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteTeam);
-            preparedStatement.setInt(1, selectedId);
-            MysqlConnector.execute();
-
-            teamTable.getItems().remove(selectedIndex);
+            ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
+            while (rs.next()) {
+                data.add(new DeveloperTable(rs.getInt(1),
+                        rs.getString(3),
+                        rs.getString(2),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getString(9)));
+            }
             MysqlConnector.closeStmt();
+
+            developersTable.setItems(data);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            Utils.showError("Ошибка удаления", "Невозможно удалить выбранную команду! Возможно в ней ещё есть участники.",
-                    "Невозможно удалить выбранную команду!", e);
-        }
-
-    }
-
-    /**
-     * Удаляем разработчика из команды
-     */
-    public void delDeveloperFromTeam() {
-        int selectedIndex = developersTable.getSelectionModel().getSelectedIndex();
-        int selectedId = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem()).getId();
-        if (Utils.conformationDialog("Удаление разработчика из группы", "Вы уверены,что хотите удалить " +
-                "разработчика из выбранной группы?")) {
-            try {
-                PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateDeveloperTeam);
-                preparedStatement.setString(1, null);
-                preparedStatement.setInt(2, selectedId);
-                MysqlConnector.executeUpdate();
-
-                developersTable.getItems().remove(selectedIndex);
-                MysqlConnector.closeStmt();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage());
-                Utils.showError("Ошибка удаления", "Невозможно удалить разработчика из команды! ",
-                        "", e);
-            }
         }
     }
 
-    /**
-     * Добавляем ноаого разработчика в команду
-     */
-    public void addNewDevelopersInTeamButtonAction() {
-        if (teamTable.getSelectionModel().getSelectedItem() == null) {
-            Utils.showAlert("Ошибка добавления", "Сначала выберие команду!");
+
+    public void setTeamEditController(TeamEditController teamEditController) {
+        this.teamEditController = teamEditController;
+    }
+
+    public void exitButtonAction(ActionEvent event) {
+        Stage stage = (Stage) btExit.getScene().getWindow();
+        stage.close();
+    }
+
+    public void developerSelectButtonAction() {
+        if (developersTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка добавления", "Сначала выберите разработчика!");
             return;
         }
-        String newName = "...";
-        String newFam = "...";
-        String newOtch = "...";
-        int id_role = 0;
-        int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
-        int newAge = 0;
-        String newPhone = "...";
-        String newRoleName = roles.get(id_team);
-        try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewDeveloper);
-            preparedStatement.setString(1, newName);
-            preparedStatement.setString(2, newFam);
-            preparedStatement.setString(3, newOtch);
-            preparedStatement.setInt(4, id_role);
-            preparedStatement.setInt(5, id_team);
-            preparedStatement.setInt(6, newAge);
-            preparedStatement.setString(7, newPhone);
-            MysqlConnector.executeUpdate();
-            int newId = MysqlConnector.getinsertId();
-
-            DeveloperTable elem = new DeveloperTable(newId, newName, newFam, newOtch, id_role,
-                    id_team, newAge, newPhone, newRoleName);
-            developersTable.getItems().add(elem);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-
+        int id_team = ((DeveloperTable) (developersTable.getSelectionModel().getSelectedItem())).getId();
+        this.teamEditController.existingDeveloperInTeamAdd(id_team);
+        Stage stage = (Stage) btExit.getScene().getWindow();
+        stage.close();
     }
-
-
-    /**
-     * Окно "Добавление существующего разработчика"
-     */
-    public void developerInTeamAddButtonAction() {
-        try {
-            if (teamTable.getSelectionModel().getSelectedItem() == null) {
-                Utils.showAlert("Ошибка добавления", "Сначала выберие команду!");
-                return;
-            }
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("view/developerInTeamAddView.fxml"));
-            AnchorPane aboutLayout = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Добавление существующего разработчика в команду");
-            stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            //Инициализируем
-            DeveloperInTeamAddControlller controller = loader.getController();
-            controller.setTeamEditController(this);
-
-            //Инициализируем и запускаем
-            stage.showAndWait();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
-     * Добавление существующего разработчика в команду по id
-     *
-     * @param id
-     */
-    public void existingDeveloperInTeamAdd(int id) {
-        if (teamTable.getSelectionModel().getSelectedItem() == null) {
-            Utils.showAlert("Ошибка добавления", "Сначала выберите команду!");
-            return;
-        }
-        int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
-        try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateDeveloperTeam);
-            preparedStatement.setInt(1, id_team);
-            preparedStatement.setInt(2, id);
-
-            MysqlConnector.executeUpdate();
-
-            showDevelopersInTeam(id_team);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
 }

@@ -1,6 +1,7 @@
 package org.ams.repstats;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -10,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Map;
+import java.util.Optional;
+
 
 /**
  * Created with IntelliJ IDEA
@@ -87,6 +91,20 @@ public class Utils {
         alert.showAndWait();
     }
 
+    public static boolean conformationDialog(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(text);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     /**
      * Проверка строки на корректность ввода
      *
@@ -99,9 +117,17 @@ public class Utils {
         }
         return true;
     }
-/*
-    public static void configureStringColumn(TableColumn tableColumn, Class classElemtable,String propertyName ){
-        tableColumn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("technology"));
+
+    public static boolean isValidStringValue(Integer check) {
+        if (check < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /*
+    public static void configureStringColumnTeamTable(TableColumn tableColumn, String propertyName, String querry,Logger LOGGER ){
+        tableColumn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>(propertyName));
         tableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableColumn.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
@@ -119,7 +145,7 @@ public class Utils {
                             return;
                         }
                         try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateTechnTeam);
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(querry);
                             preparedStatement.setString(1, t.getNewValue());
                             preparedStatement.setInt(2, changeable.getId());
                             int newId = MysqlConnector.executeUpdate();
@@ -134,4 +160,13 @@ public class Utils {
         );
 
     }*/
+
+    public static Object getKeyFromValue(Map hm, Object value) {
+        for (Object o : hm.keySet()) {
+            if (hm.get(o).equals(value)) {
+                return o;
+            }
+        }
+        return null;
+    }
 }

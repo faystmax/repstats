@@ -33,6 +33,28 @@ public class MysqlConnector {
     public static final String deleteTeam = "delete from team where id = ?";
     public static final String updateNameTeam = "update team set name = ? WHERE id = ?";
     public static final String updateTechnTeam = "update team set technology = ? WHERE id = ?";
+
+    public static final String selectDevelopersInTeam = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name from developer" +
+            " inner JOIN role on role.id=developer.id_role" +
+            " where id_team = ?";
+
+    public static final String insertNewDeveloper = "insert into developer (name,surname,middlename,id_role,id_team,age,phone) " +
+            "values (?, ?, ?, ?, ?, ?, ?)";
+    public static final String deleteDeveloper = "delete from developer WHERE id = ?";
+    public static final String updateDeveloperTeam = "update developer set id_team = ? WHERE id = ?";
+    public static final String updateNameDeveloper = "update developer set name = ? WHERE id = ?";
+    public static final String updateSurnameDeveloper = "update developer set surname = ? WHERE id = ?";
+    public static final String updateMidleNameDeveloper = "update developer set middlename = ? WHERE id = ?";
+    public static final String updateAgeDeveloper = "update developer set age = ? WHERE id = ?";
+    public static final String updatePhoneDeveloper = "update developer set phone = ? WHERE id = ?";
+    public static final String updateRoleDeveloper = "update developer set id_role = ? WHERE id = ?";
+
+    public static final String selectAllRoles = "select id,name from role";
+    public static final String selectAllDevelopersWithNull = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name from developer" +
+            " inner JOIN role on role.id=developer.id_role" +
+            " where id_team is NULL";
+
+
     /**
      * Инициализирует соединение с БД
      *
@@ -97,8 +119,23 @@ public class MysqlConnector {
      * @throws SQLException - ошибка запроса
      */
     public static int executeUpdate() throws SQLException {
-        int rowUpdated = myStmt.executeUpdate();
-        return rowUpdated;
+        return myStmt.executeUpdate();
+    }
+
+    /**
+     * Получаем сгенерированный Id
+     *
+     * @return - сгенерированный id
+     * @throws SQLException - ошибка запроса
+     */
+    public static int getinsertId() throws SQLException {
+        try (ResultSet generatedKeys = myStmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return (int) generatedKeys.getLong(1);
+            } else {
+                throw new SQLException("Creating user failed, no ID obtained.");
+            }
+        }
     }
 
     /**
