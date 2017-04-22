@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.DevelopersEditController">
     <children>
-        <TableView layoutX="18.0" layoutY="10.0" prefHeight="480.0" prefWidth="686.0" AnchorPane.bottomAnchor="10.0"
-                   AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="10.0">
+        <TableView fx:id="developersTable" layoutX="18.0" layoutY="10.0" prefHeight="480.0" prefWidth="686.0"
+                   AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="204.0"
+                   AnchorPane.topAnchor="10.0">
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
             <columns>
                 <TableColumn prefWidth="75.0" text="Разработчики">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Фамилия"/>
-                        <TableColumn prefWidth="75.0" text="Имя"/>
-                        <TableColumn prefWidth="75.0" text="Отчество"/>
-                        <TableColumn prefWidth="75.0" text="Возраст"/>
-                        <TableColumn prefWidth="75.0" text="Телефон"/>
-                        <TableColumn prefWidth="75.0" text="Роль"/>
+                        <TableColumn fx:id="developerFamClmn" prefWidth="75.0" text="Фамилия"/>
+                        <TableColumn fx:id="developerNameClmn" prefWidth="75.0" text="Имя"/>
+                        <TableColumn fx:id="developerOtchClmn" prefWidth="75.0" text="Отчество"/>
+                        <TableColumn fx:id="developerAgeClmn" prefWidth="75.0" text="Возраст"/>
+                        <TableColumn fx:id="developerPhoneClmn" prefWidth="75.0" text="Телефон"/>
+                        <TableColumn fx:id="developerRoleClmn" prefWidth="75.0" text="Роль"/>
                     </columns>
                 </TableColumn>
             </columns>
