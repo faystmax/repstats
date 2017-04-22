@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.ams.repstats.fortableview.TableCommit;
+import org.ams.repstats.fortableview.CommitTable;
 import org.ams.repstats.userinterface.UInterface;
 
 import java.text.DateFormat;
@@ -33,7 +33,7 @@ public class CommitsController {
     @FXML
     private TableColumn clmnFilesChanged;
     @FXML
-    private TableColumn<TableCommit, String> clmnDate;
+    private TableColumn<CommitTable, String> clmnDate;
     @FXML
     private TableColumn clmnMessage;
     @FXML
@@ -73,18 +73,18 @@ public class CommitsController {
                 });
         clmnFilesChanged.setCellValueFactory(new PropertyValueFactory<>("filesChanged"));
         if (commits != null) {
-            ObservableList<TableCommit> data = FXCollections.observableArrayList();
+            ObservableList<CommitTable> data = FXCollections.observableArrayList();
             for (Commit commit : commits) {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 
                 if (datePicker.getValue() != null) {
 
                     if (commit.getCommitDateTime().toLocalDate().isAfter(datePicker.getValue()))
-                        data.add(new TableCommit(commit.getCommitMessage(),
+                        data.add(new CommitTable(commit.getCommitMessage(),
                                 commit.getCommitDateTime(),
                                 commit.getFilesChanged().size()));
                 } else {
-                    data.add(new TableCommit(commit.getCommitMessage(),
+                    data.add(new CommitTable(commit.getCommitMessage(),
                             commit.getCommitDateTime(),
                             commit.getFilesChanged().size()));
                 }

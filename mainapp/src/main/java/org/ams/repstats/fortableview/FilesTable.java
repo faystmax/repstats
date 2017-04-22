@@ -8,13 +8,13 @@ import javafx.beans.property.SimpleStringProperty;
  * Date: 06.01.2017
  * Time: 12:20
  */
-public class TableFiles {
+public class FilesTable {
     SimpleStringProperty path;
     SimpleStringProperty isBinary;
     SimpleStringProperty numberOfLines;
 
 
-    public TableFiles(String path, String isBinary, String numberOfLines) {
+    public FilesTable(String path, String isBinary, String numberOfLines) {
         this.path = new SimpleStringProperty(path);
         this.isBinary = new SimpleStringProperty(isBinary);
         this.numberOfLines = new SimpleStringProperty(numberOfLines);

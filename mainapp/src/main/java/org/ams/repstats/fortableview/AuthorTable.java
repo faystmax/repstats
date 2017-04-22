@@ -9,14 +9,15 @@ import javafx.beans.property.SimpleStringProperty;
  * Date: 05.01.2017
  * Time: 20:22
  */
-public class TableAuthor {
+public class AuthorTable {
+
     private SimpleStringProperty name;
     private SimpleIntegerProperty commitCount;
     private SimpleIntegerProperty linesAdded;
     private SimpleIntegerProperty linesRemoved;
     private SimpleIntegerProperty netContribution;
 
-    public TableAuthor(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution) {
+    public AuthorTable(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution) {
         this.name = new SimpleStringProperty(name);
         this.commitCount = new SimpleIntegerProperty(commitCount);
         this.linesAdded = new SimpleIntegerProperty(linesAdded);

@@ -17,7 +17,7 @@ public class MysqlConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnector.class); ///< ссылка на логер
 
     // JDBC URL, username and password of MySQL server
-    private static final String url = "jdbc:mysql://localhost:3306/gitstats";
+    private static final String url = "jdbc:mysql://localhost:3306/gitstats?characterEncoding=UTF-8";
     private static final String user = "root";
     private static final String password = "";
     private static final String driverName = "com.mysql.jdbc.Driver";
@@ -27,6 +27,12 @@ public class MysqlConnector {
     private static PreparedStatement myStmt = null;
     private static ResultSet myRs = null;
 
+    // Подготовленные запросы
+    public static final String selectAllTeams = "select id,name,technology from team";
+    public static final String insertNewTeam = "insert into team (name, technology) values (?, ?)";
+    public static final String deleteTeam = "delete from team where id = ?";
+    public static final String updateNameTeam = "update team set name = ? WHERE id = ?";
+    public static final String updateTechnTeam = "update team set technology = ? WHERE id = ?";
     /**
      * Инициализирует соединение с БД
      *
@@ -62,6 +68,18 @@ public class MysqlConnector {
     }
 
     /**
+     * Prepare statement with ret key
+     *
+     * @param query - строка запроса
+     * @return PreparedStatement для заполнения параметров
+     * @throws SQLException - ошибка запроса
+     */
+    public static PreparedStatement prepeareStmtRetKey(String query) throws SQLException {
+        myStmt = myConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        return myStmt;
+    }
+
+    /**
      * Execute SQL query
      *
      * @return ResultSet
@@ -69,20 +87,40 @@ public class MysqlConnector {
      */
     public static ResultSet executeQuery() throws SQLException {
         myRs = myStmt.executeQuery();
-        myStmt.close();
         return myRs;
     }
 
     /**
      * Execute SQL update
      *
-     * @return ResultSet
+     * @return кол-во обновлённых строк или сгенерированный id
      * @throws SQLException - ошибка запроса
      */
     public static int executeUpdate() throws SQLException {
         int rowUpdated = myStmt.executeUpdate();
-        myStmt.close();
         return rowUpdated;
+    }
+
+    /**
+     * Execute SQL
+     *
+     * @return Фдаг о выполнении
+     * @throws SQLException - ошибка запроса
+     */
+    public static boolean execute() throws SQLException {
+        boolean rez = myStmt.execute();
+        return rez;
+    }
+
+
+    public static void closeStmt() {
+        try {
+            if (myStmt != null) {
+                myStmt.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
 /*

@@ -13,12 +13,12 @@ import java.time.ZonedDateTime;
  * Date: 07.01.2017
  * Time: 20:55
  */
-public class TableCommit {
+public class CommitTable {
     private SimpleStringProperty message;
     private ObjectProperty<ZonedDateTime> date = new SimpleObjectProperty<ZonedDateTime>();
     private SimpleIntegerProperty filesChanged;
 
-    public TableCommit(String message, ZonedDateTime date, int filesChanged) {
+    public CommitTable(String message, ZonedDateTime date, int filesChanged) {
         this.message = new SimpleStringProperty(message);
         this.date = new SimpleObjectProperty<ZonedDateTime>(date);
         this.filesChanged = new SimpleIntegerProperty(filesChanged);

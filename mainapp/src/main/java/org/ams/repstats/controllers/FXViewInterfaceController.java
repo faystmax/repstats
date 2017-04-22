@@ -17,8 +17,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.ams.repstats.fortableview.TableAuthor;
-import org.ams.repstats.fortableview.TableFiles;
+import org.ams.repstats.fortableview.AuthorTable;
+import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.userinterface.GitUInterface;
 import org.ams.repstats.userinterface.SvnUInterface;
 import org.ams.repstats.view.ViewInterfaceAbstract;
@@ -184,9 +184,9 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
         clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
 
         TableModel allFiles = getuInterface().getAllFiles();
-        ObservableList<TableFiles> data = FXCollections.observableArrayList();
+        ObservableList<FilesTable> data = FXCollections.observableArrayList();
         for (int i = 0; i < allFiles.getRowCount(); i++) {
-            data.add(new TableFiles((String) (allFiles.getValueAt(i, 0)),
+            data.add(new FilesTable((String) (allFiles.getValueAt(i, 0)),
                     (String) allFiles.getValueAt(i, 1),
                     (String) allFiles.getValueAt(i, 2)));
         }
@@ -203,9 +203,9 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
         clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
 
         TableModel authors = getuInterface().getAuthors();
-        ObservableList<TableAuthor> data = FXCollections.observableArrayList();
+        ObservableList<AuthorTable> data = FXCollections.observableArrayList();
         for (int i = 0; i < authors.getRowCount(); i++) {
-            data.add(new TableAuthor((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
+            data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
                     (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4)));
         }
 
@@ -283,7 +283,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
      */
     public void ShowCommitsButtonAction(ActionEvent event) {
         if (isStart()) {
-            TableAuthor tableAuthor = (TableAuthor) avtorTable.getSelectionModel().getSelectedItem();
+            AuthorTable tableAuthor = (AuthorTable) avtorTable.getSelectionModel().getSelectedItem();
             Author selectedAuthor = getuInterface().getAuthorByName(tableAuthor.getName());
             if (selectedAuthor == null) {
                 ShowAlert("Внимание", "Вы не выбрали автора!");

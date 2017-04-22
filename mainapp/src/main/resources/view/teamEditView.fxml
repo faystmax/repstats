@@ -3,7 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.ams.repstats.controllers.TeamEditController">
     <children>
         <SplitPane dividerPositions="0.4678714859437751" orientation="VERTICAL" prefHeight="500.0" prefWidth="900.0"
                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -11,14 +12,15 @@
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
-                        <TableView layoutX="18.0" layoutY="134.0" prefHeight="230.0" prefWidth="690.0"
-                                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                        <TableView fx:id="teamTable" editable="true" layoutX="18.0" layoutY="134.0" prefHeight="230.0"
+                                   prefWidth="690.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
                                    AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="40.0">
                             <columns>
                                 <TableColumn prefWidth="262.0" text="Список команд">
                                     <columns>
-                                        <TableColumn prefWidth="133.0" text="Имя"/>
-                                        <TableColumn prefWidth="136.0" text="Технология Разр."/>
+                                        <TableColumn fx:id="teamNameClmn" prefWidth="133.0" text="Название"/>
+                                        <TableColumn fx:id="teamTechnolClmn" prefWidth="136.0"
+                                                     text="Технология Разработки"/>
                                     </columns>
                                 </TableColumn>
                             </columns>
@@ -29,10 +31,12 @@
                         <VBox layoutX="764.0" layoutY="161.0" spacing="5.0" AnchorPane.bottomAnchor="14.0"
                               AnchorPane.rightAnchor="14.0">
                             <children>
-                                <Button layoutX="7.0" layoutY="261.0" mnemonicParsing="false" prefHeight="25.0"
-                                        prefWidth="187.0" text="Добавить Команду"/>
-                                <Button layoutX="7.0" layoutY="297.0" mnemonicParsing="false" prefHeight="25.0"
-                                        prefWidth="187.0" text="Удалить Команду"/>
+                                <Button layoutX="7.0" layoutY="261.0" mnemonicParsing="false"
+                                        onAction="#addTeamButtonAction" prefHeight="25.0" prefWidth="187.0"
+                                        text="Добавить Команду"/>
+                                <Button layoutX="7.0" layoutY="297.0" mnemonicParsing="false"
+                                        onAction="#delTeamButtonAction" prefHeight="25.0" prefWidth="187.0"
+                                        text="Удалить Команду"/>
                             </children>
                         </VBox>
                         <Label alignment="CENTER" layoutX="197.0" layoutY="14.0"
@@ -46,18 +50,18 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="635.0">
                     <children>
-                        <TableView layoutX="8.0" prefHeight="262.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0"
-                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="216.0"
-                                   AnchorPane.topAnchor="0.0">
+                        <TableView editable="true" layoutX="8.0" prefHeight="262.0" prefWidth="690.0"
+                                   AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                                   AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="10.0">
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Участники команды">
+                                <TableColumn fx:id="developersTable" prefWidth="75.0" text="Участники команды">
                                     <columns>
-                                        <TableColumn prefWidth="75.0" text="Фамилия"/>
-                                        <TableColumn prefWidth="75.0" text="Имя"/>
-                                        <TableColumn prefWidth="75.0" text="Отчество"/>
-                                        <TableColumn prefWidth="75.0" text="Возраст"/>
-                                        <TableColumn prefWidth="75.0" text="Телефон"/>
-                                        <TableColumn prefWidth="75.0" text="Роль"/>
+                                        <TableColumn fx:id="developerFamClmn" prefWidth="75.0" text="Фамилия"/>
+                                        <TableColumn fx:id="developerNameClmn" prefWidth="75.0" text="Имя"/>
+                                        <TableColumn fx:id="developerOtchClmn" prefWidth="75.0" text="Отчество"/>
+                                        <TableColumn fx:id="developerAgeClmn" prefWidth="75.0" text="Возраст"/>
+                                        <TableColumn fx:id="developerPhoneClmn" prefWidth="75.0" text="Телефон"/>
+                                        <TableColumn fx:id="developerRoleClmn" prefWidth="75.0" text="Роль"/>
                                     </columns>
                                 </TableColumn>
                             </columns>
