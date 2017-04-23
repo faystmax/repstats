@@ -62,7 +62,9 @@ public class MysqlConnector {
     public static final String selectAllTeamsWithCount = "SELECT team.id,team.name,team.technology,COUNT(developer.id_team)" +
             " FROM team,developer where developer.id_team=team.id || developer.id_team is null GROUP BY team.id";
 
-
+    // project
+    public static final String updateNameProject = "update project set name = ? WHERE id = ?";
+    public static final String selectAllProject = "select id,name,start,deadline,priority from project";
     /**
      * Инициализирует соединение с БД
      *

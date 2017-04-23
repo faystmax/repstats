@@ -14,8 +14,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.Utils;
 import org.ams.repstats.fortableview.DeveloperTable;
+import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

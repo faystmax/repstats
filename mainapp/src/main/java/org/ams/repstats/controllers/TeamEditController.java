@@ -17,9 +17,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.Utils;
 import org.ams.repstats.fortableview.DeveloperTable;
 import org.ams.repstats.fortableview.TeamTable;
+import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +39,7 @@ public class TeamEditController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamEditController.class); ///< ссылка на логер
 
+    //region << UI Компоненты
     @FXML
     private TableView teamTable;
     @FXML
@@ -59,7 +60,7 @@ public class TeamEditController {
     private TableColumn developerPhoneClmn;
     @FXML
     private TableColumn developerRoleClmn;
-
+    //endregion
 
     private HashMap<Integer, String> roles;    ///< id_role - name
 
@@ -76,6 +77,100 @@ public class TeamEditController {
         });
 
 
+    }
+
+
+    /**
+     * Заполняем таблицу с командами
+     */
+    private void showAllTeams() {
+
+        // region << Инициализируем колонки таблицы
+        // Имя
+        //Utils.configureStringColumnTeamTable(teamNameClmn,"name",MysqlConnector.updateNameTeam,LOGGER);
+        teamNameClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("name"));
+        teamNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        teamNameClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
+                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setName(t.getOldValue());
+                            // обновляем колонку
+                            teamNameClmn.setVisible(false);
+                            teamNameClmn.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateNameTeam);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setName(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+        // Технология
+        //Utils.configureStringColumnTeamTable(teamTechnolClmn,"technology",MysqlConnector.updateTechnTeam,LOGGER);
+        teamTechnolClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("technology"));
+        teamTechnolClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        teamTechnolClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
+                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setName(t.getOldValue());
+                            // обновляем колонку
+                            teamTechnolClmn.setVisible(false);
+                            teamTechnolClmn.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateTechnTeam);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setTechnology(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+        //endregion
+
+        // Извлекаем данные из базы
+        try {
+            MysqlConnector.prepeareStmt(MysqlConnector.selectAllTeams);
+            ResultSet rs = MysqlConnector.executeQuery();
+
+            ObservableList<TeamTable> data = FXCollections.observableArrayList();
+            while (rs.next()) {
+                data.add(new TeamTable(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3)));
+            }
+            MysqlConnector.closeStmt();
+
+            teamTable.setItems(data);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
@@ -297,99 +392,6 @@ public class TeamEditController {
 
         //endregion
 
-    }
-
-    /**
-     * Заполняем таблицу с командами
-     */
-    private void showAllTeams() {
-
-        // region << Инициализируем колонки таблицы
-        // Имя
-        //Utils.configureStringColumnTeamTable(teamNameClmn,"name",MysqlConnector.updateNameTeam,LOGGER);
-        teamNameClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("name"));
-        teamNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
-        teamNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-                        //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
-                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
-                            // обновляем колонку
-                            teamNameClmn.setVisible(false);
-                            teamNameClmn.setVisible(true);
-                            return;
-                        }
-                        //обновляем в базе
-                        try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateNameTeam);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, changeable.getId());
-                            int newId = MysqlConnector.executeUpdate();
-                            changeable.setName(t.getNewValue());
-                        } catch (SQLException e) {
-                            LOGGER.error((e.getMessage()));
-                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
-                                    "", e);
-                        }
-                    }
-                }
-        );
-        // Технология
-        //Utils.configureStringColumnTeamTable(teamTechnolClmn,"technology",MysqlConnector.updateTechnTeam,LOGGER);
-        teamTechnolClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("technology"));
-        teamTechnolClmn.setCellFactory(TextFieldTableCell.forTableColumn());
-        teamTechnolClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-                        //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
-                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
-                            // обновляем колонку
-                            teamTechnolClmn.setVisible(false);
-                            teamTechnolClmn.setVisible(true);
-                            return;
-                        }
-                        //обновляем в базе
-                        try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateTechnTeam);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, changeable.getId());
-                            int newId = MysqlConnector.executeUpdate();
-                            changeable.setTechnology(t.getNewValue());
-                        } catch (SQLException e) {
-                            LOGGER.error((e.getMessage()));
-                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
-                                    "", e);
-                        }
-                    }
-                }
-        );
-        //endregion
-
-        // Извлекаем данные из базы
-        try {
-            MysqlConnector.prepeareStmt(MysqlConnector.selectAllTeams);
-            ResultSet rs = MysqlConnector.executeQuery();
-
-            ObservableList<TeamTable> data = FXCollections.observableArrayList();
-            while (rs.next()) {
-                data.add(new TeamTable(rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3)));
-            }
-            MysqlConnector.closeStmt();
-
-            teamTable.setItems(data);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
     }
 
 

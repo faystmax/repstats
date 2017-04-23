@@ -1,4 +1,4 @@
-package org.ams.repstats;
+package org.ams.repstats.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
