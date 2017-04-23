@@ -308,7 +308,6 @@ public class DeveloperInTeamAddControlller {
      * Заполняем таблицу со всеми разработчиками
      */
     private void showDevelopersInTeam() {
-
         // Извлекаем данные из базы
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithNull);
@@ -354,4 +353,6 @@ public class DeveloperInTeamAddControlller {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
+
+
 }

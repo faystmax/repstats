@@ -104,6 +104,19 @@ public class Utils {
         }
     }
 
+    public static void informationDialog(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+
+        // Get the Stage.
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("infIcon.png").toString()));
+
+        alert.showAndWait();
+    }
 
     /**
      * Проверка строки на корректность ввода

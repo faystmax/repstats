@@ -20,6 +20,7 @@
                         <TableColumn fx:id="developerAgeClmn" prefWidth="75.0" text="Возраст"/>
                         <TableColumn fx:id="developerPhoneClmn" prefWidth="75.0" text="Телефон"/>
                         <TableColumn fx:id="developerRoleClmn" prefWidth="75.0" text="Роль"/>
+                        <TableColumn fx:id="developerTeamClmn" prefWidth="75.0" text="Команда"/>
                     </columns>
                 </TableColumn>
             </columns>
@@ -27,11 +28,11 @@
         <VBox layoutX="713.0" layoutY="14.0" spacing="5.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <children>
                 <Button layoutX="431.0" layoutY="261.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        text="Удалить разработчика" VBox.vgrow="ALWAYS"/>
+                        onAction="#delDeveloper" text="Удалить разработчика" VBox.vgrow="ALWAYS"/>
                 <Button layoutX="431.0" layoutY="297.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        text="Добавить нового разраб."/>
+                        onAction="#addNewDevelopersInTeamButtonAction" text="Добавить нового разраб."/>
                 <Button layoutX="431.0" layoutY="334.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        text="Добавить разраб. в команду"/>
+                        onAction="#developerInTeamAddButtonAction" text="Добавить разраб. в команду"/>
             </children>
         </VBox>
     </children>

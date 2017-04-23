@@ -38,6 +38,12 @@ public class MysqlConnector {
             " inner JOIN role on role.id=developer.id_role" +
             " where id_team = ?";
 
+    public static final String selectAllDevelopers = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name from developer" +
+            " inner JOIN role on role.id=developer.id_role";
+    public static final String selectAllDevelopersWithTeam = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name," +
+            "(SELECT team.name from team WHERE team.id=developer.id_team) from developer,role " +
+            "where  role.id=developer.id_role";
+
     public static final String insertNewDeveloper = "insert into developer (name,surname,middlename,id_role,id_team,age,phone) " +
             "values (?, ?, ?, ?, ?, ?, ?)";
     public static final String deleteDeveloper = "delete from developer WHERE id = ?";
@@ -53,6 +59,8 @@ public class MysqlConnector {
     public static final String selectAllDevelopersWithNull = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name from developer" +
             " inner JOIN role on role.id=developer.id_role" +
             " where id_team is NULL";
+    public static final String selectAllTeamsWithCount = "SELECT team.id,team.name,team.technology,COUNT(developer.id_team)" +
+            " FROM team,developer where developer.id_team=team.id || developer.id_team is null GROUP BY team.id";
 
 
     /**

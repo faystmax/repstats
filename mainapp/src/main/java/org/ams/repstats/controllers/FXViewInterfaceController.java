@@ -36,7 +36,7 @@ import java.io.IOException;
  */
 public class FXViewInterfaceController extends ViewInterfaceAbstract {
 
-    //region <<К омпоненты UI
+    //region << UI Компоненты
     @FXML
     private MenuItem btAbout;
     @FXML

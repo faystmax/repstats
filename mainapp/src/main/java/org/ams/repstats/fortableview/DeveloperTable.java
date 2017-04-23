@@ -20,6 +20,7 @@ public class DeveloperTable {
     private SimpleStringProperty phone;
     private SimpleIntegerProperty id_role;
     private SimpleStringProperty role_name;
+    private SimpleStringProperty team_name;
 
     public DeveloperTable(int id, String name, String surname, String middleName,
                           int id_role, int id_team, int age, String phone, String role_name) {
@@ -32,6 +33,20 @@ public class DeveloperTable {
         this.age = new SimpleIntegerProperty(age);
         this.phone = new SimpleStringProperty(phone);
         this.role_name = new SimpleStringProperty(role_name);
+    }
+
+    public DeveloperTable(int id, String name, String surname, String middleName,
+                          int id_role, int id_team, int age, String phone, String role_name, String team_name) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.surname = new SimpleStringProperty(surname);
+        this.middlename = new SimpleStringProperty(middleName);
+        this.id_role = new SimpleIntegerProperty(id_role);
+        this.id_team = new SimpleIntegerProperty(id_team);
+        this.age = new SimpleIntegerProperty(age);
+        this.phone = new SimpleStringProperty(phone);
+        this.role_name = new SimpleStringProperty(role_name);
+        this.team_name = new SimpleStringProperty(team_name);
     }
 
     public int getId() {
@@ -140,5 +155,17 @@ public class DeveloperTable {
 
     public void setRole_name(String role_name) {
         this.role_name.set(role_name);
+    }
+
+    public String getTeam_name() {
+        return team_name.get();
+    }
+
+    public SimpleStringProperty team_nameProperty() {
+        return team_name;
+    }
+
+    public void setTeam_name(String team_name) {
+        this.team_name.set(team_name);
     }
 }
