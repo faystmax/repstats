@@ -1,5 +1,6 @@
 package org.ams.repstats;
 
+import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +65,9 @@ public class MysqlConnector {
 
     // project
     public static final String updateNameProject = "update project set name = ? WHERE id = ?";
+    public static final String updateStartProject = "update project set start = ? WHERE id = ?";
+    public static final String updateDeadlineProject = "update project set deadline = ? WHERE id = ?";
+    public static final String updatePriorProject = "update project set priority = ? WHERE id = ?";
     public static final String selectAllProject = "select id,name,start,deadline,priority from project";
     /**
      * Инициализирует соединение с БД
@@ -80,8 +84,12 @@ public class MysqlConnector {
 
             } catch (ClassNotFoundException ex) {
                 LOGGER.error("Driver not found.");
+                Utils.showError("Ошибка", "Ошибка подключения к базе данных", "Mysql драйвер не найден", ex);
+                System.exit(-1);
             } catch (SQLException ex) {
                 LOGGER.error("Failed to create the database connection.");
+                Utils.showError("Ошибка", "Ошибка подключения к базе данных MySql", null, ex);
+                System.exit(-1);
             }
         }
         return myConn;

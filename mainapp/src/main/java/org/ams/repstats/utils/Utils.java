@@ -132,7 +132,7 @@ public class Utils {
     }
 
     public static boolean isValidStringValue(Integer check) {
-        if (check < 0) {
+        if (check == null || check < 0) {
             return false;
         }
         return true;

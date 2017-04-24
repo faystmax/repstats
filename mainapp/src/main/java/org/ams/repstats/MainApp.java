@@ -62,6 +62,9 @@ public class MainApp extends Application {
             // Отображаем сцену, содержащую корневой макет.
             primaryStage.setScene(new Scene(rootLayout));
             primaryStage.show();
+
+            //Конектимся к базе
+            MysqlConnector.getConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,6 +86,8 @@ public class MainApp extends Application {
 
             // Помещаем сведения об адресатах в центр корневого макета.
             rootLayout.setCenter(statsView);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +119,6 @@ public class MainApp extends Application {
             MainApp.viewInterface = new ConsoleViewInterface(MainApp.uInterface);
             MainApp.viewInterface.start();
         } else {
-            MysqlConnector.getConnection();
             MainApp.uInterface = factory.create(TypeUInterface.git);
             MainApp.viewInterface = new FXViewInterfaceController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
