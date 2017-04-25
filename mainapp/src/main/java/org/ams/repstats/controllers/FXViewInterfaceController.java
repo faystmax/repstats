@@ -13,14 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.FilesTable;
-import org.ams.repstats.userinterface.GitUInterface;
-import org.ams.repstats.userinterface.SvnUInterface;
 import org.ams.repstats.view.ViewInterfaceAbstract;
 
 import javax.swing.table.TableModel;
@@ -96,7 +95,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
 
     @FXML
     public void initialize() {
-        choiceBox.setItems(FXCollections.observableArrayList("Git", "Svn"));
+/*        choiceBox.setItems(FXCollections.observableArrayList("Git", "Svn"));
         choiceBox.setValue("Git");
 
         choiceBox.getSelectionModel().selectedItemProperty().addListener(
@@ -105,7 +104,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
                         setUInterface(new GitUInterface());
                     else if (newValue == "Svn")
                         setUInterface(new SvnUInterface());
-                });
+                });*/
     }
 
     // TODO  в будущем
@@ -295,7 +294,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
 
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getClassLoader().getResource("view/сommitsView.fxml"));
-                GridPane rootLayout = loader.load();
+                AnchorPane rootLayout = loader.load();
 
                 Stage stage = new Stage();
                 stage.setTitle("Коммиты");

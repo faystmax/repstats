@@ -27,7 +27,7 @@ import java.util.Date;
  */
 public class CommitsController {
     @FXML
-    private DatePicker datePicker;
+    private DatePicker datePickerStart;
     @FXML
     private Label lbName;
     @FXML
@@ -77,9 +77,9 @@ public class CommitsController {
             for (Commit commit : commits) {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 
-                if (datePicker.getValue() != null) {
+                if (datePickerStart.getValue() != null) {
 
-                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePicker.getValue()))
+                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue()))
                         data.add(new CommitTable(commit.getCommitMessage(),
                                 commit.getCommitDateTime(),
                                 commit.getFilesChanged().size()));
