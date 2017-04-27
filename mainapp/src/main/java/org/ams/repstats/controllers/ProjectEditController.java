@@ -407,7 +407,7 @@ public class ProjectEditController {
     }
 
     /**
-     * Добавляем  команду
+     * Добавляем  Проект
      */
     public void addProjectButtonAction() {
         String newName = "Новый проект";
@@ -432,7 +432,7 @@ public class ProjectEditController {
     }
 
     /**
-     * Удаляем команду
+     * Удаляем Проект
      */
     public void delProjectButtonAction() {
         int selectedIndex = projectsTable.getSelectionModel().getSelectedIndex();
@@ -448,6 +448,71 @@ public class ProjectEditController {
             LOGGER.error(e.getMessage());
             Utils.showError("Ошибка удаления", "Невозможно удалить выбранный проект!\nВозможно к нему ещё привязаны участники.",
                     "Невозможно удалить выбранный проект!", e);
+        }
+
+    }
+
+    /**
+     * Удаляем репозиторий из проекта
+     */
+    public void delRepositoryFromProjectButtonAction() {
+        int selectedIndex = repositoryTable.getSelectionModel().getSelectedIndex();
+        int selectedId = ((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem()).getId_project_repository();
+        if (Utils.conformationDialog("Удаление репозитория из проекта", "Вы уверены,что хотите удалить " +
+                "репозиторий из выбранного проекта?")) {
+            try {
+                PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.delRepositoryFromProject);
+                preparedStatement.setInt(1, selectedId);
+                MysqlConnector.execute();
+
+                repositoryTable.getItems().remove(selectedIndex);
+                MysqlConnector.closeStmt();
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage());
+                Utils.showError("Ошибка удаления", "Невозможно удалить репозиторий из проекта! ",
+                        "", e);
+            }
+        }
+    }
+
+    /**
+     * Добавляем новый репозиторий в проект
+     */
+    public void addNewRepositoryInProjectButtonAction() {
+        if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка добавления", "Сначала выберие проект!");
+            return;
+        }
+        String newName = "...";
+        String newUrl = "...";
+        Date cur = new Date();
+        java.sql.Date startdateOfCreation = new java.sql.Date(cur.getTime());
+        Integer idDeveloperResponsible = -1;
+        String FIODeveloperResponsible = "";
+        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        String description = "...";
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewRepository);
+            preparedStatement.setString(1, newName);
+            preparedStatement.setString(2, newUrl);
+            preparedStatement.setNull(3, java.sql.Types.INTEGER);
+            preparedStatement.setDate(4, startdateOfCreation);
+            MysqlConnector.executeUpdate();
+            int newIdRepository = MysqlConnector.getinsertId();
+
+            //добавляем связь в промежуточную таблицу
+            preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewProjectRepository);
+            preparedStatement.setInt(1, newIdRepository);
+            preparedStatement.setInt(2, id_project);
+            preparedStatement.setString(3, description);
+            MysqlConnector.executeUpdate();
+            int newIdProjectRepository = MysqlConnector.getinsertId();
+
+            RepositoryTable elem = new RepositoryTable(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
+                    FIODeveloperResponsible, description, newIdProjectRepository);
+            repositoryTable.getItems().add(elem);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
         }
 
     }

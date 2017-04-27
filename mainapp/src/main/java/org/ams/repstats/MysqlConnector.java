@@ -77,13 +77,21 @@ public class MysqlConnector {
     public static final String updateUrlRepository = "update repository set url = ? WHERE id = ?";
     public static final String updateDateOfCreationProject = "update repository set date_of_creation = ? WHERE id = ?";
     public static final String updateDescriptoion = "update project_repository set description = ? WHERE id_repository = ?";
-    public static final String selectRepositoryInProjects = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible,concat(developer.surname,\" \",developer.name,\" \", developer.middlename) as FIO," +
+    public static final String selectRepositoryInProjects = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible," +
+            "(SELECT concat(name,\" \",surname,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO," +
             "project_repository.description,project_repository.id " +
-            "FROM repository,project_repository,project,developer " +
-            "WHERE repository.id_developer_responsible = developer.id and " +
+            "FROM repository,project_repository,project " +
+            "WHERE " +
             "repository.id = project_repository.id_repository " +
             "and project_repository.id_project = project.id AND " +
             "project.id = ?";
+    public static final String insertNewProjectRepository = "insert into project_repository ( id_repository, id_project, description) " +
+            "values (?, ?, ?)";
+    public static final String insertNewRepository = "insert into repository (name, url, id_developer_responsible, date_of_creation) " +
+            "values (?, ?, ?, ?)";
+
+    public static final String delRepositoryFromProject = "delete from project_repository where id = ?";
+
     /**
      * Инициализирует соединение с БД
      *
