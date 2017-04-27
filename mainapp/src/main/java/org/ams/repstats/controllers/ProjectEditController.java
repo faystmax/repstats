@@ -13,7 +13,9 @@ import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
 import org.ams.repstats.fortableview.ProjectTable;
-import org.ams.repstats.utils.DateEditingCell;
+import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.utils.ProjectTableDateEditingCell;
+import org.ams.repstats.utils.RepositoryTableDateEditingCell;
 import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,20 +62,18 @@ public class ProjectEditController {
 
     @FXML
     public void initialize() {
-        showAllProjects();
-        configureProjectsClmn();
+        configureAndShowProjectsClmn();
+        configureRepositoryClmn();
         // добавили listener`a
         projectsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 //int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
-                //showDevelopersInTeam(id_team);
+                //showRepositoryInTable(id_rep);
             }
         });
-
-
     }
 
-    private void configureProjectsClmn() {
+    private void configureAndShowProjectsClmn() {
 
         ObservableList<ProjectTable> data = FXCollections.observableArrayList();
 
@@ -112,7 +112,7 @@ public class ProjectEditController {
 
         // Date start
         Callback<TableColumn<ProjectTable, Date>, TableCell<ProjectTable, Date>> dateStartCellFactory
-                = (TableColumn<ProjectTable, Date> param) -> new DateEditingCell();
+                = (TableColumn<ProjectTable, Date> param) -> new ProjectTableDateEditingCell();
         projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateStart"));
         projectDateClmn.setCellFactory(dateStartCellFactory);
         projectDateClmn.setOnEditCommit(
@@ -150,7 +150,7 @@ public class ProjectEditController {
 
         // deadline
         Callback<TableColumn<ProjectTable, Date>, TableCell<ProjectTable, Date>> dateDeadlineCellFactory
-                = (TableColumn<ProjectTable, Date> param) -> new DateEditingCell();
+                = (TableColumn<ProjectTable, Date> param) -> new ProjectTableDateEditingCell();
         projectDeadlineClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("deadline"));
         projectDeadlineClmn.setCellFactory(dateDeadlineCellFactory);
         projectDeadlineClmn.setOnEditCommit(
@@ -239,6 +239,159 @@ public class ProjectEditController {
 
     }
 
-    private void showAllProjects() {
+    private void configureRepositoryClmn() {
+        // Название
+        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("name"));
+        reposNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        reposNameClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
+                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setName(t.getOldValue());
+                            // обновляем колонку
+                            reposNameClmn.setVisible(false);
+                            reposNameClmn.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateNameRepository);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setName(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+        // Url
+        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("name"));
+        reposUrlClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        reposUrlClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
+                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setName(t.getOldValue());
+                            // обновляем колонку
+                            reposUrlClmn.setVisible(false);
+                            reposUrlClmn.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateUrlRepository);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setName(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
+        // Date of creation
+        Callback<TableColumn<RepositoryTable, Date>, TableCell<RepositoryTable, Date>> dateOfCreationCellFactory
+                = (TableColumn<RepositoryTable, Date> param) -> new RepositoryTableDateEditingCell();
+        projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateOfCreation"));
+        projectDateClmn.setCellFactory(dateOfCreationCellFactory);
+        projectDateClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, Date>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<RepositoryTable, Date> t) {
+                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        /*
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setName(t.getOldValue());
+                            // обновляем колонку
+                            projectDateClmn.setVisible(false);
+                            projectDateClmn.setVisible(true);
+                            return;
+                        }*/
+                        //обновляем в базе
+                        try {
+                            // util Date to sql Date
+                            java.sql.Date sqlDate = new java.sql.Date(t.getNewValue().getTime());
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateDateOfCreationProject);
+                            preparedStatement.setDate(1, sqlDate);
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setDateOfCreation(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                });
+
     }
+
+    private void showRepositoryInTable(int id_rep) {
+
+    }
+
+    /**
+     * Добавляем  команду
+     */
+    public void addProjectButtonAction() {
+        String newName = "Новый проект";
+        java.sql.Date startDate = new java.sql.Date(new Date().getTime());
+        java.sql.Date deadline = startDate;
+        Integer newPrior = 50;
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewProject);
+            preparedStatement.setString(1, newName);
+            preparedStatement.setDate(2, startDate);
+            preparedStatement.setDate(3, deadline);
+            preparedStatement.setInt(4, newPrior);
+            MysqlConnector.executeUpdate();
+
+            int newId = MysqlConnector.getinsertId();
+            ProjectTable elem = new ProjectTable(newId, newName, startDate, deadline, newPrior);
+            projectsTable.getItems().add(elem);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Удаляем команду
+     */
+    public void delProjectButtonAction() {
+        int selectedIndex = projectsTable.getSelectionModel().getSelectedIndex();
+        int selectedId = ((ProjectTable) projectsTable.getSelectionModel().getSelectedItem()).getId();
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteProject);
+            preparedStatement.setInt(1, selectedId);
+            MysqlConnector.execute();
+
+            projectsTable.getItems().remove(selectedIndex);
+            MysqlConnector.closeStmt();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            Utils.showError("Ошибка удаления", "Невозможно удалить выбранный проект!\nВозможно к нему ещё привязаны участники.",
+                    "Невозможно удалить выбранный проект!", e);
+        }
+
+    }
+
 }

@@ -69,6 +69,13 @@ public class MysqlConnector {
     public static final String updateDeadlineProject = "update project set deadline = ? WHERE id = ?";
     public static final String updatePriorProject = "update project set priority = ? WHERE id = ?";
     public static final String selectAllProject = "select id,name,start,deadline,priority from project";
+    public static final String insertNewProject = "insert into project (name, start, deadline, priority) values (?, ?, ?, ?)";
+    public static final String deleteProject = "delete from project where id = ?";
+
+    // repository
+    public static final String updateNameRepository = "update repository set name = ? WHERE id = ?";
+    public static final String updateUrlRepository = "update repository set url = ? WHERE id = ?";
+    public static final String updateDateOfCreationProject = "update project set date_of_creation = ? WHERE id = ?";
     /**
      * Инициализирует соединение с БД
      *
@@ -177,39 +184,4 @@ public class MysqlConnector {
             LOGGER.error(e.getMessage());
         }
     }
-
-/*
-    public static void main(String[] args) throws SQLException {
-
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            // 1. Get a connection to database
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo", "student", "student");
-
-            // 2. Prepare statement
-            myStmt = myConn.prepareStatement("select * from employees where salary > ? and department=?");
-
-            // 3. Set the parameters
-            myStmt.setDouble(1, 80000);
-            myStmt.setString(2, "Legal");
-
-            // 4. Execute SQL query
-            myRs = myStmt.executeQuery();
-
-
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        } finally {
-            if (myRs != null) {
-                myRs.close();
-            }
-            if (myStmt != null) {
-                myStmt.close();
-            }
-            if (myConn != null) {
-                myConn.close();
-            }
-        }
-    }*/
 }

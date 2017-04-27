@@ -2,7 +2,7 @@ package org.ams.repstats.utils;
 
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
-import org.ams.repstats.fortableview.ProjectTable;
+import org.ams.repstats.fortableview.RepositoryTable;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,14 +13,13 @@ import java.util.Date;
 /**
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
- * Date: 24.04.2017
- * Time: 23:38
+ * Date: 27.04.2017
+ * Time: 9:57
  */
-public class DateEditingCell extends TableCell<ProjectTable, Date> {
-
+public class RepositoryTableDateEditingCell extends TableCell<RepositoryTable, Date> {
     private DatePicker datePicker;
 
-    public DateEditingCell() {
+    public RepositoryTableDateEditingCell() {
     }
 
     @Override

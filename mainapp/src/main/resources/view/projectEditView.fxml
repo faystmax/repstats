@@ -36,9 +36,11 @@
                               AnchorPane.rightAnchor="14.0">
                             <children>
                                 <Button layoutX="7.0" layoutY="261.0" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" text="Добавить Проект"/>
+                                        mnemonicParsing="false" onAction="#addProjectButtonAction"
+                                        text="Добавить Проект"/>
                                 <Button layoutX="7.0" layoutY="297.0" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" text="Удалить Проект"/>
+                                        mnemonicParsing="false" onAction="#delProjectButtonAction"
+                                        text="Удалить Проект"/>
                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                                         text="Прикрепить к команде"/>
                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
