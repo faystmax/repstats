@@ -75,7 +75,15 @@ public class MysqlConnector {
     // repository
     public static final String updateNameRepository = "update repository set name = ? WHERE id = ?";
     public static final String updateUrlRepository = "update repository set url = ? WHERE id = ?";
-    public static final String updateDateOfCreationProject = "update project set date_of_creation = ? WHERE id = ?";
+    public static final String updateDateOfCreationProject = "update repository set date_of_creation = ? WHERE id = ?";
+    public static final String updateDescriptoion = "update project_repository set description = ? WHERE id_repository = ?";
+    public static final String selectRepositoryInProjects = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible,concat(developer.surname,\" \",developer.name,\" \", developer.middlename) as FIO," +
+            "project_repository.description,project_repository.id " +
+            "FROM repository,project_repository,project,developer " +
+            "WHERE repository.id_developer_responsible = developer.id and " +
+            "repository.id = project_repository.id_repository " +
+            "and project_repository.id_project = project.id AND " +
+            "project.id = ?";
     /**
      * Инициализирует соединение с БД
      *

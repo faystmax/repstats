@@ -21,9 +21,9 @@ public class RepositoryTable {
     private SimpleIntegerProperty idDeveloperResponsible;
     private SimpleStringProperty FIO;
     private SimpleStringProperty description;
-    private SimpleIntegerProperty id_project;
+    private SimpleIntegerProperty id_project_repository;
 
-    public RepositoryTable(int id, String name, String url, Date dateOfCreation, int idDeveloperResponsible, String FIO, String description, int id_project) {
+    public RepositoryTable(int id, String name, String url, Date dateOfCreation, int idDeveloperResponsible, String FIO, String description, int id_project_repository) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.url = new SimpleStringProperty(url);
@@ -31,7 +31,7 @@ public class RepositoryTable {
         this.idDeveloperResponsible = new SimpleIntegerProperty(idDeveloperResponsible);
         this.FIO = new SimpleStringProperty(FIO);
         this.description = new SimpleStringProperty(description);
-        this.id_project = new SimpleIntegerProperty(id_project);
+        this.id_project_repository = new SimpleIntegerProperty(id_project_repository);
     }
 
     public int getId() {
@@ -118,15 +118,15 @@ public class RepositoryTable {
         this.description.set(description);
     }
 
-    public int getId_project() {
-        return id_project.get();
+    public int getId_project_repository() {
+        return id_project_repository.get();
     }
 
-    public SimpleIntegerProperty id_projectProperty() {
-        return id_project;
+    public SimpleIntegerProperty id_project_repositoryProperty() {
+        return id_project_repository;
     }
 
-    public void setId_project(int id_project) {
-        this.id_project.set(id_project);
+    public void setId_project_repository(int id_project_repository) {
+        this.id_project_repository.set(id_project_repository);
     }
 }

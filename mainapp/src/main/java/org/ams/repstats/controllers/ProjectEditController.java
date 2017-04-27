@@ -67,8 +67,8 @@ public class ProjectEditController {
         // добавили listener`a
         projectsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                //int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
-                //showRepositoryInTable(id_rep);
+                int id_proj = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+                showRepositoryInTable(id_proj);
             }
         });
     }
@@ -273,7 +273,7 @@ public class ProjectEditController {
                 }
         );
         // Url
-        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("name"));
+        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("url"));
         reposUrlClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         reposUrlClmn.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
@@ -283,7 +283,7 @@ public class ProjectEditController {
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
+                            changeable.setUrl(t.getOldValue());
                             // обновляем колонку
                             reposUrlClmn.setVisible(false);
                             reposUrlClmn.setVisible(true);
@@ -295,7 +295,7 @@ public class ProjectEditController {
                             preparedStatement.setString(1, t.getNewValue());
                             preparedStatement.setInt(2, changeable.getId());
                             int newId = MysqlConnector.executeUpdate();
-                            changeable.setName(t.getNewValue());
+                            changeable.setUrl(t.getNewValue());
                         } catch (SQLException e) {
                             LOGGER.error((e.getMessage()));
                             Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
@@ -308,9 +308,9 @@ public class ProjectEditController {
         // Date of creation
         Callback<TableColumn<RepositoryTable, Date>, TableCell<RepositoryTable, Date>> dateOfCreationCellFactory
                 = (TableColumn<RepositoryTable, Date> param) -> new RepositoryTableDateEditingCell();
-        projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateOfCreation"));
-        projectDateClmn.setCellFactory(dateOfCreationCellFactory);
-        projectDateClmn.setOnEditCommit(
+        reposDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateOfCreation"));
+        reposDateClmn.setCellFactory(dateOfCreationCellFactory);
+        reposDateClmn.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<RepositoryTable, Date>>() {
                     @Override
                     public void handle(TableColumn.CellEditEvent<RepositoryTable, Date> t) {
@@ -342,10 +342,68 @@ public class ProjectEditController {
                     }
                 });
 
+        // Ответственный
+        reposResponsClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("FIO"));
+
+        // Описание
+        reposDeskClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("description"));
+        reposDeskClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        reposDeskClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
+                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setDescription(t.getOldValue());
+                            // обновляем колонку
+                            reposDeskClmn.setVisible(false);
+                            reposDeskClmn.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateDescriptoion);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setDescription(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
     }
 
-    private void showRepositoryInTable(int id_rep) {
+    private void showRepositoryInTable(int id_proj) {
+        // Извлекаем данные из базы
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectRepositoryInProjects);
+            preparedStatement.setInt(1, id_proj);
+            ResultSet rs = MysqlConnector.executeQuery();
 
+            ObservableList<RepositoryTable> data = FXCollections.observableArrayList();
+            while (rs.next()) {
+                data.add(new RepositoryTable(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getDate(4),
+                        rs.getInt(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getInt(8)));
+            }
+            MysqlConnector.closeStmt();
+
+            repositoryTable.setItems(data);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
