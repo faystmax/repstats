@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.ams.repstats.controllers.ProjectEditController">
+            fx:controller="org.ams.repstats.controllers.projects.ProjectEditController">
     <children>
         <SplitPane dividerPositions="0.4678714859437751" orientation="VERTICAL" prefHeight="500.0" prefWidth="900.0"
                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -42,8 +42,10 @@
                                         mnemonicParsing="false" onAction="#delProjectButtonAction"
                                         text="Удалить Проект"/>
                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                        onAction="#projectConnectWithTeamWindowButtonAction"
                                         text="Прикрепить к команде"/>
                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                        onAction="#developerConnectWithProjecButtonAction"
                                         text="Прикрепить к разработчику"/>
                             </children>
                         </VBox>
@@ -86,7 +88,8 @@
                                         mnemonicParsing="false" onAction="#addNewRepositoryInProjectButtonAction"
                                         text="Добавить новый репозиторий"/>
                                 <Button layoutX="431.0" layoutY="334.0" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" text="Добавить сущ. репоз. в проект"/>
+                                        mnemonicParsing="false" onAction="#addExistRepositoryInProjectButtonAction"
+                                        text="Добавить сущ. репоз. в проект"/>
                             </children>
                         </VBox>
                     </children>

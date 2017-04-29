@@ -1,4 +1,4 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.developers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +36,7 @@ import java.util.HashMap;
  */
 public class DevelopersEditController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TeamEditController.class); ///< ссылка на логер
+    private static final Logger LOGGER = LoggerFactory.getLogger(DevelopersEditController.class); ///< ссылка на логер
 
 
     //region << UI Компоненты
@@ -416,7 +416,7 @@ public class DevelopersEditController {
                 return;
             }
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("view/chooseTeamForDeveloperView.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("view/developers/chooseTeamForDeveloperView.fxml"));
             AnchorPane aboutLayout = loader.load();
 
             Stage stage = new Stage();

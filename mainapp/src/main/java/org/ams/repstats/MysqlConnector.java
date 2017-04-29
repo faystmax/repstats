@@ -77,6 +77,7 @@ public class MysqlConnector {
     public static final String updateUrlRepository = "update repository set url = ? WHERE id = ?";
     public static final String updateDateOfCreationProject = "update repository set date_of_creation = ? WHERE id = ?";
     public static final String updateDescriptoion = "update project_repository set description = ? WHERE id_repository = ?";
+    public static final String updateResponsible = "update repository set repository.id_developer_responsible = ? WHERE id = ?";
     public static final String selectRepositoryInProjects = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible," +
             "(SELECT concat(name,\" \",surname,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO," +
             "project_repository.description,project_repository.id " +
@@ -85,12 +86,20 @@ public class MysqlConnector {
             "repository.id = project_repository.id_repository " +
             "and project_repository.id_project = project.id AND " +
             "project.id = ?";
+    public static final String selectAllRepository = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible," +
+            "(SELECT concat(name,\" \",surname,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO " +
+            "FROM repository ";
     public static final String insertNewProjectRepository = "insert into project_repository ( id_repository, id_project, description) " +
             "values (?, ?, ?)";
     public static final String insertNewRepository = "insert into repository (name, url, id_developer_responsible, date_of_creation) " +
             "values (?, ?, ?, ?)";
 
     public static final String delRepositoryFromProject = "delete from project_repository where id = ?";
+    public static final String delRepository = "delete from repository where id = ?";
+
+    // TODO role_in_the_project
+    public static final String insertNewDeveloperProject = "insert into developer_project (id_developer,id_project,role_in_the_project)" +
+            "values (?, ?, ?)";
 
     /**
      * Инициализирует соединение с БД

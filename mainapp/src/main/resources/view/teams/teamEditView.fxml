@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.ams.repstats.controllers.TeamEditController">
+            fx:controller="org.ams.repstats.controllers.teams.TeamEditController">
     <children>
         <SplitPane dividerPositions="0.4678714859437751" orientation="VERTICAL" prefHeight="500.0" prefWidth="900.0"
                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

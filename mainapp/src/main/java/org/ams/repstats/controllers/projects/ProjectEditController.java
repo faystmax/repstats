@@ -1,14 +1,20 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.projects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
@@ -20,6 +26,7 @@ import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -515,6 +522,186 @@ public class ProjectEditController {
             LOGGER.error(e.getMessage());
         }
 
+    }
+
+    /**
+     * Окно "Приерепить к команде"
+     */
+    public void projectConnectWithTeamWindowButtonAction() {
+        try {
+            if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+                Utils.showAlert("Ошибка добавления", "Сначала выберие проект!");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("view/projects/projectConnectWithTeamView.fxml"));
+            AnchorPane aboutLayout = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Прикрепление проекта к команде");
+            stage.setScene(new Scene(aboutLayout));
+            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            //Инициализируем
+            ProjectConnectWithTeamController controller = loader.getController();
+
+            controller.setTeamEditController(this);
+
+            //Инициализируем и запускаем
+            stage.showAndWait();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Прикрепление проекта к команде по id_team
+     *
+     * @param id_team
+     */
+    public void projectConnectWithTeamButtonAction(int id_team) {
+        if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка добавления", "Сначала выберите команду!");
+            return;
+        }
+        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        try {
+            // бежим по всем разработчикам в команде и крепим к ним проект
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectDevelopersInTeam);
+            preparedStatement.setInt(1, id_team);
+            ResultSet rs = MysqlConnector.executeQuery();
+
+            while (rs.next()) {
+                // получаем id разработчика
+                int id_developer = rs.getInt(1);
+
+                PreparedStatement preparedStatement2 = MysqlConnector.prepeareStmt(MysqlConnector.insertNewDeveloperProject);
+                preparedStatement2.setInt(1, id_developer);
+                preparedStatement2.setInt(2, id_project);
+                preparedStatement2.setString(3, "...");
+
+                MysqlConnector.executeUpdate();     // вставляем запись
+            }
+            // обновляем проекты
+            configureAndShowProjectsClmn();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Окно "Прикрепление проекта к разработчику"
+     */
+    public void developerConnectWithProjecButtonAction() {
+        try {
+            if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+                Utils.showAlert("Ошибка добавления", "Сначала выберите проект!");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("view/projects/projectConnectWithDeveloperView.fxml"));
+            AnchorPane aboutLayout = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Прикрепление проекта к разработчику");
+            stage.setScene(new Scene(aboutLayout));
+            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            //Инициализируем
+            ProjectConnectWithDeveloperController controller = loader.getController();
+            controller.setProjectEditController(this);
+
+            //Инициализируем и запускаем
+            stage.showAndWait();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Прикрепление проекта к разработчику по id_developer
+     *
+     * @param id_developer -  id разработчика
+     * @param role         - роль в проекте
+     */
+    public void developerConnectWithProject(int id_developer, String role) {
+        if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка добавления", "Сначала выберите проект!");
+            return;
+        }
+        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        try {
+            PreparedStatement preparedStatement2 = MysqlConnector.prepeareStmt(MysqlConnector.insertNewDeveloperProject);
+            preparedStatement2.setInt(1, id_developer);
+            preparedStatement2.setInt(2, id_project);
+            preparedStatement2.setString(3, role);
+
+            MysqlConnector.executeUpdate();
+
+            //showDevelopersInTeam(id_team);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Окно "Добавление сущ. репозитория в проект"
+     */
+    public void addExistRepositoryInProjectButtonAction() {
+        try {
+            if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+                Utils.showAlert("Ошибка добавления", "Сначала выберите проект!");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("view/projects/projectAddExistRepositoryView.fxml"));
+            AnchorPane aboutLayout = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Прикрепление репозитория к проекту");
+            stage.setScene(new Scene(aboutLayout));
+            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            //Инициализируем
+            ProjectAddExistRepositoryController controller = loader.getController();
+            controller.setProjectEditController(this);
+
+            //Инициализируем и запускаем
+            stage.showAndWait();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Добавление сущ. репозитория в проект
+     *
+     * @param id_repository -  id разработчика
+     * @param description   - роль в проекте
+     */
+    public void addExistRepositoryInProject(int id_repository, String description) {
+        if (projectsTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка добавления", "Сначала выберите проект!");
+            return;
+        }
+        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        try {
+            //добавляем связь в промежуточную таблицу
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewProjectRepository);
+            preparedStatement.setInt(1, id_repository);
+            preparedStatement.setInt(2, id_project);
+            preparedStatement.setString(3, description);
+
+            MysqlConnector.executeUpdate();
+
+            showRepositoryInTable(id_project);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
 }

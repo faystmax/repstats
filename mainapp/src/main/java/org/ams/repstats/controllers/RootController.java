@@ -40,7 +40,7 @@ public class RootController {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/teamEditView.fxml"));
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/teams/teamEditView.fxml"));
             AnchorPane adminTeamView = (AnchorPane) loader.load();
 
 
@@ -58,7 +58,7 @@ public class RootController {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/developersEditView.fxml"));
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/developers/developersEditView.fxml"));
             AnchorPane adminDevelopersView = (AnchorPane) loader.load();
 
             // Помещаем итерфейс для редактирования разработчиков в центр корневого макета.
@@ -75,7 +75,7 @@ public class RootController {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/projectEditView.fxml"));
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/projects/projectEditView.fxml"));
             AnchorPane adminProjectsView = (AnchorPane) loader.load();
 
             // Помещаем итерфейс для редактирования пректов в центр корневого макета.
@@ -92,7 +92,7 @@ public class RootController {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/repositoryEditView.fxml"));
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/repository/repositoryEditView.fxml"));
             AnchorPane adminRepositoryView = (AnchorPane) loader.load();
 
             // Помещаем итерфейс для редактирования репозиториев в центр корневого макета.

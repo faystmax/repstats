@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.ams.repstats.controllers.DevelopersEditController">
+            fx:controller="org.ams.repstats.controllers.developers.DevelopersEditController">
     <children>
         <TableView fx:id="developersTable" layoutX="18.0" layoutY="10.0" prefHeight="480.0" prefWidth="686.0"
                    AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="204.0"

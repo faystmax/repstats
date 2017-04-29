@@ -1,4 +1,4 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.teams;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -562,7 +562,7 @@ public class TeamEditController {
                 return;
             }
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("view/developerInTeamAddView.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("view/teams/developerInTeamAddView.fxml"));
             AnchorPane aboutLayout = loader.load();
 
             Stage stage = new Stage();

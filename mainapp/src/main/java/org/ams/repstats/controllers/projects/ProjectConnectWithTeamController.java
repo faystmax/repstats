@@ -1,4 +1,4 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.projects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,12 +24,12 @@ import java.sql.SQLException;
 /**
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
- * Date: 23.04.2017
- * Time: 13:45
+ * Date: 28.04.2017
+ * Time: 19:48
  */
-public class ChooseTeamForDeveloperController {
+public class ProjectConnectWithTeamController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TeamEditController.class); ///< ссылка на логер
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectConnectWithTeamController.class); ///< ссылка на логер
 
     //region << UI Компоненты
     @FXML
@@ -44,7 +44,7 @@ public class ChooseTeamForDeveloperController {
     private Button btExit;
     //endregion
 
-    private DevelopersEditController developersEditController;
+    private ProjectEditController projectEditController;
 
     @FXML
     public void initialize() {
@@ -147,24 +147,38 @@ public class ChooseTeamForDeveloperController {
         }
     }
 
-
-    public void setDevelopersEditController(DevelopersEditController developersEditController) {
-        this.developersEditController = developersEditController;
+    /**
+     * Сеттер родительского контроллера
+     *
+     * @param projectEditController
+     */
+    public void setTeamEditController(ProjectEditController projectEditController) {
+        this.projectEditController = projectEditController;
     }
 
+    /**
+     * Выход
+     *
+     * @param event
+     */
     public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
 
-    public void developerSelectButtonAction() {
+    /**
+     * Выбор команды
+     */
+    public void teamSelectButtonAction() {
         if (teamTable.getSelectionModel().getSelectedItem() == null) {
-            Utils.showAlert("Ошибка добавления", "Сначала выберите команду!");
+            Utils.showAlert("Ошибка прикрепления", "Сначала выберите команду!");
             return;
         }
         int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
-        this.developersEditController.existingDeveloperInTeamAdd(id_team);
+        this.projectEditController.projectConnectWithTeamButtonAction(id_team);
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
+
+
 }

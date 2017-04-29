@@ -1,4 +1,4 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.projects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -27,14 +28,16 @@ import java.util.HashMap;
 /**
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
- * Date: 23.04.2017
- * Time: 0:09
+ * Date: 29.04.2017
+ * Time: 11:19
  */
-public class DeveloperInTeamAddControlller {
+public class ProjectConnectWithDeveloperController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TeamEditController.class); ///< ссылка на логер
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectEditController.class); ///< ссылка на логер
 
     //region << UI Компоненты
+    @FXML
+    private TableView developersTable;
     @FXML
     private TableColumn developerFamClmn;
     @FXML
@@ -48,13 +51,14 @@ public class DeveloperInTeamAddControlller {
     @FXML
     private TableColumn developerRoleClmn;
     @FXML
-    private TableView developersTable;
-    @FXML
     private Button btExit;
+    @FXML
+    private TextField roleTextField;
     //endregion
 
-    private TeamEditController teamEditController;
+    private ProjectEditController projectEditController;
     private HashMap<Integer, String> roles;         ///< id_role - name
+
 
     @FXML
     public void initialize() {
@@ -66,8 +70,7 @@ public class DeveloperInTeamAddControlller {
      * Настраиваем колонки таблицы DevelopersTable
      */
     private void configureDevelopersTable() {
-
-        // region << Инициализируем колонки таблицы
+        developersTable.setEditable(true);
         // Имя
         developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("name"));
         developerNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -277,10 +280,6 @@ public class DeveloperInTeamAddControlller {
                     }
                 }
         );
-
-
-        //endregion
-
     }
 
     /**
@@ -310,7 +309,7 @@ public class DeveloperInTeamAddControlller {
     private void showDevelopersInTeam() {
         // Извлекаем данные из базы
         try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithNull);
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopers);
             ResultSet rs = MysqlConnector.executeQuery();
 
             ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
@@ -334,25 +333,41 @@ public class DeveloperInTeamAddControlller {
     }
 
 
-    public void setTeamEditController(TeamEditController teamEditController) {
-        this.teamEditController = teamEditController;
-    }
-
+    /**
+     * Выход
+     *
+     * @param event
+     */
     public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Сеттер родительского контроллера
+     *
+     * @param projectEditController
+     */
+    public void setProjectEditController(ProjectEditController projectEditController) {
+        this.projectEditController = projectEditController;
+    }
+
+    /**
+     * Выбок разработчика
+     */
     public void developerSelectButtonAction() {
         if (developersTable.getSelectionModel().getSelectedItem() == null) {
             Utils.showAlert("Ошибка добавления", "Сначала выберите разработчика!");
             return;
         }
-        int id_team = ((DeveloperTable) (developersTable.getSelectionModel().getSelectedItem())).getId();
-        this.teamEditController.existingDeveloperInTeamAdd(id_team);
+        if (!Utils.isValidStringValue(roleTextField.getText())) {
+            Utils.showAlert("Ошибка добавления", "Введённая вами роль не корректна!");
+            return;
+        }
+        int id_developer = ((DeveloperTable) (developersTable.getSelectionModel().getSelectedItem())).getId();
+        this.projectEditController.developerConnectWithProject(id_developer, roleTextField.getText());
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
-
 
 }
