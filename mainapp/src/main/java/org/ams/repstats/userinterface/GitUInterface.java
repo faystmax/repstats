@@ -27,7 +27,9 @@ import java.util.Collection;
  * Time: 10:38
  */
 public class GitUInterface implements UInterface {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GitUInterface.class);
+
     private String gitPath = null;
     private BranchAnalyzer branchAnalyzer = null;
     private BranchDetails branchDetails = null;
@@ -55,16 +57,18 @@ public class GitUInterface implements UInterface {
         tablemodel.addColumn("Lines added");
         tablemodel.addColumn("Lines removed");
         tablemodel.addColumn("Net Contribution");
-
+        tablemodel.addColumn("Email");
 
         for (Author author : branchDetails.getAuthorToCommitMap().keySet()) {
             String name = "";
+            String email = "";
             int commitCount = 0;
             int linesAdded = 0;
             int linesRemoved = 0;
             int netContribution = 0;
 
             name = author.getName();
+            email = author.getEmailAddress();
             commitCount = branchDetails.getAuthorToCommitMap().get(author).size();
             Collection<CommitDiff> commitDiffs = branchDetails.getAuthorToCommitDiffsMap().get(author);
             for (CommitDiff commitDiff : commitDiffs) {
@@ -73,7 +77,7 @@ public class GitUInterface implements UInterface {
             }
             netContribution = linesAdded - linesRemoved;
             //Write to TableModel
-            tablemodel.addRow(new Object[]{name, commitCount, linesAdded, linesRemoved, netContribution});
+            tablemodel.addRow(new Object[]{name, commitCount, linesAdded, linesRemoved, netContribution, email});
         }
         return tablemodel;
     }
@@ -137,7 +141,6 @@ public class GitUInterface implements UInterface {
         return absolutePath;
     }
 
-
     @Override
     public boolean startProjectAnalyze() {
         String branchName = "master";
@@ -194,6 +197,11 @@ public class GitUInterface implements UInterface {
         return null;
     }
 
+    @Override
+    public String getRemoteName() {
+        branchDetails.getRepository().getRepository().getRemoteNames();
+        return "";
+    }
 
 }
 

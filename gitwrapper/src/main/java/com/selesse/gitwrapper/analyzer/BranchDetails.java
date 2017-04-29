@@ -20,6 +20,7 @@ import java.util.Map;
  * Содержит в себе всю информацию об авторах репозиториях их коммитах, файлах и т.п.
  */
 public class BranchDetails {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BranchDetails.class);  ///< логгер
 
     private GitRepository repository;                               ///< Ссылка на репозиторий
@@ -56,7 +57,7 @@ public class BranchDetails {
 
     /**
      * Необходим для инициализации BranchDetails.
-     * Бежит по коммитов и инициализирует списки authorToCommitMap, authorToCommitDiffMap
+     * Бежит по коммитам и инициализирует списки authorToCommitMap, authorToCommitDiffMap
      * и переменные totalLinesAdded и totalLinesRemoved.
      *
      * @param commits список коммитов
@@ -180,5 +181,14 @@ public class BranchDetails {
      */
     public void closeRepository() {
         repository.close();
+    }
+
+    /**
+     * Возвращает Репозиторий Git
+     *
+     * @return
+     */
+    public GitRepository getRepository() {
+        return repository;
     }
 }

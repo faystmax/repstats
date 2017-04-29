@@ -35,6 +35,7 @@ import java.io.IOException;
  */
 public class FXViewInterfaceController extends ViewInterfaceAbstract {
 
+
     //region << UI Компоненты
     @FXML
     private MenuItem btAbout;
@@ -52,6 +53,8 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
     private TableView avtorTable;
     @FXML
     private TableColumn clmnAvtorName;
+    @FXML
+    private TableColumn clmnAvtorEmail;
     @FXML
     private TableColumn clmnCommitCount;
     @FXML
@@ -78,6 +81,8 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
     private Label lbKolCommit;
     @FXML
     private Label lbKolCommitCur;
+    @FXML
+    private Label lbRemoteName;
     @FXML
     private TextField tbProject;
     @FXML
@@ -114,9 +119,6 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
         SwingFXUtils.toFXImage(img, wimg);
         imageView.setImage(wimg);
     }
-
-
-
 
     /**
      * Кнопка выбора директории
@@ -200,12 +202,13 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
         clmnLinesAdd.setCellValueFactory(new PropertyValueFactory<>("linesAdded"));
         clmnLinesDelete.setCellValueFactory(new PropertyValueFactory<>("linesRemoved"));
         clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
-
+        clmnAvtorEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         TableModel authors = getuInterface().getAuthors();
         ObservableList<AuthorTable> data = FXCollections.observableArrayList();
         for (int i = 0; i < authors.getRowCount(); i++) {
             data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
-                    (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4)));
+                    (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
+                    (String) (authors.getValueAt(i, 5))));
         }
 
         avtorTable.setItems(data);
@@ -220,7 +223,7 @@ public class FXViewInterfaceController extends ViewInterfaceAbstract {
         lbBranchCur.setText(getuInterface().getBranchName());
         lbKolCommit.setText("Всего кол-во коммитов:");
         lbKolCommitCur.setText(Integer.toString(getuInterface().getNumberOfCommits()));
-
+        //lbRemoteName.setText(getuInterface().getRemoteName());
     }
 
 

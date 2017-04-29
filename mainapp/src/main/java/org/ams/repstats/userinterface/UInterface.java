@@ -14,6 +14,7 @@ import java.util.Collection;
  * Time: 19:59
  */
 public interface UInterface {
+
     boolean сhooseProjectDirectory(String Path);
 
     boolean startProjectAnalyze();
@@ -36,5 +37,5 @@ public interface UInterface {
 
     Collection<Commit> getLastCommits(Author author);
 
-
+    String getRemoteName();
 }

@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class AuthorTable {
 
     private SimpleStringProperty name;
+    private SimpleStringProperty email;
     private SimpleIntegerProperty commitCount;
     private SimpleIntegerProperty linesAdded;
     private SimpleIntegerProperty linesRemoved;
@@ -25,6 +26,14 @@ public class AuthorTable {
         this.netContribution = new SimpleIntegerProperty(netContribution);
     }
 
+    public AuthorTable(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution, String email) {
+        this.name = new SimpleStringProperty(name);
+        this.commitCount = new SimpleIntegerProperty(commitCount);
+        this.linesAdded = new SimpleIntegerProperty(linesAdded);
+        this.linesRemoved = new SimpleIntegerProperty(linesRemoved);
+        this.netContribution = new SimpleIntegerProperty(netContribution);
+        this.email = new SimpleStringProperty(email);
+    }
     public String getName() {
         return name.get();
     }
@@ -83,5 +92,17 @@ public class AuthorTable {
 
     public void setNetContribution(int netContribution) {
         this.netContribution.set(netContribution);
+    }
+
+    public String getEmail() {
+        return email.get();
+    }
+
+    public SimpleStringProperty emailProperty() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email.set(email);
     }
 }

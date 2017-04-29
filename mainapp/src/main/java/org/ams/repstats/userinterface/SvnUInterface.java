@@ -102,4 +102,9 @@ public class SvnUInterface implements UInterface {
     public Collection<Commit> getLastCommits(Author author) {
         return null;
     }
+
+    @Override
+    public String getRemoteName() {
+        return null;
+    }
 }

@@ -38,7 +38,6 @@ public class DevelopersEditController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DevelopersEditController.class); ///< ссылка на логер
 
-
     //region << UI Компоненты
     @FXML
     private TableView developersTable;
@@ -56,6 +55,10 @@ public class DevelopersEditController {
     private TableColumn developerRoleClmn;
     @FXML
     private TableColumn developerTeamClmn;
+    @FXML
+    private TableColumn developerGitName;
+    @FXML
+    private TableColumn developerGitEmail;
     //endregion
 
     private HashMap<Integer, String> roles;    ///< id_role - name
@@ -286,6 +289,72 @@ public class DevelopersEditController {
 
         developerTeamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("team_name"));
 
+        // gitname
+        developerGitName.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("gitname"));
+        developerGitName.setCellFactory(TextFieldTableCell.forTableColumn());
+        developerGitName.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setGitname(t.getOldValue());
+                            // обновляем колонку
+                            developerGitName.setVisible(false);
+                            developerGitName.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateGitName);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setGitname(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
+        // gitemail
+        developerGitEmail.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("gitemail"));
+        developerGitEmail.setCellFactory(TextFieldTableCell.forTableColumn());
+        developerGitEmail.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setGitemail(t.getOldValue());
+                            // обновляем колонку
+                            developerGitEmail.setVisible(false);
+                            developerGitEmail.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateGitEmail);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setGitemail(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
 
         //endregion
 
@@ -298,7 +367,7 @@ public class DevelopersEditController {
 
         // Извлекаем данные из базы
         try {
-            MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithTeam);
+            MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithTeamName);
             ResultSet rs = MysqlConnector.executeQuery();
 
             ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
@@ -313,7 +382,9 @@ public class DevelopersEditController {
                         rs.getInt(7),
                         rs.getString(8),
                         rs.getString(9),
-                        team_name));
+                        team_name,
+                        rs.getString(11),
+                        rs.getString(12)));
             }
             MysqlConnector.closeStmt();
 
