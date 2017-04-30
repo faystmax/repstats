@@ -26,6 +26,8 @@ import java.util.Date;
  * Time: 20:12
  */
 public class CommitsController {
+
+    //region << UI Компоненты
     @FXML
     private DatePicker datePickerStart;
     @FXML
@@ -40,6 +42,7 @@ public class CommitsController {
     private Button btExit;
     @FXML
     private TableView tableForCommits;
+    //endregion
 
     private Author author;
     private UInterface uInterface;
@@ -55,7 +58,6 @@ public class CommitsController {
     public void setLbName(String name) {
         lbName.setText("Коммиты " + name);
     }
-
 
     public void showCommits() {
 
@@ -95,7 +97,6 @@ public class CommitsController {
 
         }
     }
-
 
     public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();

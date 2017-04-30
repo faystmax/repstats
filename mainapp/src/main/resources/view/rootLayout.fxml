@@ -2,15 +2,15 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-            prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0"
+            prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.RootController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Настройки"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showSettings" text="Настройки"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
                         <MenuItem fx:id="buttonAboutAction" mnemonicParsing="false" onAction="#exitButtonAction"
                                   text="Закрыть"/>
@@ -18,10 +18,12 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Статистика">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Статистика Команд"/>
-                        <MenuItem mnemonicParsing="false" text="Статистика Разработчика"/>
-                        <MenuItem mnemonicParsing="false" text="Статистика по проекту"/>
-                        <MenuItem mnemonicParsing="false" text="Групповая статистика"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showStatsTeam" text="Статистика команд"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showStatsDeveloper"
+                                  text="Статистика разработчиков"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showStatsProject" text="Статистика по проекту"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showStatsRepository"
+                                  text="Статистика репозитория"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Администрирование">

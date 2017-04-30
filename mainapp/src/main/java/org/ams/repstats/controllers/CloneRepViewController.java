@@ -9,7 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.ams.repstats.controllers.mytask.MyDownloadRepTask;
+import org.ams.repstats.controllers.stats.StatsRepositoryController;
 import org.eclipse.jgit.api.Git;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -23,6 +26,8 @@ import java.io.IOException;
  */
 public class CloneRepViewController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CloneRepViewController.class); ///< ссылка на логер
+
     //region <<<  элементы UI
     @FXML
     public ProgressBar pbDownload;
@@ -34,7 +39,7 @@ public class CloneRepViewController {
     private TextField tbURL;
     //endregion
 
-    private FXViewInterfaceController fxViewInterfaceController;    ///< ссылка на родителя
+    private StatsRepositoryController fxViewInterfaceController;    ///< ссылка на родителя
     private boolean isStart = false;                                ///< флаг начала
 
 
@@ -44,7 +49,7 @@ public class CloneRepViewController {
      *
      * @param fxViewInterfaceController -контроллер род. окна
      */
-    public void setFxViewInterfaceController(FXViewInterfaceController fxViewInterfaceController) {
+    public void setFxViewInterfaceController(StatsRepositoryController fxViewInterfaceController) {
         this.fxViewInterfaceController = fxViewInterfaceController;
     }
 
@@ -71,8 +76,8 @@ public class CloneRepViewController {
                     deleteRecursive(dir);
                 }
                 /*
-      Task для подкачки  внешнего репозитория
-     */
+                 *  Task для подкачки  внешнего репозитория
+                 */
                 MyDownloadRepTask task = new MyDownloadRepTask(this, fxViewInterfaceController, tbURL);
                 pbDownload.progressProperty().bind(task.progressProperty());
                 new Thread(task).start();
@@ -103,7 +108,6 @@ public class CloneRepViewController {
             git.getRepository().close();
             this.fxViewInterfaceController.closeRepository();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         path.listFiles(new FileFilter() {
             @Override
@@ -125,7 +129,7 @@ public class CloneRepViewController {
      * Отображаем Окно с ошибкой
      *
      * @param title - заголовок
-     * @param text - текст ошибки
+     * @param text  - текст ошибки
      */
     public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

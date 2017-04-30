@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="333.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.ams.repstats.controllers.admin.projects.ProjectAddExistRepositoryController">
+    <children>
+        <TableView fx:id="repositoryTable" editable="true" prefHeight="262.0" prefWidth="671.0"
+                   AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+                   AnchorPane.topAnchor="10.0">
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+            <columns>
+                <TableColumn prefWidth="75.0" text="Репозитории без проекта">
+                    <columns>
+                        <TableColumn fx:id="reposNameClmn" prefWidth="75.0" text="Название"/>
+                        <TableColumn fx:id="reposUrlClmn" prefWidth="75.0" text="Адрес (url)"/>
+                        <TableColumn fx:id="reposDateClmn" prefWidth="75.0" text="Дата создания"/>
+                        <TableColumn fx:id="reposResponsClmn" prefWidth="75.0" text="Ответственный"/>
+                    </columns>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <TextField fx:id="descriptionTextField" layoutX="14.0" layoutY="298.0" prefHeight="25.0" prefWidth="193.0"
+                   promptText="Введите описание репозитория" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                   AnchorPane.rightAnchor="397.0"/>
+        <HBox spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <children>
+                <Button layoutX="474.0" layoutY="305.0" mnemonicParsing="false" onAction="#repositorySelectButtonAction"
+                        prefWidth="80.0" text="Выбрать"/>
+                <Button fx:id="btExit" layoutX="534.0" layoutY="305.0" mnemonicParsing="false"
+                        onAction="#exitButtonAction" prefWidth="80.0" text="Отмена"/>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

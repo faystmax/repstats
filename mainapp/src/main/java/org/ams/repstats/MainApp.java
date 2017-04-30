@@ -7,8 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.ams.repstats.controllers.FXViewInterfaceController;
 import org.ams.repstats.controllers.RootController;
+import org.ams.repstats.controllers.stats.StatsRepositoryController;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.userinterface.UInterface;
@@ -77,7 +77,7 @@ public class MainApp extends Application {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/statsView.fxml"));
+            loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsRepositoryView.fxml"));
             AnchorPane statsView = (AnchorPane) loader.load();
 
             // Ставим интерфейс в зависимости от моста
@@ -111,7 +111,7 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         if (args.length == 2 && args[0].equals("fx") && args[1].equals("analyzer")) {
             MainApp.uInterface = factory.create(TypeUInterface.git);
-            MainApp.viewInterface = new FXViewInterfaceController();
+            MainApp.viewInterface = new StatsRepositoryController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
             launch(args);
         } else if (args.length == 2 && args[0].equals("c") && args[1].equals("analyzer")) {
@@ -120,7 +120,7 @@ public class MainApp extends Application {
             MainApp.viewInterface.start();
         } else {
             MainApp.uInterface = factory.create(TypeUInterface.git);
-            MainApp.viewInterface = new FXViewInterfaceController();
+            MainApp.viewInterface = new StatsRepositoryController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
             launch(args);
         }
