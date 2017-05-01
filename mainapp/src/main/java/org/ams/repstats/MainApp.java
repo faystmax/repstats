@@ -34,6 +34,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //setUserAgentStylesheet(STYLESHEET_CASPIAN);
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Git Statistics");
         this.primaryStage.getIcons().add(new Image("gitIcon.png"));

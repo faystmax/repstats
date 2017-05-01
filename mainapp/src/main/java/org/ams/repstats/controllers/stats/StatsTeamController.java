@@ -23,6 +23,8 @@ import org.ams.repstats.controllers.CommitsController;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.fortableview.TeamTable;
+import org.ams.repstats.uifactory.TypeUInterface;
+import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.view.ViewInterfaceAbstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,6 +114,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
 
     @FXML
     public void initialize() {
+        this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
         teamTable.setEditable(false);
         showAllTeams();
         Platform.runLater(new Runnable() {

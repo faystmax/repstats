@@ -2,14 +2,13 @@ package org.ams.repstats.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.ams.repstats.controllers.mytask.MyDownloadRepTask;
 import org.ams.repstats.controllers.stats.StatsRepositoryController;
+import org.ams.repstats.utils.Utils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +90,7 @@ public class CloneRepViewController {
      * ошибка подкачки репозитория
      */
     public void downloadError() {
-        this.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
+        Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
                 " либо у вас отсутствует подключение к интернету");
         isStart = false;
     }
@@ -125,25 +124,7 @@ public class CloneRepViewController {
     }
 
 
-    /**
-     * Отображаем Окно с ошибкой
-     *
-     * @param title - заголовок
-     * @param text  - текст ошибки
-     */
-    public void showAlert(String title, String text) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        // Get the Stage.
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
-        // Add a custom icon.
-        stage.getIcons().add(new Image(this.getClass().getClassLoader().getResource("errorIcon.png").toString()));
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-
-        alert.setContentText(text);
-        alert.showAndWait();
-    }
 
 
 }

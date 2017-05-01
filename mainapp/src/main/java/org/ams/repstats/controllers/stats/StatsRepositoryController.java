@@ -4,6 +4,7 @@ import com.selesse.gitwrapper.myobjects.Author;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,8 +26,12 @@ import org.ams.repstats.controllers.CommitsController;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.uifactory.TypeUInterface;
+import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,15 +123,11 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     @FXML
     public void initialize() {
+        this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
         repositoryTable.setEditable(false);
         configureRepositoryClmn();
         showRepository();
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                repositoryTable.requestFocus();
-            }
-        });
+        Platform.runLater(() -> repositoryTable.requestFocus());
     }
 
     private void configureRepositoryClmn() {
@@ -184,11 +185,11 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             return;
         }
         if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
-            ShowAlert("Ошибка", "Выбрана неверная директория!");
+            Utils.showAlert("Ошибка", "Выбрана неверная директория!");
             return;
         }
         setNewRepDirectory(projectDir);
-
+        Platform.runLater(() -> btStart.requestFocus());
     }
 
     public void setNewRepDirectory(File file) {
@@ -207,12 +208,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     public void start() {
         projectDir = new File(tbProject.getText());
         if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
-            ShowAlert("Ошибка", "Выбрана неверная директория!");
+            Utils.showAlert("Ошибка", "Выбрана неверная директория!");
             this.setStart(false);
             return;
         }
         if (!getuInterface().startProjectAnalyze()) {
-            ShowAlert("Ошибка", "Ошибка анализа файлов проекта!");
+            Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
             this.setStart(false);
         } else {
             this.setStart(true);
@@ -228,57 +229,86 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
      * Кнопка начала анализа Репозитория
      */
     public void startRepositoryAnalyze() {
-        try {
-            if (repositoryTable.getSelectionModel().getSelectedItem() == null) {
-                Utils.showAlert("Ошибка", "Сначала выберите репозиторий!");
-                return;
-            }
-
-            //Запуск анализа - открытие окна загрузки
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("view/loadingView.fxml"));
-            loader.setController();
-            AnchorPane aboutLayout = null;
-
-            aboutLayout = loader.load();
-
-
-            Stage stage = new Stage();
-            stage.setTitle("О Программе");
-            stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            //Инициализируем и запускаем
-            stage.showAndWait();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-
-        //stage.setE;
-     /*   projectDir = new File(tbProject.getText());
-        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
-            ShowAlert("Ошибка", "Выбрана неверная директория!");
-            this.setStart(false);
+        if (repositoryTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка", "Сначала выберите репозиторий!");
             return;
         }
-        if (!getuInterface().startProjectAnalyze()) {
-            ShowAlert("Ошибка", "Ошибка анализа файлов проекта!");
-            this.setStart(false);
-        } else {
-            this.setStart(true);
-        }
 
-        //showChartOnImageView();
-        showMainInf();
-        showAvtors();
-        showAllFiles();*/
+        // берём url
+        String url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
+
+        // Открываем окно загрузки
+
+        // here runs the JavaFX thread
+        // Boolean as generic parameter since you want to return it
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            public Boolean call() throws GitAPIException {
+                // do your operation in here
+                downloadRepository(url);
+                if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
+                    Utils.showAlert("Ошибка", "Выбрана неверная директория!");
+                    setStart(false);
+                    return false;
+                }
+                if (!getuInterface().startProjectAnalyze()) {
+                    Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
+                    setStart(false);
+                } else {
+                    setStart(true);
+                }
+
+                //выводим данные о репозитории в потоку javafx
+                Platform.runLater(() -> {
+                    showMainInf();
+                    showAvtors();
+                    showAllFiles();
+                });
+
+                return true;
+            }
+        };
+
+        task.setOnRunning((e) -> Utils.openLoadingWindow());
+        task.setOnSucceeded((e) -> {
+            Utils.closeLoadingWindow();
+            // process return value again in JavaFX thread
+        });
+        task.setOnFailed((e) -> {
+            // eventual error handling by catching exceptions from task.get()
+            LOGGER.error(task.getException().getMessage());
+            Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
+                    " либо у вас отсутствует подключение к интернету");
+            Utils.closeLoadingWindow();
+        });
+        new Thread(task).start();
     }
 
+    /**
+     * Загрузка репозитория
+     *
+     * @param url - url репозитория
+     * @throws GitAPIException - при ошибке скачивания
+     */
+    private void downloadRepository(String url) throws GitAPIException {
+        File dir = new File("./cloneRep");
+        if (dir.exists()) {
+            setNewRepDirectory(null);
+            closeRepository();
+            Utils.deleteRecursive(dir);
+
+            Git git = Git.cloneRepository()
+                    .setURI(url)
+                    .setDirectory(new File("./cloneRep"))
+                    .call();
+            git.getRepository().close();
+            projectDir = dir;
+        }
+    }
 
     @Override
     public void closeRepository() {
-        this.getuInterface().closeRepository();
+        getuInterface().closeRepository();
     }
 
     @Override
@@ -319,6 +349,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     @Override
     public void showMainInf() {
+
+
         lbNameRep.setText(getuInterface().getRepName());
         lbNazv.setText("Название репозитория:");
         lbNazvCur.setText(getuInterface().getRepName());
@@ -327,29 +359,18 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         lbKolCommit.setText("Всего кол-во коммитов:");
         lbKolCommitCur.setText(Integer.toString(getuInterface().getNumberOfCommits()));
         //lbRemoteName.setText(getuInterface().getRemoteName());
+
+        String repName = null;
+        if (repositoryTable.getSelectionModel().getSelectedItem() != null) {
+            String url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
+            String[] parts = url.split("/");
+            repName = parts[parts.length - 1];
+            lbNameRep.setText(repName);
+            lbNazvCur.setText(repName);
+        }
     }
 
 
-    /**
-     * Отображаем Окно с ошибкой
-     *
-     * @param title - заголовок
-     * @param text  - текст сообщения
-     */
-    private void ShowAlert(String title, String text) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        // Get the Stage.
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-
-        // Add a custom icon.
-        stage.getIcons().add(new Image(this.getClass().getClassLoader().getResource("errorIcon.png").toString()));
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-
-        alert.setContentText(text);
-        alert.showAndWait();
-
-    }
 
     /**
      * Подгружаем внешний репозиторий
@@ -392,7 +413,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             AuthorTable tableAuthor = (AuthorTable) avtorTable.getSelectionModel().getSelectedItem();
             Author selectedAuthor = getuInterface().getAuthorByName(tableAuthor.getName());
             if (selectedAuthor == null) {
-                ShowAlert("Внимание", "Вы не выбрали автора!");
+                Utils.showAlert("Внимание", "Вы не выбрали автора!");
                 return;
             }
 

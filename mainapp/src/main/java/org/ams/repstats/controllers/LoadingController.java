@@ -1,10 +1,8 @@
 package org.ams.repstats.controllers;
 
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
-import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,18 +21,8 @@ public class LoadingController {
     private ProgressBar progressBar;
     //endregion
 
-    Task task;
-
     @FXML
     public void initialize() {
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public void startTask() {
-        new Thread(task).start();
     }
 
     /**
@@ -43,10 +31,5 @@ public class LoadingController {
     public void closeStage() {
         Stage stage = (Stage) progressBar.getScene().getWindow();
         stage.close();
-    }
-
-    public void downloadError(Exception e) {
-        Utils.showError("Ошибка скачивания", "Не удалось скачать репозиторий", "", e);
-        closeStage();
     }
 }

@@ -22,6 +22,7 @@ import java.io.IOException;
 public class RootController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class); ///< ссылка на логер
+
     private Stage primaryStage;                                                         ///< Главный каркас
     private BorderPane rootLayout;                                                      ///< Layout
 

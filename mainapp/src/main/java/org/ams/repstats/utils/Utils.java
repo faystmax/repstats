@@ -1,16 +1,21 @@
 package org.ams.repstats.utils;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.eclipse.jgit.api.Git;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,6 +27,8 @@ import java.util.Optional;
  * Time: 13:50
  */
 public class Utils {
+
+    public static Stage loadingStage;
     /**
      * Отображаем Диалоговое окно Alert
      *
@@ -34,7 +41,7 @@ public class Utils {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("errorIcon.png").toString()));
+        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("infIcon.png").toString()));
         alert.setTitle(title);
         alert.setHeaderText(null);
 
@@ -138,42 +145,6 @@ public class Utils {
         return true;
     }
 
-    /*
-    public static void configureStringColumnTeamTable(TableColumn tableColumn, String propertyName, String querry,Logger LOGGER ){
-        tableColumn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>(propertyName));
-        tableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        tableColumn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        //обновляем в базе
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-                        //провверка ввода
-                        if(!Utils.isValidStringValue(t.getNewValue())){
-                            Utils.showAlert("Ошибка ввода!","Неверное значение поля");
-                            changeable.setName(t.getOldValue());
-                            // обновляем колонку
-                            tableColumn.setVisible(false);
-                            tableColumn.setVisible(true);
-                            return;
-                        }
-                        try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(querry);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, changeable.getId());
-                            int newId = MysqlConnector.executeUpdate();
-                            changeable.setTechnology(t.getNewValue());
-                        } catch (SQLException e) {
-                            LOGGER.error((e.getMessage()));
-                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
-                                    "", e);
-                        }
-                    }
-                }
-        );
-
-    }*/
-
     public static Object getKeyFromValue(Map hm, Object value) {
         for (Object o : hm.keySet()) {
             if (hm.get(o).equals(value)) {
@@ -181,5 +152,59 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    /**
+     * Удаление дирректории рекурсивно
+     *
+     * @param path - путь для удаления
+     */
+    public static void deleteRecursive(File path) {
+        try {
+            Git git = Git.open(path);
+            git.getRepository().close();
+
+        } catch (IOException e) {
+        }
+        path.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory()) {
+                    pathname.listFiles(this);
+                    pathname.delete();
+                } else {
+                    pathname.delete();
+                }
+                return false;
+            }
+        });
+        path.delete();
+    }
+
+    public static void openLoadingWindow() {
+        try {
+            //Запуск анализа - открытие окна загрузки
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Utils.class.getClassLoader().getResource("view/loadingView.fxml"));
+            AnchorPane aboutLayout = loader.load();
+
+            loadingStage = new Stage(StageStyle.TRANSPARENT);
+            loadingStage.setTitle("Прогресс");
+            loadingStage.setScene(new Scene(aboutLayout));
+            loadingStage.getIcons().add(new Image("loadIcon.png"));
+            loadingStage.initModality(Modality.APPLICATION_MODAL);
+
+            //Инициализируем и запускаем
+            loadingStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Закрытие окна загрузки
+     */
+    public static void closeLoadingWindow() {
+        loadingStage.close();
     }
 }
