@@ -54,6 +54,7 @@ public class MyDownloadRepTask extends Task {
             });
         } finally {
             this.done();
+            Platform.runLater(() -> controller.btExit.requestFocus());
         }
         return null;
     }

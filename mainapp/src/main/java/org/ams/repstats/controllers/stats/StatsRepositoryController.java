@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -128,6 +130,28 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         configureRepositoryClmn();
         showRepository();
         Platform.runLater(() -> repositoryTable.requestFocus());
+
+        // добавили listener`a
+        repositoryTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    startRepositoryAnalyze();
+                }
+            }
+        });
+
+        // добавили listener`a
+        avtorTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsButtonAction(null);
+                }
+            }
+        });
+
+        btStart.defaultButtonProperty().bind(btStart.focusedProperty());
     }
 
     private void configureRepositoryClmn() {
@@ -190,6 +214,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
         setNewRepDirectory(projectDir);
         Platform.runLater(() -> btStart.requestFocus());
+
     }
 
     public void setNewRepDirectory(File file) {
@@ -387,7 +412,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             GridPane rootLayout = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Удалённый репозиторий");
-            stage.setScene(new Scene(rootLayout, 365, 136));
+            stage.setScene(new Scene(rootLayout));
             stage.getIcons().add(new Image("gitIcon.png"));
 
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -398,6 +423,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
             stage.showAndWait();
 
+            Platform.runLater(() -> btStart.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

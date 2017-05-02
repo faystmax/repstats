@@ -31,6 +31,8 @@ public class CommitsController {
     @FXML
     private DatePicker datePickerStart;
     @FXML
+    private DatePicker datePickerEnd;
+    @FXML
     private Label lbName;
     @FXML
     private TableColumn clmnFilesChanged;
@@ -79,9 +81,20 @@ public class CommitsController {
             for (Commit commit : commits) {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 
-                if (datePickerStart.getValue() != null) {
+                if (datePickerStart.getValue() != null && datePickerEnd.getValue() != null) {
 
+                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue()) &&
+                            commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue()))
+                        data.add(new CommitTable(commit.getCommitMessage(),
+                                commit.getCommitDateTime(),
+                                commit.getFilesChanged().size()));
+                } else if (datePickerStart.getValue() != null) {
                     if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue()))
+                        data.add(new CommitTable(commit.getCommitMessage(),
+                                commit.getCommitDateTime(),
+                                commit.getFilesChanged().size()));
+                } else if (datePickerEnd.getValue() != null) {
+                    if (commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue()))
                         data.add(new CommitTable(commit.getCommitMessage(),
                                 commit.getCommitDateTime(),
                                 commit.getFilesChanged().size()));

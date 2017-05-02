@@ -222,9 +222,9 @@
                                                         <AnchorPane>
                                                             <children>
                                                                 <TableView fx:id="avtorTable" layoutX="3.0"
-                                                                           layoutY="82.0" prefHeight="271.0"
+                                                                           layoutY="82.0" prefHeight="367.0"
                                                                            prefWidth="642.0"
-                                                                           AnchorPane.bottomAnchor="50.0"
+                                                                           AnchorPane.bottomAnchor="44.0"
                                                                            AnchorPane.leftAnchor="0.0"
                                                                            AnchorPane.rightAnchor="0.0"
                                                                            AnchorPane.topAnchor="0.0">

@@ -1,10 +1,12 @@
 package org.ams.repstats.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.ams.repstats.controllers.mytask.MyDownloadRepTask;
 import org.ams.repstats.controllers.stats.StatsRepositoryController;
@@ -31,7 +33,7 @@ public class CloneRepViewController {
     @FXML
     public ProgressBar pbDownload;
     @FXML
-    private Button btExit;
+    public Button btExit;
     @FXML
     private Button btChoose;
     @FXML
@@ -41,6 +43,19 @@ public class CloneRepViewController {
     private StatsRepositoryController fxViewInterfaceController;    ///< ссылка на родителя
     private boolean isStart = false;                                ///< флаг начала
 
+    @FXML
+    public void initialize() {
+        // wherever you assign event handlers...
+        tbURL.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                chooseButtonAction(null);
+            }
+        });
+        btExit.defaultButtonProperty().bind(btExit.focusedProperty());
+        btChoose.defaultButtonProperty().bind(btChoose.focusedProperty());
+        Platform.runLater(() -> tbURL.requestFocus());
+        Platform.runLater(() -> tbURL.selectEnd());
+    }
 
     /**
      * Инициализация родительского окна
@@ -93,6 +108,7 @@ public class CloneRepViewController {
         Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
                 " либо у вас отсутствует подключение к интернету");
         isStart = false;
+        Platform.runLater(() -> btExit.requestFocus());
     }
 
 

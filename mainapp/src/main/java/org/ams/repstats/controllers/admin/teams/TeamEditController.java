@@ -75,8 +75,6 @@ public class TeamEditController {
                 showDevelopersInTeam(id_team);
             }
         });
-
-
     }
 
 
