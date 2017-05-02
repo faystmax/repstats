@@ -248,6 +248,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         showMainInf();
         showAvtors();
         showAllFiles();
+
+        closeRepository();
     }
 
     /**
@@ -289,6 +291,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAvtors();
                     showAllFiles();
                 });
+
+                closeRepository();
 
                 return true;
             }
