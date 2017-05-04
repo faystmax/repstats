@@ -3,7 +3,7 @@ package org.ams.repstats.controllers.mytask;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextField;
-import org.ams.repstats.controllers.CloneRepViewController;
+import org.ams.repstats.controllers.stats.CloneRepViewController;
 import org.ams.repstats.controllers.stats.StatsRepositoryController;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;

@@ -34,7 +34,7 @@
                         onAction="#exitButtonAction" prefWidth="80.0" text="Отмена"/>
             </children>
         </HBox>
-        <TextField fx:id="roleTextField" layoutX="14.0" layoutY="298.0" prefHeight="25.0" prefWidth="186.0"
+        <TextField fx:id="roleTextField" layoutX="14.0" layoutY="298.0" prefHeight="25.0"
                    promptText="Введите его роль в проекте" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
                    AnchorPane.rightAnchor="404.0"/>
     </children>

@@ -2,10 +2,7 @@ package org.ams.repstats.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -41,7 +38,7 @@ public class Utils {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("infIcon.png").toString()));
+        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("icons/infIcon.png").toString()));
         alert.setTitle(title);
         alert.setHeaderText(null);
 
@@ -68,7 +65,7 @@ public class Utils {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("errorIcon.png").toString()));
+        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("icons/errorIcon.png").toString()));
 
 
         StringWriter sw = new StringWriter();
@@ -101,10 +98,20 @@ public class Utils {
     public static boolean conformationDialog(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
-        alert.setHeaderText(text);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        // Get the Stage.
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("icons/questIcon.png").toString()));
+
+        ButtonType buttonTypeOk = new ButtonType("Oк", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeCancel = new ButtonType("Отмена", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeOk, buttonTypeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.get() == buttonTypeOk) {
             return true;
         } else {
             return false;
@@ -120,7 +127,7 @@ public class Utils {
         // Get the Stage.
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         // Add a custom icon.
-        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("infIcon.png").toString()));
+        stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("icons/infIcon.png").toString()));
 
         alert.showAndWait();
     }
@@ -185,13 +192,13 @@ public class Utils {
         try {
             //Запуск анализа - открытие окна загрузки
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Utils.class.getClassLoader().getResource("view/loadingView.fxml"));
+            loader.setLocation(Utils.class.getClassLoader().getResource("view/stats/loadingView.fxml"));
             AnchorPane aboutLayout = loader.load();
 
             loadingStage = new Stage(StageStyle.TRANSPARENT);
             loadingStage.setTitle("Прогресс");
             loadingStage.setScene(new Scene(aboutLayout));
-            loadingStage.getIcons().add(new Image("loadIcon.png"));
+            loadingStage.getIcons().add(new Image("icons/loadIcon.png"));
             loadingStage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем и запускаем

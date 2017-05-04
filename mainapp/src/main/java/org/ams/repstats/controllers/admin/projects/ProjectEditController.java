@@ -2,6 +2,7 @@ package org.ams.repstats.controllers.admin.projects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
+import org.ams.repstats.fortableview.DeveloperTable;
 import org.ams.repstats.fortableview.ProjectTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.utils.ProjectTableDateEditingCell;
@@ -31,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA
@@ -44,33 +48,50 @@ public class ProjectEditController {
 
     //region << UI Компоненты
     @FXML
-    public TableView projectsTable;
+    private TableView projectsTable;
     @FXML
-    public TableColumn projectNameClmn;
+    private TableColumn projectNameClmn;
     @FXML
-    public TableColumn projectDateClmn;
+    private TableColumn projectDateClmn;
     @FXML
-    public TableColumn projectDeadlineClmn;
+    private TableColumn projectDeadlineClmn;
     @FXML
-    public TableColumn projectPriorClmn;
+    private TableColumn projectPriorClmn;
     @FXML
-    public TableView repositoryTable;
+    private TableView repositoryTable;
     @FXML
-    public TableColumn reposNameClmn;
+    private TableColumn reposNameClmn;
     @FXML
-    public TableColumn reposUrlClmn;
+    private TableColumn reposUrlClmn;
     @FXML
-    public TableColumn reposDateClmn;
+    private TableColumn reposDateClmn;
     @FXML
-    public TableColumn reposResponsClmn;
+    private TableColumn reposResponsClmn;
     @FXML
-    public TableColumn reposDeskClmn;
+    private TableColumn reposDeskClmn;
+    @FXML
+    private TableView developersTable;
+    @FXML
+    private TableColumn developerFamClmn;
+    @FXML
+    private TableColumn developerNameClmn;
+    @FXML
+    private TableColumn developerOtchClmn;
+    @FXML
+    private TableColumn developerAgeClmn;
+    @FXML
+    private TableColumn developerRoleClmn;
+    @FXML
+    private TableColumn developerRoleINProjectClmn;
     //endregion
+
+    private HashMap<Integer, String> roles;    ///< id_role - name
 
     @FXML
     public void initialize() {
         configureAndShowProjectsClmn();
         configureRepositoryClmn();
+        configureDevelopersTable();
         // добавили listener`a
         projectsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -387,6 +408,7 @@ public class ProjectEditController {
 
     }
 
+
     private void showRepositoryInTable(int id_proj) {
         // Извлекаем данные из базы
         try {
@@ -408,6 +430,243 @@ public class ProjectEditController {
             MysqlConnector.closeStmt();
 
             repositoryTable.setItems(data);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Настраиваем колонки таблицы DevelopersTable
+     */
+    private void configureDevelopersTable() {
+
+        // Имя
+        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("name"));
+        developerNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        developerNameClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setName(t.getOldValue());
+                            // обновляем колонку
+                            developerNameClmn.setVisible(false);
+                            developerNameClmn.setVisible(true);
+                            return;
+                        }
+                        //обновляем в базе
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateNameDeveloper);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setName(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+        // Фамилия
+        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("surname"));
+        developerFamClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        developerFamClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        //обновляем в базе
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setSurname(t.getOldValue());
+                            // обновляем колонку
+                            developerFamClmn.setVisible(false);
+                            developerFamClmn.setVisible(true);
+                            return;
+                        }
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateSurnameDeveloper);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setSurname(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
+        // Отчество
+        developerOtchClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("middlename"));
+        developerOtchClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        developerOtchClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        //обновляем в базе
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setMiddlename(t.getOldValue());
+                            // обновляем колонку
+                            developerOtchClmn.setVisible(false);
+                            developerOtchClmn.setVisible(true);
+                            return;
+                        }
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateMidleNameDeveloper);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setMiddlename(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
+        // Возраст
+        developerAgeClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, Integer>("age"));
+        developerAgeClmn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        developerAgeClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, Integer>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, Integer> t) {
+                        //обновляем в базе
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setAge(t.getOldValue());
+                            // обновляем колонку
+                            developerAgeClmn.setVisible(false);
+                            developerAgeClmn.setVisible(true);
+                            return;
+                        }
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateAgeDeveloper);
+                            preparedStatement.setInt(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setAge(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
+        // роль
+        developerRoleClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("role_name"));
+        //
+        // генерим хеш ролей
+        this.readAllRoles();
+        ObservableList<String> rolesOL = FXCollections.observableArrayList();
+        rolesOL.addAll(FXCollections.observableArrayList(roles.values()));
+        //
+        developerRoleClmn.setCellFactory(ComboBoxTableCell.forTableColumn(rolesOL));
+        developerRoleClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        //обновляем в базе
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            Integer id_role = (Integer) Utils.getKeyFromValue(roles, t.getOldValue());
+                            changeable.setId_role(id_role);
+                            changeable.setRole_name(t.getOldValue());
+                            // обновляем колонку
+                            developerRoleClmn.setVisible(false);
+                            developerRoleClmn.setVisible(true);
+                            return;
+                        }
+                        try {
+                            Integer id_role = (Integer) Utils.getKeyFromValue(roles, t.getNewValue());
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateRoleDeveloper);
+                            preparedStatement.setInt(1, id_role);
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            if (id_role != null) {
+                                changeable.setId_role(id_role);
+                                changeable.setRole_name(t.getNewValue());
+                            }
+
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+
+        // роль в проекте
+        developerRoleINProjectClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("middlename"));
+        developerRoleINProjectClmn.setCellFactory(TextFieldTableCell.forTableColumn());
+        developerRoleINProjectClmn.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                        //обновляем в базе
+                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        //провверка ввода
+                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                            Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
+                            changeable.setMiddlename(t.getOldValue());
+                            // обновляем колонку
+                            developerRoleINProjectClmn.setVisible(false);
+                            developerRoleINProjectClmn.setVisible(true);
+                            return;
+                        }
+                        try {
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateMidleNameDeveloper);
+                            preparedStatement.setString(1, t.getNewValue());
+                            preparedStatement.setInt(2, changeable.getId());
+                            int newId = MysqlConnector.executeUpdate();
+                            changeable.setMiddlename(t.getNewValue());
+                        } catch (SQLException e) {
+                            LOGGER.error((e.getMessage()));
+                            Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
+                                    "", e);
+                        }
+                    }
+                }
+        );
+    }
+
+    /**
+     * Считываем все роли в Хеш
+     */
+    private void readAllRoles() {
+        roles = new HashMap<Integer, String>();
+        roles.put(0, "111");
+
+        // Извлекаем данные из базы
+        try {
+            MysqlConnector.prepeareStmt(MysqlConnector.selectAllRoles);
+            ResultSet rs = MysqlConnector.executeQuery();
+
+            while (rs.next()) {
+                roles.put(rs.getInt(1), rs.getString(2));
+            }
+            MysqlConnector.closeStmt();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -540,7 +799,7 @@ public class ProjectEditController {
             Stage stage = new Stage();
             stage.setTitle("Прикрепление проекта к команде");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем
@@ -606,7 +865,7 @@ public class ProjectEditController {
             Stage stage = new Stage();
             stage.setTitle("Прикрепление проекта к разработчику");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем
@@ -663,7 +922,7 @@ public class ProjectEditController {
             Stage stage = new Stage();
             stage.setTitle("Прикрепление репозитория к проекту");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем
@@ -704,4 +963,19 @@ public class ProjectEditController {
         }
     }
 
+    /**
+     * Открепление разработчика от проекта
+     *
+     * @param event
+     */
+    public void undoDeveloperFromProject(ActionEvent event) {
+    }
+
+    /**
+     * Окно "Прикрепления разработчика к проекту"
+     *
+     * @param event
+     */
+    public void connectDeveloperButtonAction(ActionEvent event) {
+    }
 }

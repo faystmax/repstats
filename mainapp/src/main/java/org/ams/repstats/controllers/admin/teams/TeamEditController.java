@@ -408,8 +408,8 @@ public class TeamEditController {
             while (rs.next()) {
                 //String role_name =
                 data.add(new DeveloperTable(rs.getInt(1),
-                        rs.getString(3),
                         rs.getString(2),
+                        rs.getString(3),
                         rs.getString(4),
                         rs.getInt(5),
                         rs.getInt(6),
@@ -528,6 +528,8 @@ public class TeamEditController {
         int newAge = 0;
         String newPhone = "...";
         String newRoleName = roles.get(id_team);
+        String newGitname = "...";
+        String newGitemail = "...";
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewDeveloper);
             preparedStatement.setString(1, newName);
@@ -537,11 +539,13 @@ public class TeamEditController {
             preparedStatement.setInt(5, id_team);
             preparedStatement.setInt(6, newAge);
             preparedStatement.setString(7, newPhone);
+            preparedStatement.setString(8, newGitname);
+            preparedStatement.setString(9, newGitemail);
             MysqlConnector.executeUpdate();
             int newId = MysqlConnector.getinsertId();
 
             DeveloperTable elem = new DeveloperTable(newId, newName, newFam, newOtch, id_role,
-                    id_team, newAge, newPhone, newRoleName);
+                    id_team, newAge, newPhone, newRoleName, newGitname, newGitemail);
             developersTable.getItems().add(elem);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -566,7 +570,7 @@ public class TeamEditController {
             Stage stage = new Stage();
             stage.setTitle("Добавление существующего разработчика в команду");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем

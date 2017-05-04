@@ -51,8 +51,6 @@ public class RepositoryEditController {
     private TableColumn reposDateClmn;
     @FXML
     private TableColumn reposResponsClmn;
-    @FXML
-    private TableColumn reposDeskClmn;
     //endregion
 
 
@@ -264,9 +262,9 @@ public class RepositoryEditController {
             AnchorPane aboutLayout = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Изминение ответственного за репозиторий");
+            stage.setTitle("Изменение ответственного за репозиторий");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем

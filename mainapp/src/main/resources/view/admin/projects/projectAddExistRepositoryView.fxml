@@ -23,7 +23,7 @@
                 </TableColumn>
             </columns>
         </TableView>
-        <TextField fx:id="descriptionTextField" layoutX="14.0" layoutY="298.0" prefHeight="25.0" prefWidth="193.0"
+        <TextField fx:id="descriptionTextField" layoutX="14.0" layoutY="298.0" prefHeight="25.0"
                    promptText="Введите описание репозитория" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
                    AnchorPane.rightAnchor="397.0"/>
         <HBox spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">

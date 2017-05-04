@@ -37,7 +37,7 @@ public class MainApp extends Application {
         //setUserAgentStylesheet(STYLESHEET_CASPIAN);
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Git Statistics");
-        this.primaryStage.getIcons().add(new Image("gitIcon.png"));
+        this.primaryStage.getIcons().add(new Image("icons/gitIcon.png"));
 
         // TODO настройку открытия определённого окна при загрузке прилжения
         initRootLayout(primaryStage);

@@ -1,4 +1,4 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.stats;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.ams.repstats.controllers.mytask.MyDownloadRepTask;
-import org.ams.repstats.controllers.stats.StatsRepositoryController;
 import org.ams.repstats.utils.Utils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;

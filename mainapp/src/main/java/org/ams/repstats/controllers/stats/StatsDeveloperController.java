@@ -19,7 +19,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.controllers.CommitsController;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.DeveloperTable;
 import org.ams.repstats.fortableview.FilesTable;
@@ -343,7 +342,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(this.getClass().getClassLoader().getResource("errorIcon.png").toString()));
+        stage.getIcons().add(new Image(this.getClass().getClassLoader().getResource("icons/errorIcon.png").toString()));
         alert.setTitle(title);
         alert.setHeaderText(null);
 
@@ -371,13 +370,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
 
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getClassLoader().getResource("view/сommitsView.fxml"));
+                loader.setLocation(getClass().getClassLoader().getResource("view/stats/сommitsView.fxml"));
                 AnchorPane rootLayout = loader.load();
 
                 Stage stage = new Stage();
                 stage.setTitle("Коммиты");
                 stage.setScene(new Scene(rootLayout, 480, 370));
-                stage.getIcons().add(new Image("gitIcon.png"));
+                stage.getIcons().add(new Image("icons/gitIcon.png"));
                 stage.initModality(Modality.APPLICATION_MODAL);
 
                 //Инициализируем

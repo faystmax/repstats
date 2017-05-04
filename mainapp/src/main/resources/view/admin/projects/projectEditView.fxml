@@ -3,7 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.admin.projects.ProjectEditController">
     <children>
         <SplitPane dividerPositions="0.4678714859437751" orientation="VERTICAL" prefHeight="500.0" prefWidth="900.0"
@@ -31,9 +32,8 @@
                                 </TableColumn>
                             </columns>
                         </TableView>
-                        <VBox layoutX="764.0" layoutY="161.0" maxWidth="1.7976931348623157E308" prefHeight="56.0"
-                              prefWidth="199.0" spacing="5.0" AnchorPane.bottomAnchor="13.0"
-                              AnchorPane.rightAnchor="14.0">
+                        <VBox layoutX="764.0" layoutY="161.0" maxWidth="1.7976931348623157E308" prefWidth="199.0"
+                              spacing="5.0" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="14.0">
                             <children>
                                 <Button layoutX="7.0" layoutY="261.0" maxWidth="1.7976931348623157E308"
                                         mnemonicParsing="false" onAction="#addProjectButtonAction"
@@ -60,38 +60,105 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="635.0">
                     <children>
-                        <TableView fx:id="repositoryTable" editable="true" layoutX="8.0" prefHeight="262.0"
-                                   prefWidth="671.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
-                                   AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="10.0">
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                            </columnResizePolicy>
-                            <columns>
-                                <TableColumn prefWidth="75.0" text="Репозитории Проекта">
-                                    <columns>
-                                        <TableColumn fx:id="reposNameClmn" prefWidth="75.0" text="Название"/>
-                                        <TableColumn fx:id="reposUrlClmn" prefWidth="75.0" text="Адрес (url)"/>
-                                        <TableColumn fx:id="reposDateClmn" prefWidth="75.0" text="Дата создания"/>
-                                        <TableColumn fx:id="reposResponsClmn" prefWidth="75.0" text="Ответственный"/>
-                                        <TableColumn fx:id="reposDeskClmn" prefWidth="75.0" text="Описание"/>
-                                    </columns>
-                                </TableColumn>
-                            </columns>
-                        </TableView>
-                        <VBox layoutX="431.0" layoutY="409.0" spacing="5.0" AnchorPane.bottomAnchor="14.0"
-                              AnchorPane.rightAnchor="14.0">
-                            <children>
-                                <Button layoutX="431.0" layoutY="261.0" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" onAction="#delRepositoryFromProjectButtonAction"
-                                        text="Удалить репозиторий из проекта"/>
-                                <Button layoutX="431.0" layoutY="297.0" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" onAction="#addNewRepositoryInProjectButtonAction"
-                                        text="Добавить новый репозиторий"/>
-                                <Button layoutX="431.0" layoutY="334.0" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" onAction="#addExistRepositoryInProjectButtonAction"
-                                        text="Добавить сущ. репоз. в проект"/>
-                            </children>
-                        </VBox>
+                        <TabPane layoutX="10.0" layoutY="10.0" prefHeight="262.0" prefWidth="898.0"
+                                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                 AnchorPane.topAnchor="0.0">
+                            <tabs>
+                                <Tab text="Репозитории Проекта">
+                                    <content>
+                                        <AnchorPane>
+                                            <children>
+                                                <TableView fx:id="repositoryTable" editable="true" prefHeight="262.0"
+                                                           prefWidth="671.0" AnchorPane.bottomAnchor="10.0"
+                                                           AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="227.0"
+                                                           AnchorPane.topAnchor="10.0">
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                    </columnResizePolicy>
+                                                    <columns>
+                                                        <TableColumn fx:id="reposNameClmn" prefWidth="75.0"
+                                                                     text="Название"/>
+                                                        <TableColumn fx:id="reposUrlClmn" prefWidth="75.0"
+                                                                     text="Адрес (url)"/>
+                                                        <TableColumn fx:id="reposDateClmn" prefWidth="75.0"
+                                                                     text="Дата создания"/>
+                                                        <TableColumn fx:id="reposResponsClmn" prefWidth="75.0"
+                                                                     text="Ответственный"/>
+                                                        <TableColumn fx:id="reposDeskClmn" prefWidth="75.0"
+                                                                     text="Описание"/>
+                                                    </columns>
+                                                </TableView>
+                                                <VBox layoutX="675.0" layoutY="153.0" spacing="5.0"
+                                                      AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                                                    <children>
+                                                        <Button layoutX="431.0" layoutY="261.0"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false"
+                                                                onAction="#delRepositoryFromProjectButtonAction"
+                                                                text="Удалить репозиторий из проекта"/>
+                                                        <Button layoutX="431.0" layoutY="297.0"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false"
+                                                                onAction="#addNewRepositoryInProjectButtonAction"
+                                                                text="Добавить новый репозиторий"/>
+                                                        <Button layoutX="431.0" layoutY="334.0"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false"
+                                                                onAction="#addExistRepositoryInProjectButtonAction"
+                                                                text="Добавить сущ. репоз. в проект"/>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Разработчики проекта">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <TableView fx:id="developersTable" editable="true" layoutX="23.0"
+                                                           layoutY="7.0" prefHeight="205.0" prefWidth="653.0"
+                                                           AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                                                           AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="10.0">
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                    </columnResizePolicy>
+                                                    <columns>
+                                                        <TableColumn fx:id="developerFamClmn" prefWidth="75.0"
+                                                                     text="Фамилия"/>
+                                                        <TableColumn fx:id="developerNameClmn" prefWidth="75.0"
+                                                                     text="Имя"/>
+                                                        <TableColumn fx:id="developerOtchClmn" prefWidth="75.0"
+                                                                     text="Отчество"/>
+                                                        <TableColumn fx:id="developerAgeClmn" prefWidth="75.0"
+                                                                     text="Возраст"/>
+                                                        <TableColumn fx:id="developerRoleClmn" prefWidth="75.0"
+                                                                     text="Роль"/>
+                                                        <TableColumn fx:id="developerRoleINProjectClmn" prefWidth="75.0"
+                                                                     text="Роль в проекте"/>
+                                                    </columns>
+                                                </TableView>
+                                                <VBox prefWidth="199.0" spacing="5.0" AnchorPane.bottomAnchor="14.0"
+                                                      AnchorPane.rightAnchor="14.0">
+                                                    <children>
+                                                        <Button layoutX="431.0" layoutY="261.0"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false"
+                                                                onAction="#undoDeveloperFromProject"
+                                                                text="Открепить  от проекта"/>
+                                                        <Button layoutX="431.0" layoutY="297.0"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false"
+                                                                onAction="#connectDeveloperButtonAction"
+                                                                text="Прикрепить сущ. разработчика"/>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
                     </children>
                 </AnchorPane>
             </items>

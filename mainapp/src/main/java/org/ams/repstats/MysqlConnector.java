@@ -45,8 +45,8 @@ public class MysqlConnector {
             "(SELECT team.name from team WHERE team.id=developer.id_team),gitname,gitemail from developer,role " +
             "where  role.id=developer.id_role";
 
-    public static final String insertNewDeveloper = "insert into developer (name,surname,middlename,id_role,id_team,age,phone) " +
-            "values (?, ?, ?, ?, ?, ?, ?)";
+    public static final String insertNewDeveloper = "insert into developer (name,surname,middlename,id_role,id_team,age,phone,gitname,gitemail) " +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String deleteDeveloper = "delete from developer WHERE id = ?";
     public static final String updateDeveloperTeam = "update developer set id_team = ? WHERE id = ?";
     public static final String updateNameDeveloper = "update developer set name = ? WHERE id = ?";
@@ -81,7 +81,7 @@ public class MysqlConnector {
     public static final String updateDescriptoion = "update project_repository set description = ? WHERE id_repository = ?";
     public static final String updateResponsible = "update repository set repository.id_developer_responsible = ? WHERE id = ?";
     public static final String selectRepositoryInProjects = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible," +
-            "(SELECT concat(name,\" \",surname,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO," +
+            "(SELECT concat(surname,\" \",name,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO," +
             "project_repository.description,project_repository.id " +
             "FROM repository,project_repository,project " +
             "WHERE " +
@@ -89,7 +89,7 @@ public class MysqlConnector {
             "and project_repository.id_project = project.id AND " +
             "project.id = ?";
     public static final String selectAllRepository = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible," +
-            "(SELECT concat(name,\" \",surname,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO " +
+            "(SELECT concat(surname,\" \",name,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO " +
             "FROM repository ";
     public static final String insertNewProjectRepository = "insert into project_repository ( id_repository, id_project, description) " +
             "values (?, ?, ?)";

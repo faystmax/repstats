@@ -311,14 +311,14 @@ public class RepositoryResponsibleSelectController {
     private void showDevelopersInTeam() {
         // Извлекаем данные из базы
         try {
-            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithNull);
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopers);
             ResultSet rs = MysqlConnector.executeQuery();
 
             ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
             while (rs.next()) {
                 data.add(new DeveloperTable(rs.getInt(1),
-                        rs.getString(3),
                         rs.getString(2),
+                        rs.getString(3),
                         rs.getString(4),
                         rs.getInt(5),
                         rs.getInt(6),

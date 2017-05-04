@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0"
             prefWidth="220.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.ams.repstats.controllers.LoadingController">
+            fx:controller="org.ams.repstats.controllers.stats.LoadingController">
     <children>
         <ProgressBar fx:id="progressBar" layoutX="53.0" layoutY="31.0" prefHeight="41.0" prefWidth="193.0"
                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

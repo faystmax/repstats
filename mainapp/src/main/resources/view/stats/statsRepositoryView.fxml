@@ -272,7 +272,7 @@
                                                                 <TableColumn fx:id="clmnIsBinary" minWidth="0.0"
                                                                              prefWidth="110.0" text="Бинарник"/>
                                                                 <TableColumn fx:id="clmnLOC" prefWidth="140.0"
-                                                                             text="Кол-в строк"/>
+                                                                             text="Кол-во строк"/>
                                                             </columns>
                                                             <columnResizePolicy>
                                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

@@ -1,4 +1,4 @@
-package org.ams.repstats.controllers;
+package org.ams.repstats.controllers.stats;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;

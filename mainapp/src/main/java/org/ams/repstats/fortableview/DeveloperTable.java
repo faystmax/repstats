@@ -22,6 +22,8 @@ public class DeveloperTable {
     private SimpleStringProperty role_name;
     private SimpleStringProperty team_name;
 
+    private SimpleStringProperty role_in_project;
+
     private SimpleStringProperty gitname;
     private SimpleStringProperty gitemail;
 
@@ -50,6 +52,23 @@ public class DeveloperTable {
         this.phone = new SimpleStringProperty(phone);
         this.role_name = new SimpleStringProperty(role_name);
         this.team_name = new SimpleStringProperty(team_name);
+    }
+
+    public DeveloperTable(int id, String name, String surname, String middleName,
+                          int id_role, int id_team, int age, String phone, String role_name,
+                          String gitname, String gitemail) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.surname = new SimpleStringProperty(surname);
+        this.middlename = new SimpleStringProperty(middleName);
+        this.id_role = new SimpleIntegerProperty(id_role);
+        this.id_team = new SimpleIntegerProperty(id_team);
+        this.age = new SimpleIntegerProperty(age);
+        this.phone = new SimpleStringProperty(phone);
+        this.role_name = new SimpleStringProperty(role_name);
+
+        this.gitname = new SimpleStringProperty(gitname);
+        this.gitemail = new SimpleStringProperty(gitemail);
     }
 
     public DeveloperTable(int id, String name, String surname, String middleName,

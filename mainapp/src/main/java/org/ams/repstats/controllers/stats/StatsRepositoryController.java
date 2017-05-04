@@ -18,13 +18,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.controllers.CloneRepViewController;
-import org.ams.repstats.controllers.CommitsController;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.fortableview.RepositoryTable;
@@ -412,12 +409,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("view/cloneRepView.fxml"));
-            GridPane rootLayout = loader.load();
+            loader.setLocation(getClass().getClassLoader().getResource("view/stats/cloneRepView.fxml"));
+            AnchorPane rootLayout = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Удалённый репозиторий");
             stage.setScene(new Scene(rootLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
 
             stage.initModality(Modality.APPLICATION_MODAL);
 
@@ -451,13 +448,13 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
 
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getClassLoader().getResource("view/сommitsView.fxml"));
+                loader.setLocation(getClass().getClassLoader().getResource("view/stats/сommitsView.fxml"));
                 AnchorPane rootLayout = loader.load();
 
                 Stage stage = new Stage();
                 stage.setTitle("Коммиты");
                 stage.setScene(new Scene(rootLayout, 480, 370));
-                stage.getIcons().add(new Image("gitIcon.png"));
+                stage.getIcons().add(new Image("icons/gitIcon.png"));
                 stage.initModality(Modality.APPLICATION_MODAL);
 
                 //Инициализируем

@@ -374,8 +374,8 @@ public class DevelopersEditController {
             while (rs.next()) {
                 String team_name = rs.getString(10) == null ? "" : rs.getString(10);
                 data.add(new DeveloperTable(rs.getInt(1),
-                        rs.getString(3),
                         rs.getString(2),
+                        rs.getString(3),
                         rs.getString(4),
                         rs.getInt(5),
                         rs.getInt(6),
@@ -428,6 +428,8 @@ public class DevelopersEditController {
         String newPhone = "...";
         String newRoleName = "";
         String newTeamName = "";
+        String newGitname = "...";
+        String newGitemail = "...";
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewDeveloper);
             preparedStatement.setString(1, newName);
@@ -437,11 +439,13 @@ public class DevelopersEditController {
             preparedStatement.setString(5, null);
             preparedStatement.setInt(6, newAge);
             preparedStatement.setString(7, newPhone);
+            preparedStatement.setString(8, newGitname);
+            preparedStatement.setString(9, newGitemail);
             MysqlConnector.executeUpdate();
             int newId = MysqlConnector.getinsertId();
 
             DeveloperTable elem = new DeveloperTable(newId, newName, newFam, newOtch, id_role,
-                    id_team, newAge, newPhone, newRoleName, newTeamName);
+                    id_team, newAge, newPhone, newRoleName, newTeamName, newGitname, newGitemail);
             developersTable.getItems().add(elem);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -460,8 +464,7 @@ public class DevelopersEditController {
         }
         int selectedIndex = developersTable.getSelectionModel().getSelectedIndex();
         int selectedId = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem()).getId();
-        if (Utils.conformationDialog("Удаление разработчика ", "Вы уверены,что хотите удалить " +
-                "всю информацию о выбранном разработчике?")) {
+        if (Utils.conformationDialog("Удаление разработчика ", "Удалить всю информацию о выбранном разработчике?")) {
             try {
                 PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteDeveloper);
                 preparedStatement.setInt(1, selectedId);
@@ -493,7 +496,7 @@ public class DevelopersEditController {
             Stage stage = new Stage();
             stage.setTitle("Выбор команды для разработчика");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем

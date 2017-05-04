@@ -115,7 +115,7 @@ public class RootController {
             Stage stage = new Stage();
             stage.setTitle("О Программе");
             stage.setScene(new Scene(aboutLayout));
-            stage.getIcons().add(new Image("gitIcon.png"));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
             //Инициализируем и запускаем

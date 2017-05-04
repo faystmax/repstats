@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="307.0" prefWidth="454.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.ams.repstats.controllers.CommitsController">
+            fx:controller="org.ams.repstats.controllers.stats.CommitsController">
     <children>
         <TableView fx:id="tableForCommits" layoutY="31.0" prefHeight="202.0" prefWidth="410.0"
                    AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"

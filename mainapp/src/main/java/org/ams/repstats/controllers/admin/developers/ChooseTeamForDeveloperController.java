@@ -100,7 +100,7 @@ public class ChooseTeamForDeveloperController {
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
+                            changeable.setTechnology(t.getOldValue());
                             // обновляем колонку
                             teamTechnolClmn.setVisible(false);
                             teamTechnolClmn.setVisible(true);
