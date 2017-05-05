@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,7 +136,7 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsTeamView.fxml"));
             AnchorPane statsTeamView = (AnchorPane) loader.load();
 
-
+            Utils.addStyleSheet(rootLayout.getScene());
             // Помещаем итерфейс для редактирования команд в центр корневого макета.
             rootLayout.setCenter(statsTeamView);
         } catch (IOException e) {

@@ -122,6 +122,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     @FXML
     public void initialize() {
+        //Utils.addStyleSheet(repositoryTable.getScene());
         this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
         repositoryTable.setEditable(false);
         configureRepositoryClmn();

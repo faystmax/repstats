@@ -75,9 +75,9 @@
                             <children>
                                 <Button layoutX="431.0" layoutY="261.0" mnemonicParsing="false"
                                         onAction="#delDeveloperFromTeam" text="Удалить участника из команды"/>
-                                <Button layoutX="431.0" layoutY="297.0" mnemonicParsing="false"
-                                        onAction="#addNewDevelopersInTeamButtonAction" prefHeight="25.0"
-                                        prefWidth="187.0" text="Добавить нового участника"/>
+                                <Button layoutX="431.0" layoutY="297.0" maxWidth="1.7976931348623157E308"
+                                        mnemonicParsing="false" onAction="#addNewDevelopersInTeamButtonAction"
+                                        prefHeight="25.0" text="Добавить нового участника"/>
                                 <Button layoutX="431.0" layoutY="334.0" mnemonicParsing="false"
                                         onAction="#developerInTeamAddButtonAction" text="Добавить участника в команду"/>
                             </children>
