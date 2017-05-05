@@ -97,6 +97,7 @@ public class ProjectEditController {
             if (newSelection != null) {
                 int id_proj = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
                 showRepositoryInTable(id_proj);
+                showDeveloperswithProject(id_proj);
             }
         });
     }
@@ -618,7 +619,7 @@ public class ProjectEditController {
         );
 
         // роль в проекте
-        developerRoleINProjectClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("middlename"));
+        developerRoleINProjectClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("role_in_project"));
         developerRoleINProjectClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerRoleINProjectClmn.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
@@ -629,18 +630,18 @@ public class ProjectEditController {
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setMiddlename(t.getOldValue());
+                            changeable.setRole_in_project(t.getOldValue());
                             // обновляем колонку
                             developerRoleINProjectClmn.setVisible(false);
                             developerRoleINProjectClmn.setVisible(true);
                             return;
                         }
                         try {
-                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateMidleNameDeveloper);
+                            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateRoleInProject);
                             preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, changeable.getId());
+                            preparedStatement.setInt(2, changeable.getId_developer_project());
                             int newId = MysqlConnector.executeUpdate();
-                            changeable.setMiddlename(t.getNewValue());
+                            changeable.setRole_in_project(t.getNewValue());
                         } catch (SQLException e) {
                             LOGGER.error((e.getMessage()));
                             Utils.showError("Ошибка Изминения", "Невозможно изменить выбранную запись!",
@@ -667,6 +668,36 @@ public class ProjectEditController {
                 roles.put(rs.getInt(1), rs.getString(2));
             }
             MysqlConnector.closeStmt();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Заполняем таблицу со всеми разработчиками
+     */
+    private void showDeveloperswithProject(int id_proj) {
+        // Извлекаем данные из базы
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersInPoject);
+            preparedStatement.setInt(1, id_proj);
+            ResultSet rs = MysqlConnector.executeQuery();
+
+            ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
+            while (rs.next()) {
+                data.add(new DeveloperTable(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getInt(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getString(9)));
+            }
+            MysqlConnector.closeStmt();
+
+            developersTable.setItems(data);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -899,7 +930,7 @@ public class ProjectEditController {
 
             MysqlConnector.executeUpdate();
 
-            //showDevelopersInTeam(id_team);
+            showDeveloperswithProject(id_project);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -969,13 +1000,21 @@ public class ProjectEditController {
      * @param event
      */
     public void undoDeveloperFromProject(ActionEvent event) {
-    }
+        if (developersTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка добавления", "Сначала выберите разработчика!");
+            return;
+        }
+        int id_developer_project = ((DeveloperTable) (developersTable.getSelectionModel().getSelectedItem())).getId_developer_project();
+        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteDeveloperProject);
+            preparedStatement.setInt(1, id_developer_project);
+            MysqlConnector.execute();
+            MysqlConnector.closeStmt();
 
-    /**
-     * Окно "Прикрепления разработчика к проекту"
-     *
-     * @param event
-     */
-    public void connectDeveloperButtonAction(ActionEvent event) {
+            showDeveloperswithProject(id_project);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 }

@@ -315,8 +315,8 @@ public class ProjectConnectWithDeveloperController {
             ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
             while (rs.next()) {
                 data.add(new DeveloperTable(rs.getInt(1),
-                        rs.getString(3),
                         rs.getString(2),
+                        rs.getString(3),
                         rs.getString(4),
                         rs.getInt(5),
                         rs.getInt(6),

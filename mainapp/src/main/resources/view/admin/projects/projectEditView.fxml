@@ -44,9 +44,6 @@
                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                                         onAction="#projectConnectWithTeamWindowButtonAction"
                                         text="Прикрепить к команде"/>
-                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                        onAction="#developerConnectWithProjecButtonAction"
-                                        text="Прикрепить к разработчику"/>
                             </children>
                         </VBox>
                         <Label alignment="CENTER" layoutX="10.0" layoutY="14.0" prefHeight="19.0" prefWidth="661.0"
@@ -64,7 +61,7 @@
                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                  AnchorPane.topAnchor="0.0">
                             <tabs>
-                                <Tab text="Репозитории Проекта">
+                                <Tab closable="false" text="Репозитории Проекта">
                                     <content>
                                         <AnchorPane>
                                             <children>
@@ -112,7 +109,7 @@
                                         </AnchorPane>
                                     </content>
                                 </Tab>
-                                <Tab text="Разработчики проекта">
+                                <Tab closable="false" text="Разработчики проекта">
                                     <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                             <children>
@@ -149,7 +146,7 @@
                                                         <Button layoutX="431.0" layoutY="297.0"
                                                                 maxWidth="1.7976931348623157E308"
                                                                 mnemonicParsing="false"
-                                                                onAction="#connectDeveloperButtonAction"
+                                                                onAction="#developerConnectWithProjecButtonAction"
                                                                 text="Прикрепить сущ. разработчика"/>
                                                     </children>
                                                 </VBox>

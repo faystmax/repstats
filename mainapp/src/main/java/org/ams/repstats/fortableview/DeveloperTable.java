@@ -22,6 +22,7 @@ public class DeveloperTable {
     private SimpleStringProperty role_name;
     private SimpleStringProperty team_name;
 
+    private SimpleIntegerProperty id_developer_project;
     private SimpleStringProperty role_in_project;
 
     private SimpleStringProperty gitname;
@@ -38,6 +39,20 @@ public class DeveloperTable {
         this.age = new SimpleIntegerProperty(age);
         this.phone = new SimpleStringProperty(phone);
         this.role_name = new SimpleStringProperty(role_name);
+    }
+
+    public DeveloperTable(int id, String name, String surname, String middleName,
+                          int id_role, int age, String role_name, int id_developer_project, String role_in_project) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.surname = new SimpleStringProperty(surname);
+        this.middlename = new SimpleStringProperty(middleName);
+        this.id_role = new SimpleIntegerProperty(id_role);
+        this.age = new SimpleIntegerProperty(age);
+        this.role_name = new SimpleStringProperty(role_name);
+
+        this.id_developer_project = new SimpleIntegerProperty(id_developer_project);
+        this.role_in_project = new SimpleStringProperty(role_in_project);
     }
 
     public DeveloperTable(int id, String name, String surname, String middleName,
@@ -231,5 +246,29 @@ public class DeveloperTable {
 
     public void setGitemail(String gitemail) {
         this.gitemail.set(gitemail);
+    }
+
+    public String getRole_in_project() {
+        return role_in_project.get();
+    }
+
+    public SimpleStringProperty role_in_projectProperty() {
+        return role_in_project;
+    }
+
+    public void setRole_in_project(String role_in_project) {
+        this.role_in_project.set(role_in_project);
+    }
+
+    public int getId_developer_project() {
+        return id_developer_project.get();
+    }
+
+    public SimpleIntegerProperty id_developer_projectProperty() {
+        return id_developer_project;
+    }
+
+    public void setId_developer_project(int id_developer_project) {
+        this.id_developer_project.set(id_developer_project);
     }
 }

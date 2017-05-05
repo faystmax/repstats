@@ -56,7 +56,6 @@ public class ProjectConnectWithTeamController {
      */
     private void showAllTeams() {
 
-        // region << Инициализируем колонки таблицы
         // Имя
         teamNameClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("name"));
         teamNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());

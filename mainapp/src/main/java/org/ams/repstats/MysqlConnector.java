@@ -44,6 +44,10 @@ public class MysqlConnector {
     public static final String selectAllDevelopersWithTeamName = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name," +
             "(SELECT team.name from team WHERE team.id=developer.id_team),gitname,gitemail from developer,role " +
             "where  role.id=developer.id_role";
+    public static final String selectAllDevelopersInPoject = "select developer.id,developer.name,surname,middlename,id_role,age,role.name,developer_project.id,developer_project.role_in_the_project" +
+            " from developer" +
+            " inner JOIN role on role.id=developer.id_role " +
+            " inner JOIN developer_project on developer_project.id_developer=developer.id && developer_project.id_project=?";
 
     public static final String insertNewDeveloper = "insert into developer (name,surname,middlename,id_role,id_team,age,phone,gitname,gitemail) " +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -57,6 +61,7 @@ public class MysqlConnector {
     public static final String updateRoleDeveloper = "update developer set id_role = ? WHERE id = ?";
     public static final String updateGitName = "update developer set gitname = ? WHERE id = ?";
     public static final String updateGitEmail = "update developer set gitemail = ? WHERE id = ?";
+    public static final String updateRoleInProject = "update developer_project set role_in_the_project = ? WHERE id = ?";
 
     public static final String selectAllRoles = "select id,name from role";
     public static final String selectAllDevelopersWithNull = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name from developer" +
@@ -102,6 +107,8 @@ public class MysqlConnector {
     // TODO role_in_the_project
     public static final String insertNewDeveloperProject = "insert into developer_project (id_developer,id_project,role_in_the_project)" +
             "values (?, ?, ?)";
+
+    public static final String deleteDeveloperProject = "delete from developer_project WHERE id = ?";
 
     /**
      * Инициализирует соединение с БД
