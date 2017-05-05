@@ -287,9 +287,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showMainInf();
                     showAvtors();
                     showAllFiles();
+                    closeRepository();
                 });
 
-                closeRepository();
+
 
                 return true;
             }
@@ -330,6 +331,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             git.getRepository().close();
             projectDir = dir;
         }
+        Platform.runLater(() -> {
+            projectDir = dir;
+        });
     }
 
     @Override
