@@ -458,7 +458,7 @@ public class TeamEditController {
             preparedStatement.setString(2, newTecnology);
             MysqlConnector.executeUpdate();
 
-            int newId = MysqlConnector.getinsertId();
+            int newId = MysqlConnector.getInsertId();
             TeamTable elem = new TeamTable(newId, "Новая команда", "...");
             teamTable.getItems().add(elem);
         } catch (SQLException e) {
@@ -542,7 +542,7 @@ public class TeamEditController {
             preparedStatement.setString(8, newGitname);
             preparedStatement.setString(9, newGitemail);
             MysqlConnector.executeUpdate();
-            int newId = MysqlConnector.getinsertId();
+            int newId = MysqlConnector.getInsertId();
 
             DeveloperTable elem = new DeveloperTable(newId, newName, newFam, newOtch, id_role,
                     id_team, newAge, newPhone, newRoleName, newGitname, newGitemail);

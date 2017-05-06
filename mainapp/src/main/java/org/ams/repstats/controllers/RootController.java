@@ -8,7 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class RootController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class); ///< ссылка на логер
 
     private Stage primaryStage;                                                         ///< Главный каркас
-    private BorderPane rootLayout;                                                      ///< Layout
+    public static BorderPane rootLayout;                                                      ///< Layout
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -46,7 +45,7 @@ public class RootController {
             AnchorPane adminTeamView = (AnchorPane) loader.load();
 
 
-            // Помещаем итерфейс для редактирования команд в центр корневого макета.
+            // Помещаем итерфейс  в центр корневого макета.
             rootLayout.setCenter(adminTeamView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -63,7 +62,7 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/developers/developersEditView.fxml"));
             AnchorPane adminDevelopersView = (AnchorPane) loader.load();
 
-            // Помещаем итерфейс для редактирования разработчиков в центр корневого макета.
+            // Помещаем итерфейс  в центр корневого макета.
             rootLayout.setCenter(adminDevelopersView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -80,7 +79,7 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/projects/projectEditView.fxml"));
             AnchorPane adminProjectsView = (AnchorPane) loader.load();
 
-            // Помещаем итерфейс для редактирования пректов в центр корневого макета.
+            // Помещаем итерфейс  в центр корневого макета.
             rootLayout.setCenter(adminProjectsView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -97,7 +96,7 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/repository/repositoryEditView.fxml"));
             AnchorPane adminRepositoryView = (AnchorPane) loader.load();
 
-            // Помещаем итерфейс для редактирования репозиториев в центр корневого макета.
+            // Помещаем итерфейс в центр корневого макета.
             rootLayout.setCenter(adminRepositoryView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -136,8 +135,8 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsTeamView.fxml"));
             AnchorPane statsTeamView = (AnchorPane) loader.load();
 
-            Utils.addStyleSheet(rootLayout.getScene());
-            // Помещаем итерфейс для редактирования команд в центр корневого макета.
+
+            // Помещаем итерфейс  в центр корневого макета.
             rootLayout.setCenter(statsTeamView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -155,7 +154,7 @@ public class RootController {
             AnchorPane statsDeveloperView = (AnchorPane) loader.load();
 
 
-            // Помещаем итерфейс для редактирования команд в центр корневого макета.
+            // Помещаем итерфейс в центр корневого макета.
             rootLayout.setCenter(statsDeveloperView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -173,7 +172,7 @@ public class RootController {
             AnchorPane statsProjectView = (AnchorPane) loader.load();
 
 
-            // Помещаем итерфейс для редактирования команд в центр корневого макета.
+            // Помещаем итерфейс  в центр корневого макета.
             rootLayout.setCenter(statsProjectView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -191,7 +190,7 @@ public class RootController {
             AnchorPane statsRepositoryView = (AnchorPane) loader.load();
 
 
-            // Помещаем итерфейс для редактирования команд в центр корневого макета.
+            // Помещаем итерфейс в центр корневого макета.
             rootLayout.setCenter(statsRepositoryView);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -208,9 +207,15 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource("view/settingsView.fxml"));
             AnchorPane statsRepositoryView = (AnchorPane) loader.load();
 
+            //Создаём новую сцену
+            Stage stage = new Stage();
+            stage.setTitle("Настройки");
+            stage.setScene(new Scene(statsRepositoryView));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
+            stage.initModality(Modality.APPLICATION_MODAL);
 
-            // Помещаем интерфейс  в центр корневого макета.
-            rootLayout.setCenter(statsRepositoryView);
+            //Инициализируем и запускаем
+            stage.showAndWait();
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }

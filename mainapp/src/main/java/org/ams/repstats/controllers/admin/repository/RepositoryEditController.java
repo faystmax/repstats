@@ -237,7 +237,7 @@ public class RepositoryEditController {
             preparedStatement.setDate(4, startdateOfCreation);
 
             MysqlConnector.executeUpdate();
-            int newIdRepository = MysqlConnector.getinsertId();
+            int newIdRepository = MysqlConnector.getInsertId();
 
             RepositoryTable elem = new RepositoryTable(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
                     FIODeveloperResponsible, description, -1);

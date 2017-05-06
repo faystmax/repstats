@@ -12,6 +12,7 @@ import javafx.stage.Stage;
  * Time: 16:58
  */
 public class AboutController {
+
     @FXML
     private Button btExit;
 

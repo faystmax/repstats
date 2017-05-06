@@ -1,4 +1,11 @@
 .root{
-    -fx-base: #53C3FF;
-    -fx-background: #95DAFF;
+    -fx-base: #7E8181;
+    -fx-background: #4F5050;
+    -fx-text-fill: white;
+}
+.button {
+    -fx-text-fill: white;
+}
+.tab-label {
+    -fx-text-fill: white;
 }

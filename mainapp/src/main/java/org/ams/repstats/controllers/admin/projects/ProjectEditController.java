@@ -719,7 +719,7 @@ public class ProjectEditController {
             preparedStatement.setInt(4, newPrior);
             MysqlConnector.executeUpdate();
 
-            int newId = MysqlConnector.getinsertId();
+            int newId = MysqlConnector.getInsertId();
             ProjectTable elem = new ProjectTable(newId, newName, startDate, deadline, newPrior);
             projectsTable.getItems().add(elem);
         } catch (SQLException e) {
@@ -795,7 +795,7 @@ public class ProjectEditController {
             preparedStatement.setNull(3, java.sql.Types.INTEGER);
             preparedStatement.setDate(4, startdateOfCreation);
             MysqlConnector.executeUpdate();
-            int newIdRepository = MysqlConnector.getinsertId();
+            int newIdRepository = MysqlConnector.getInsertId();
 
             //добавляем связь в промежуточную таблицу
             preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewProjectRepository);
@@ -803,7 +803,7 @@ public class ProjectEditController {
             preparedStatement.setInt(2, id_project);
             preparedStatement.setString(3, description);
             MysqlConnector.executeUpdate();
-            int newIdProjectRepository = MysqlConnector.getinsertId();
+            int newIdProjectRepository = MysqlConnector.getInsertId();
 
             RepositoryTable elem = new RepositoryTable(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
                     FIODeveloperResponsible, description, newIdProjectRepository);

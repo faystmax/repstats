@@ -1,5 +1,6 @@
 package org.ams.repstats;
 
+import org.ams.repstats.utils.MyProperties;
 import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class MysqlConnector {
     private static PreparedStatement myStmt = null;
     private static ResultSet myRs = null;
 
-    // Подготовленные запросы
+    //region <<< Подготовленные запросы
     public static final String selectAllTeams = "select id,name,technology from team";
     public static final String insertNewTeam = "insert into team (name, technology) values (?, ?)";
     public static final String deleteTeam = "delete from team where id = ?";
@@ -110,6 +111,9 @@ public class MysqlConnector {
 
     public static final String deleteDeveloperProject = "delete from developer_project WHERE id = ?";
 
+    //endregion
+
+
     /**
      * Инициализирует соединение с БД
      *
@@ -121,7 +125,9 @@ public class MysqlConnector {
                 Class.forName(driverName);
 
                 // Get a connection to database
-                myConn = DriverManager.getConnection(url, user, password);
+                myConn = DriverManager.getConnection(MyProperties.givePropValue("database"),
+                        MyProperties.givePropValue("dbuser"),
+                        MyProperties.givePropValue("dbpassword"));
 
             } catch (ClassNotFoundException ex) {
                 LOGGER.error("Driver not found.");
@@ -187,7 +193,7 @@ public class MysqlConnector {
      * @return - сгенерированный id
      * @throws SQLException - ошибка запроса
      */
-    public static int getinsertId() throws SQLException {
+    public static int getInsertId() throws SQLException {
         try (ResultSet generatedKeys = myStmt.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 return (int) generatedKeys.getLong(1);
@@ -204,11 +210,12 @@ public class MysqlConnector {
      * @throws SQLException - ошибка запроса
      */
     public static boolean execute() throws SQLException {
-        boolean rez = myStmt.execute();
-        return rez;
+        return myStmt.execute();
     }
 
-
+    /**
+     * Закрываем stmt
+     */
     public static void closeStmt() {
         try {
             if (myStmt != null) {

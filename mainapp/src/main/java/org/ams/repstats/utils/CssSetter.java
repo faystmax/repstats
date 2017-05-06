@@ -1,6 +1,7 @@
 package org.ams.repstats.utils;
 
-import javafx.scene.Scene;
+import com.sun.javafx.css.StyleManager;
+import javafx.application.Application;
 
 /**
  * Created with IntelliJ IDEA
@@ -18,26 +19,45 @@ public class CssSetter {
     public static String blackStyleSheet = "black.css";
     public static String blueStyleSheet = "blue.css";
     public static String greenStyleSheet = "green.css";
+    public static String pinkStyleSheet = "pink.css";
 
-
-    public static void addStyleSheet(Scene scene) {
-        scene.getStylesheets().add("styles/" + CssSetter.currentStyleSheet);
+    public static void refreshStyleSheet() {
+        Application.setUserAgentStylesheet(null);
+        StyleManager.getInstance().addUserAgentStylesheet("styles/" + CssSetter.currentStyleSheet);
     }
 
     public static void setDefaultStyleSheet() {
         currentStyleSheet = defaultStyleSheet;
+        refreshStyleSheet();
     }
 
     public static void setBlackStyleSheet() {
         currentStyleSheet = blackStyleSheet;
+        refreshStyleSheet();
+
     }
 
     public static void setBlueStyleSheet() {
         currentStyleSheet = blueStyleSheet;
+        refreshStyleSheet();
     }
 
     public static void setGreenStyleSheet() {
         currentStyleSheet = greenStyleSheet;
+        refreshStyleSheet();
     }
 
+    public static void setPinkStyleSheet() {
+        currentStyleSheet = pinkStyleSheet;
+        refreshStyleSheet();
+    }
+
+    public static String getCurrentStyleSheet() {
+        return currentStyleSheet;
+    }
+
+    public static void setCurrentStyleSheet(String currentStyleSheet) {
+        CssSetter.currentStyleSheet = currentStyleSheet;
+        refreshStyleSheet();
+    }
 }

@@ -442,7 +442,7 @@ public class DevelopersEditController {
             preparedStatement.setString(8, newGitname);
             preparedStatement.setString(9, newGitemail);
             MysqlConnector.executeUpdate();
-            int newId = MysqlConnector.getinsertId();
+            int newId = MysqlConnector.getInsertId();
 
             DeveloperTable elem = new DeveloperTable(newId, newName, newFam, newOtch, id_role,
                     id_team, newAge, newPhone, newRoleName, newTeamName, newGitname, newGitemail);
