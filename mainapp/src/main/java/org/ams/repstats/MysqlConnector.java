@@ -18,10 +18,7 @@ public class MysqlConnector {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnector.class); ///< ссылка на логер
 
-    // JDBC URL, username and password of MySQL server
-    private static final String url = "jdbc:mysql://localhost:3306/gitstats?characterEncoding=UTF-8";
-    private static final String user = "root";
-    private static final String password = "";
+    // JDBC Driver
     private static final String driverName = "com.mysql.jdbc.Driver";
 
     // JDBC variables for opening and managing connection

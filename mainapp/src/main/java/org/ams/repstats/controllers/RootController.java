@@ -24,7 +24,7 @@ public class RootController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class); ///< ссылка на логер
 
     private Stage primaryStage;                                                         ///< Главный каркас
-    public static BorderPane rootLayout;                                                      ///< Layout
+    public static BorderPane rootLayout;                                                ///< Layout
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -35,13 +35,15 @@ public class RootController {
     }
 
     /**
-     * Администрирование -> Команда
+     * Основной шаблон
+     *
+     * @param fxmlfile
      */
-    public void showAdminTeam() {
+    public void setCenterFxml(String fxmlfile) {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/teams/teamEditView.fxml"));
+            loader.setLocation(this.getClass().getClassLoader().getResource(fxmlfile));
             AnchorPane adminTeamView = (AnchorPane) loader.load();
 
 
@@ -53,54 +55,59 @@ public class RootController {
     }
 
     /**
+     * Администрирование -> Команда
+     */
+    public void showAdminTeam() {
+        setCenterFxml("view/admin/teams/teamEditView.fxml");
+    }
+
+    /**
      * Администрирование -> Разработчики
      */
     public void showAdminDevelopers() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/developers/developersEditView.fxml"));
-            AnchorPane adminDevelopersView = (AnchorPane) loader.load();
-
-            // Помещаем итерфейс  в центр корневого макета.
-            rootLayout.setCenter(adminDevelopersView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
+        setCenterFxml("view/admin/developers/developersEditView.fxml");
     }
 
     /**
      * Администрирование -> Проекты
      */
     public void showAdminProjects() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/projects/projectEditView.fxml"));
-            AnchorPane adminProjectsView = (AnchorPane) loader.load();
-
-            // Помещаем итерфейс  в центр корневого макета.
-            rootLayout.setCenter(adminProjectsView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
+        setCenterFxml("view/admin/projects/projectEditView.fxml");
     }
 
     /**
      * Администрирование -> Репозитории
      */
     public void showAdminRepository() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/admin/repository/repositoryEditView.fxml"));
-            AnchorPane adminRepositoryView = (AnchorPane) loader.load();
+        setCenterFxml("view/admin/repository/repositoryEditView.fxml");
+    }
 
-            // Помещаем итерфейс в центр корневого макета.
-            rootLayout.setCenter(adminRepositoryView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
+    /**
+     * Статистика -> Команда
+     */
+    public void showStatsTeam() {
+        setCenterFxml("view/stats/statsTeamView.fxml");
+    }
+
+    /**
+     * Статистика -> Разработчика
+     */
+    public void showStatsDeveloper() {
+        setCenterFxml("view/stats/statsDeveloperView.fxml");
+    }
+
+    /**
+     * Статистика -> по проекту
+     */
+    public void showStatsProject() {
+        setCenterFxml("view/stats/statsProjectView.fxml");
+    }
+
+    /**
+     * Статистика -> Репозитория
+     */
+    public void showStatsRepository() {
+        setCenterFxml("view/stats/statsRepositoryView.fxml");
     }
 
     /**
@@ -125,77 +132,6 @@ public class RootController {
         }
     }
 
-    /**
-     * Статистика -> Команда
-     */
-    public void showStatsTeam() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsTeamView.fxml"));
-            AnchorPane statsTeamView = (AnchorPane) loader.load();
-
-
-            // Помещаем итерфейс  в центр корневого макета.
-            rootLayout.setCenter(statsTeamView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
-     * Статистика -> Разработчика
-     */
-    public void showStatsDeveloper() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsDeveloperView.fxml"));
-            AnchorPane statsDeveloperView = (AnchorPane) loader.load();
-
-
-            // Помещаем итерфейс в центр корневого макета.
-            rootLayout.setCenter(statsDeveloperView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
-     * Статистика -> по проекту
-     */
-    public void showStatsProject() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsProjectView.fxml"));
-            AnchorPane statsProjectView = (AnchorPane) loader.load();
-
-
-            // Помещаем итерфейс  в центр корневого макета.
-            rootLayout.setCenter(statsProjectView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    /**
-     * Статистика -> Репозитория
-     */
-    public void showStatsRepository() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getClassLoader().getResource("view/stats/statsRepositoryView.fxml"));
-            AnchorPane statsRepositoryView = (AnchorPane) loader.load();
-
-
-            // Помещаем итерфейс в центр корневого макета.
-            rootLayout.setCenter(statsRepositoryView);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
 
     /**
      * Файл -> Настройки
