@@ -18,6 +18,9 @@ public class MyProperties {
     private static OutputStream output = null;
     private static InputStream input = null;
 
+    /**
+     * Загружаем свойства из конфига
+     */
     public static void loadProperties() {
         try {
             input = new FileInputStream("config.properties");
@@ -49,6 +52,9 @@ public class MyProperties {
         }
     }
 
+    /**
+     * Пишем свойства в конфиг
+     */
     public static void writeProperties() {
         try {
 

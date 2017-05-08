@@ -5,12 +5,14 @@ import com.oneandone.sales.svnstats.connectors.Repository;
 import com.oneandone.sales.svnstats.connectors.svnkit.SvnRepository;
 import com.oneandone.sales.svnstats.model.Revision;
 import com.selesse.gitwrapper.myobjects.Author;
+import com.selesse.gitwrapper.myobjects.Branch;
 import com.selesse.gitwrapper.myobjects.Commit;
+import org.ams.repstats.graph.DiffChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.table.TableModel;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import java.util.List;
  * Time: 19:57
  */
 public class SvnUInterface implements UInterface {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SvnUInterface.class);
 
     private String svnPath = null;
@@ -64,7 +67,7 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
-    public BufferedImage getChart() {
+    public DiffChart getChart() {
         return null;
     }
 
@@ -105,6 +108,27 @@ public class SvnUInterface implements UInterface {
 
     @Override
     public String getRemoteName() {
+        return null;
+    }
+
+    @Override
+    public long getTotalNumberOfLines() {
+        return 0;
+    }
+
+
+    @Override
+    public ArrayList<Branch> getListCurBranches() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Branch> getListMergedBranches() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getCommitsByMonths() {
         return null;
     }
 }

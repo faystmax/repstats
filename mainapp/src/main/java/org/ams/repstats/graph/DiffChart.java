@@ -54,4 +54,29 @@ public class DiffChart {
         }
         return data;
     }
+
+    public List<CommitDiff> getCommitDiffList() {
+        return commitDiffList;
+    }
+
+    public JFreeChart getJFreeChart() {
+        CategoryDataset dataset = getDataSet();
+
+        JFreeChart chart = ChartFactory.createStackedBarChart(
+                "Изминения",
+                "Файл",
+                "Строк изменено",
+                dataset,
+                PlotOrientation.HORIZONTAL,
+                true,
+                false,
+                false
+        );
+        final CategoryPlot plot = chart.getCategoryPlot();
+        ((BarRenderer) plot.getRenderer()).setBarPainter(new StandardBarPainter());
+        plot.getRenderer().setSeriesPaint(0, Color.RED);
+        plot.getRenderer().setSeriesPaint(1, Color.GREEN);
+
+        return chart;
+    }
 }

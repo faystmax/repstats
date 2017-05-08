@@ -4,7 +4,6 @@ import com.selesse.gitwrapper.myobjects.Author;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -29,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.table.TableModel;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -164,10 +161,10 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
     // TODO  в будущем
     public void showChartOnImageView() {
-        BufferedImage img = getuInterface().getChart();
+       /* BufferedImage img = getuInterface().getChart();
         WritableImage wimg = new WritableImage(img.getWidth(), img.getHeight());
         SwingFXUtils.toFXImage(img, wimg);
-        imageView.setImage(wimg);
+        imageView.setImage(wimg);*/
     }
 
     /**
@@ -227,6 +224,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
      * Кнопка начала анализа команд
      */
     public void startProjectAnylyze() {
+
 
         projectDir = new File(tbProject.getText());
         if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {

@@ -25,6 +25,7 @@ public class Branch {
 
     private Repository repository;      ///< Ссылка на репозиторий
     private String name;                ///< Имя ветки
+    private String id;                  ///< id ветки
     private List<Commit> revCommitList; ///< Все коммиты этой ветки
 
     /**
@@ -38,6 +39,19 @@ public class Branch {
     Branch(Repository repository, String name) {
         this.repository = repository;
         this.name = name;
+    }
+
+    /**
+     * Анадогично верхнему, но вместе с id
+     *
+     * @param repository ссылка на репозиторий.
+     * @param name       имя ветки.
+     * @param id         id ветки.
+     */
+    public Branch(Repository repository, String name, String id) {
+        this.repository = repository;
+        this.name = name;
+        this.id = id;
     }
 
     /**
@@ -99,5 +113,14 @@ public class Branch {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Возвращает id ветки.
+     *
+     * @return id ветки.
+     */
+    public String getId() {
+        return id;
     }
 }

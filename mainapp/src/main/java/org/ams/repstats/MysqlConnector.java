@@ -76,6 +76,8 @@ public class MysqlConnector {
     public static final String selectAllProject = "select id,name,start,deadline,priority from project";
     public static final String insertNewProject = "insert into project (name, start, deadline, priority) values (?, ?, ?, ?)";
     public static final String deleteProject = "delete from project where id = ?";
+    public static final String selectAllDevelopersProjects = "select project.id,project.name,start,deadline,priority from project " +
+            "    inner JOIN developer_project on developer_project.id_developer=? && developer_project.id_project=project.id";
 
     // repository
     public static final String updateNameRepository = "update repository set name = ? WHERE id = ?";
@@ -107,6 +109,8 @@ public class MysqlConnector {
             "values (?, ?, ?)";
 
     public static final String deleteDeveloperProject = "delete from developer_project WHERE id = ?";
+
+    public static final String selectDeveloperFIO = "select concat(surname,\" \",name,\" \",middlename) from developer WHERE  gitemail = ?";
 
     //endregion
 

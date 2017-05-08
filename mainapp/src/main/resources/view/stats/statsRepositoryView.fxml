@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -42,8 +45,8 @@
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="77.0">
                                     <children>
-                                        <TableView fx:id="repositoryTable" prefHeight="366.0" prefWidth="248.0"
-                                                   AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0"
+                                        <TableView fx:id="repositoryTable" prefHeight="387.0" prefWidth="248.0"
+                                                   AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="0.0"
                                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
@@ -61,8 +64,8 @@
                                         </TableView>
                                         <Button fx:id="btRepositoryAnalyze" mnemonicParsing="false"
                                                 onAction="#startRepositoryAnalyze" prefHeight="25.0" prefWidth="98.0"
-                                                text="Запуск" AnchorPane.bottomAnchor="10.0"
-                                                AnchorPane.rightAnchor="10.0"/>
+                                                text="Запуск" AnchorPane.bottomAnchor="14.0"
+                                                AnchorPane.rightAnchor="14.0"/>
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -80,8 +83,8 @@
                                                                        contentDisplay="CENTER" layoutX="228.0"
                                                                        layoutY="14.0" prefHeight="50.0"
                                                                        prefWidth="167.0" text="-" textAlignment="CENTER"
-                                                                       AnchorPane.leftAnchor="240.0"
-                                                                       AnchorPane.rightAnchor="240.0"
+                                                                       AnchorPane.leftAnchor="0.0"
+                                                                       AnchorPane.rightAnchor="0.0"
                                                                        AnchorPane.topAnchor="14.0">
                                                                     <font>
                                                                         <Font name="Arial Bold Italic" size="24.0"/>
@@ -181,7 +184,7 @@
                                                                         <Label fx:id="lbKolCommit"
                                                                                maxHeight="1.7976931348623157E308"
                                                                                maxWidth="1.7976931348623157E308"
-                                                                               text="Всего коммитов:"
+                                                                               text="Всего кол-во коммитов:"
                                                                                GridPane.hgrow="ALWAYS"
                                                                                GridPane.rowIndex="2"
                                                                                GridPane.vgrow="ALWAYS">
@@ -189,9 +192,11 @@
                                                                                 <Font name="Arial Italic" size="14.0"/>
                                                                             </font>
                                                                         </Label>
-                                                                        <Label fx:id="lbKolCommit1"
+                                                                        <Label fx:id="lbKolStrokCur"
                                                                                maxHeight="1.7976931348623157E308"
                                                                                maxWidth="1.7976931348623157E308"
+                                                                               prefHeight="63.0" prefWidth="157.0"
+                                                                               text="-" GridPane.columnIndex="1"
                                                                                GridPane.hgrow="ALWAYS"
                                                                                GridPane.rowIndex="3"
                                                                                GridPane.vgrow="ALWAYS">
@@ -199,14 +204,11 @@
                                                                                 <Font name="Arial Italic" size="14.0"/>
                                                                             </font>
                                                                         </Label>
-                                                                        <Label fx:id="lbRemoteName"
+                                                                        <Label fx:id="lbKolStrok"
                                                                                maxHeight="1.7976931348623157E308"
                                                                                maxWidth="1.7976931348623157E308"
-                                                                               prefHeight="63.0" prefWidth="157.0"
-                                                                               GridPane.columnIndex="1"
-                                                                               GridPane.hgrow="ALWAYS"
-                                                                               GridPane.rowIndex="3"
-                                                                               GridPane.vgrow="ALWAYS">
+                                                                               text="Всего строк:"
+                                                                               GridPane.rowIndex="3">
                                                                             <font>
                                                                                 <Font name="Arial Italic" size="14.0"/>
                                                                             </font>
@@ -224,22 +226,23 @@
                                                                 <TableView fx:id="avtorTable" layoutX="3.0"
                                                                            layoutY="82.0" prefHeight="367.0"
                                                                            prefWidth="642.0"
-                                                                           AnchorPane.bottomAnchor="44.0"
+                                                                           AnchorPane.bottomAnchor="53.0"
                                                                            AnchorPane.leftAnchor="0.0"
                                                                            AnchorPane.rightAnchor="0.0"
                                                                            AnchorPane.topAnchor="0.0">
                                                                     <columns>
+                                                                        <TableColumn fx:id="clmnAvtorFIO"
+                                                                                     prefWidth="75.0" text="ФИО"/>
                                                                         <TableColumn fx:id="clmnAvtorName"
                                                                                      prefWidth="100.0"
                                                                                      text="Имя Автора"/>
                                                                         <TableColumn fx:id="clmnAvtorEmail"
                                                                                      prefWidth="75.0" text="Email"/>
                                                                         <TableColumn fx:id="clmnCommitCount"
-                                                                                     prefWidth="123.0"
-                                                                                     text="Кол-во коммитов"/>
+                                                                                     prefWidth="123.0" text="Коммитов"/>
                                                                         <TableColumn fx:id="clmnLinesAdd"
                                                                                      prefWidth="133.0"
-                                                                                     text="Строк добавлено"/>
+                                                                                     text="Строк доб-но"/>
                                                                         <TableColumn fx:id="clmnLinesDelete"
                                                                                      prefWidth="101.0"
                                                                                      text="Строк удалено"/>
@@ -278,6 +281,98 @@
                                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                                             </columnResizePolicy>
                                                         </TableView>
+                                                    </content>
+                                                </Tab>
+                                                <Tab text="Все ветки репозитория">
+                                                    <content>
+                                                        <SplitPane dividerPositions="0.45742092457420924"
+                                                                   orientation="VERTICAL" prefHeight="200.0"
+                                                                   prefWidth="160.0">
+                                                            <items>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="100.0" prefWidth="160.0">
+                                                                    <children>
+                                                                        <TableView fx:id="tableTecBranches"
+                                                                                   prefHeight="205.0" prefWidth="642.0"
+                                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                                   AnchorPane.leftAnchor="0.0"
+                                                                                   AnchorPane.rightAnchor="0.0"
+                                                                                   AnchorPane.topAnchor="0.0">
+                                                                            <columns>
+                                                                                <TableColumn prefWidth="75.0"
+                                                                                             text="Текущие ветки">
+                                                                                    <columns>
+                                                                                        <TableColumn fx:id="clmnTecName"
+                                                                                                     prefWidth="75.0"
+                                                                                                     text="Название"/>
+                                                                                        <TableColumn fx:id="clmnTecId"
+                                                                                                     prefWidth="75.0"
+                                                                                                     text="id"/>
+                                                                                    </columns>
+                                                                                </TableColumn>
+                                                                            </columns>
+                                                                            <columnResizePolicy>
+                                                                                <TableView
+                                                                                        fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                                            </columnResizePolicy>
+                                                                        </TableView>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="100.0" prefWidth="160.0">
+                                                                    <children>
+                                                                        <TableView fx:id="tableMergedBranches"
+                                                                                   prefHeight="212.0" prefWidth="200.0"
+                                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                                   AnchorPane.leftAnchor="0.0"
+                                                                                   AnchorPane.rightAnchor="0.0"
+                                                                                   AnchorPane.topAnchor="0.0">
+                                                                            <columnResizePolicy>
+                                                                                <TableView
+                                                                                        fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                                            </columnResizePolicy>
+                                                                            <columns>
+                                                                                <TableColumn prefWidth="75.0"
+                                                                                             text="Ветки включённые в основную">
+                                                                                    <columns>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnMergedName"
+                                                                                                prefWidth="75.0"
+                                                                                                text="Название"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnMergedId"
+                                                                                                prefWidth="75.0"
+                                                                                                text="id"/>
+                                                                                    </columns>
+                                                                                </TableColumn>
+                                                                            </columns>
+                                                                        </TableView>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                            </items>
+                                                        </SplitPane>
+                                                    </content>
+                                                </Tab>
+                                                <Tab text="Графики активности">
+                                                    <content>
+                                                        <AnchorPane>
+                                                            <children>
+                                                                <LineChart fx:id="commitsChart" prefHeight="166.0"
+                                                                           prefWidth="642.0" title="Коммиты по месяцам"
+                                                                           AnchorPane.bottomAnchor="0.0"
+                                                                           AnchorPane.leftAnchor="0.0"
+                                                                           AnchorPane.rightAnchor="0.0"
+                                                                           AnchorPane.topAnchor="0.0">
+                                                                    <xAxis>
+                                                                        <CategoryAxis prefHeight="13.0"
+                                                                                      prefWidth="576.0" side="BOTTOM"/>
+                                                                    </xAxis>
+                                                                    <yAxis>
+                                                                        <NumberAxis side="LEFT"/>
+                                                                    </yAxis>
+                                                                </LineChart>
+                                                            </children>
+                                                        </AnchorPane>
                                                     </content>
                                                 </Tab>
                                             </tabs>

@@ -2,14 +2,16 @@ package com.selesse.gitwrapper.analyzer;
 
 import com.google.common.collect.*;
 import com.selesse.gitwrapper.myobjects.*;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * \brief Содержит в себе всю основную информацию о ветке репозитория.
@@ -190,5 +192,74 @@ public class BranchDetails {
      */
     public GitRepository getRepository() {
         return repository;
+    }
+
+    public ArrayList<Branch> getListCurBranches() {
+
+        ArrayList<Branch> curBranches = new ArrayList<Branch>();
+        Repository repository = this.getRepository().getRepository();
+        Git git = new Git(repository);
+
+        //System.out.println("Listing local branches:");
+        try {
+            List<Ref> call = null;
+            call = git.branchList().call();
+
+            for (Ref ref : call) {
+                curBranches.add(new Branch(repository, ref.getName(), ref.getObjectId().getName()));
+                //System.out.println("Branch: " + ref + " " + ref.getName() + " " + ref.getObjectId().getName());
+            }
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+        return curBranches;
+    }
+
+    public ArrayList<Branch> getListMergedBranches() {
+
+        ArrayList<Branch> mergedBranches = new ArrayList<Branch>();
+        Repository repository = this.getRepository().getRepository();
+        Git git = new Git(repository);
+
+        try {
+            List<Ref> call = null;
+            call = git.branchList().call();
+
+            //System.out.println("Now including remote branches:");
+            call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
+            for (Ref ref : call) {
+                mergedBranches.add(new Branch(repository, ref.getName(), ref.getObjectId().getName()));
+                System.out.println("Branch: " + ref + " " + ref.getName() + " " + ref.getObjectId().getName());
+            }
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+        return mergedBranches;
+    }
+
+
+    public ArrayList<Integer> getCommitsByMonths() {
+        ArrayList<Commit> revCommitList = null;
+        ArrayList<Integer> commitsByMonths = new ArrayList<Integer>();
+        try {
+            revCommitList = (ArrayList) branch.getCommits();
+            for (int i = 0; i < 12; i++) {
+                commitsByMonths.add(0);
+            }
+
+            // Сортируем
+            for (Commit aRevCommitList : revCommitList) {
+                if (aRevCommitList.getCommitDateTime().getYear() != 2017) {
+                    continue;
+                }
+                int month = aRevCommitList.getCommitDateTime().getMonthValue();
+                commitsByMonths.set(month, commitsByMonths.get(month) + 1);
+
+            }
+
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+        return commitsByMonths;
     }
 }

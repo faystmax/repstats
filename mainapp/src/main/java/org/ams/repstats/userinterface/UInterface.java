@@ -1,10 +1,12 @@
 package org.ams.repstats.userinterface;
 
 import com.selesse.gitwrapper.myobjects.Author;
+import com.selesse.gitwrapper.myobjects.Branch;
 import com.selesse.gitwrapper.myobjects.Commit;
+import org.ams.repstats.graph.DiffChart;
 
 import javax.swing.table.TableModel;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -21,7 +23,7 @@ public interface UInterface {
 
     void closeRepository();
 
-    BufferedImage getChart();
+    DiffChart getChart();
 
     String getRepName();
 
@@ -38,4 +40,14 @@ public interface UInterface {
     Collection<Commit> getLastCommits(Author author);
 
     String getRemoteName();
+
+    long getTotalNumberOfLines();
+
+
+    ArrayList<Branch> getListCurBranches();
+
+    ArrayList<Branch> getListMergedBranches();
+
+    ArrayList<Integer> getCommitsByMonths();
+
 }

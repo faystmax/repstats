@@ -43,7 +43,7 @@
                             </columns>
                         </TableView>
                         <Button fx:id="btStart" layoutX="126.0" layoutY="420.0" mnemonicParsing="false"
-                                onAction="#startTeamAnylyze" prefHeight="25.0" prefWidth="98.0" text="Запуск"
+                                onAction="#startDeveloperAnylyze" prefHeight="25.0" prefWidth="98.0" text="Запуск"
                                 AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
                     </children>
                 </AnchorPane>

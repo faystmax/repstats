@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class CheckMergeStatusOfCommit {
 
-    private Repository repository
+    private Repository repository;
 
     CheckMergeStatusOfCommit(Repository repository) {
         this.repository = repository;
@@ -24,10 +24,10 @@ public class CheckMergeStatusOfCommit {
 
     public void CheckMergeStatusOfCommit() throws IOException {
 
-        Ref head = repository.exactRef("refs/heads/master");
+        Ref head = repository.getRef("refs/heads/master");
 
         // a RevWalk allows to walk over commits based on some filtering that is defined
-        RevWalk walk = new RevWalk(repository))
+        RevWalk walk = new RevWalk(repository);
         RevCommit commit = walk.parseCommit(head.getObjectId());
         System.out.println("Start-Commit: " + commit);
 

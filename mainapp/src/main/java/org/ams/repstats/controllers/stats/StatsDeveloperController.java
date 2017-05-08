@@ -4,8 +4,9 @@ import com.selesse.gitwrapper.myobjects.Author;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,7 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -22,18 +23,22 @@ import org.ams.repstats.MysqlConnector;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.DeveloperTable;
 import org.ams.repstats.fortableview.FilesTable;
+import org.ams.repstats.fortableview.ProjectTable;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
+import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.table.TableModel;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA
@@ -130,6 +135,16 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 developersTable.requestFocus();
             }
         });
+
+        // добавили listener`a
+        developersTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    startDeveloperAnylyze();
+                }
+            }
+        });
     }
 
     /**
@@ -193,10 +208,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     // TODO  в будущем
     public void showChartOnImageView() {
-        BufferedImage img = getuInterface().getChart();
+      /*  DiffChart diffChart = getuInterface().getChart();
         WritableImage wimg = new WritableImage(img.getWidth(), img.getHeight());
         SwingFXUtils.toFXImage(img, wimg);
-        imageView.setImage(wimg);
+        imageView.setImage(wimg);*/
     }
 
     /**
@@ -252,29 +267,101 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         showAllFiles();
     }
 
+    public LocalDate start;
+    public LocalDate end;
+    public ArrayList<ProjectTable> projects;
+
     /**
      * Кнопка начала анализа команд
      */
-    public void startTeamAnylyze() {
-        projectDir = new File(tbProject.getText());
-        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
-            ShowAlert("Ошибка", "Выбрана неверная директория!");
-            this.setStart(false);
+    public void startDeveloperAnylyze() {
+        if (developersTable.getSelectionModel().getSelectedItem() == null) {
+            Utils.showAlert("Ошибка", "Сначала выберите Разработчика!");
             return;
         }
-        if (!getuInterface().startProjectAnalyze()) {
-            ShowAlert("Ошибка", "Ошибка анализа файлов проекта!");
-            this.setStart(false);
-        } else {
-            this.setStart(true);
+
+        start = end = null;
+        projects = null;
+
+        // Открываем projectForDeveloperView
+        openProjectForDeveloperView();
+        if (start == null || end == null || projects == null) {
+            //выход т.к не с чем работать
+            return;
         }
 
-        //showChartOnImageView();
-        showMainInf();
-        showAvtors();
-        showAllFiles();
+        // начинаем анализ
+
+        // here runs the JavaFX thread
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            public Boolean call() throws GitAPIException {
+                // do your operation in here
+                if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
+                    Utils.showAlert("Ошибка", "Выбрана неверная директория!");
+                    setStart(false);
+                    return false;
+                }
+                if (!getuInterface().startProjectAnalyze()) {
+                    Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
+                    setStart(false);
+                } else {
+                    setStart(true);
+                }
+
+                //выводим данные о репозитории в поток javafx
+                Platform.runLater(() -> {
+                    showMainInf();
+                    showAvtors();
+                    showAllFiles();
+                    //showCommitsChart();
+                    closeRepository();
+                });
+
+
+                return true;
+            }
+        };
+
+        task.setOnRunning((e) -> Utils.openLoadingWindow());
+        task.setOnSucceeded((e) -> {
+            Utils.closeLoadingWindow();
+            // process return value again in JavaFX thread
+        });
+        task.setOnFailed((e) -> {
+            // eventual error handling by catching exceptions from task.get()
+            LOGGER.error(task.getException().getMessage());
+            Utils.showAlert("Ошибка", "Один из репозиториев не существует," +
+                    " либо у вас отсутствует подключение к интернету");
+            Utils.closeLoadingWindow();
+        });
+        new Thread(task).start();
     }
 
+    /**
+     * Окно для выбора промежутка времени и проектов
+     */
+    private void openProjectForDeveloperView() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("view/stats/projectForDeveloperView.fxml"));
+            AnchorPane aboutLayout = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Выбор проектов");
+            stage.setScene(new Scene(aboutLayout));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            ProjectForDeveloperController controller = loader.getController();
+            controller.setStatsDeveloperController(this);
+            controller.setId_developer(((DeveloperTable) developersTable.getSelectionModel().getSelectedItem()).getId());
+            //Инициализируем и запускаем
+            stage.showAndWait();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
 
     @Override
     public void closeRepository() {

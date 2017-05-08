@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0"
+            prefWidth="648.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.ams.repstats.controllers.stats.ProjectForDeveloperController">
+    <children>
+        <TableView fx:id="projectsTable" editable="true" layoutX="17.0" layoutY="61.0" prefHeight="288.0"
+                   prefWidth="620.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="14.0"
+                   AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="61.0">
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+            <columns>
+                <TableColumn prefWidth="262.0" text="Список проектов разработчика">
+                    <columns>
+                        <TableColumn fx:id="projectNameClmn" prefWidth="180.0" text="Название"/>
+                        <TableColumn fx:id="projectDateClmn" prefWidth="160.0" text="Дата начала"/>
+                        <TableColumn fx:id="projectDeadlineClmn" prefWidth="141.0" text="Крайний срок (deadline)"/>
+                        <TableColumn fx:id="projectPriorClmn" prefWidth="75.0" text="Приоритет"/>
+                    </columns>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <Label alignment="CENTER" layoutX="310.0" layoutY="23.0" text="Выберите проекты и период времени для анализа"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <HBox layoutX="14.0" layoutY="360.0" spacing="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0"
+              AnchorPane.rightAnchor="14.0">
+            <children>
+                <DatePicker fx:id="datePickerStart" layoutX="14.0" layoutY="360.0" prefHeight="25.0" prefWidth="154.0"
+                            promptText="С"/>
+                <DatePicker fx:id="datePickerEnd" layoutX="187.0" layoutY="360.0" prefHeight="25.0" prefWidth="154.0"
+                            promptText="По"/>
+                <Region maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" onAction="#startButtonAction" prefWidth="80.0" text="Запуск"/>
+                <Button fx:id="btExit" layoutX="572.0" layoutY="360.0" mnemonicParsing="false"
+                        onAction="#exitButtonAction" prefWidth="80.0" text="Закрыть"/>
+            </children>
+        </HBox>
+    </children>
+
+</AnchorPane>

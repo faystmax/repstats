@@ -9,14 +9,9 @@ import org.ams.repstats.graph.DiffChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -101,24 +96,15 @@ public class GitUInterface implements UInterface {
         return tablemodel;
     }
 
-    public BufferedImage getChart() {
+    public DiffChart getChart() {
         if (branchDetails != null) {
-            try {
                 Multimap<Author, CommitDiff> authorToCommitDiffMap = branchDetails.getAuthorToCommitDiffsMap();
                 ArrayList<CommitDiff> commitDiffList = null;
                 for (Author author : authorToCommitDiffMap.keySet()) {
                     commitDiffList = new ArrayList<CommitDiff>(authorToCommitDiffMap.get(author));
                 }
-                DiffChart chart = new DiffChart(commitDiffList);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                chart.writeChart(stream);
-                ByteArrayInputStream in = new ByteArrayInputStream(stream.toByteArray());
-                BufferedImage img = null;
-                img = ImageIO.read(in);
-                return img;
-            } catch (IOException e) {
-                LOGGER.error("Error while creating Chart");
-            }
+            DiffChart DiffChart = new DiffChart(commitDiffList);
+            return DiffChart;
         }
         return null;
     }
@@ -201,6 +187,27 @@ public class GitUInterface implements UInterface {
     public String getRemoteName() {
         branchDetails.getRepository().getRepository().getRemoteNames();
         return "";
+    }
+
+    @Override
+    public long getTotalNumberOfLines() {
+        return branchDetails.getTotalNumberOfLines();
+    }
+
+
+    @Override
+    public ArrayList<Branch> getListCurBranches() {
+        return branchDetails.getListCurBranches();
+    }
+
+    @Override
+    public ArrayList<Branch> getListMergedBranches() {
+        return branchDetails.getListMergedBranches();
+    }
+
+    @Override
+    public ArrayList<Integer> getCommitsByMonths() {
+        return branchDetails.getCommitsByMonths();
     }
 
 }

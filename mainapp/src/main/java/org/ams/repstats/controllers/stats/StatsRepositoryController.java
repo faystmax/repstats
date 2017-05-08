@@ -1,21 +1,24 @@
 package org.ams.repstats.controllers.stats;
 
 import com.selesse.gitwrapper.myobjects.Author;
+import com.selesse.gitwrapper.myobjects.Branch;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -23,6 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.repstats.MysqlConnector;
 import org.ams.repstats.fortableview.AuthorTable;
+import org.ams.repstats.fortableview.BranchesTable;
 import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.uifactory.TypeUInterface;
@@ -35,12 +39,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.table.TableModel;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA
@@ -73,6 +77,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private TableColumn clmnLOC;
     @FXML
     private TableView avtorTable;
+    @FXML
+    private TableColumn clmnAvtorFIO;
     @FXML
     private TableColumn clmnAvtorName;
     @FXML
@@ -114,19 +120,46 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     @FXML
     private Button btStart;
     @FXML
+    private Label lbKolStrok;
+    @FXML
+    private Label lbKolStrokCur;
+    @FXML
+    private TableView tableTecBranches;
+    @FXML
+    private TableColumn clmnTecName;
+    @FXML
+    private TableColumn clmnTecId;
+    @FXML
+    private TableView tableMergedBranches;
+    @FXML
+    private TableColumn clmnMergedName;
+    @FXML
+    private TableColumn clmnMergedId;
+    @FXML
+    private LineChart commitsChart;
     //endregion
 
     private DirectoryChooser directoryChooser;
-    File projectDir;
+    private File projectDir;
 
 
     @FXML
     public void initialize() {
-        //Utils.addStyleSheet(repositoryTable.getScene());
+        // По дефолту исп-ем гит
         this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
+
+        // Отключаем редактирование таблицы
         repositoryTable.setEditable(false);
+
+        // Крепим всвой placeholder
+        Utils.setEmptyTableMessage(avtorTable);
+        Utils.setEmptyTableMessage(tableAllFiles);
+        Utils.setEmptyTableMessage(repositoryTable);
+
+        // Отображаем репозитории
         configureRepositoryClmn();
         showRepository();
+
         Platform.runLater(() -> repositoryTable.requestFocus());
 
         // добавили listener`a
@@ -188,10 +221,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     // TODO  в будущем
     public void showChartOnImageView() {
-        BufferedImage img = getuInterface().getChart();
+      /*  BufferedImage img = getuInterface().getChart();
         WritableImage wimg = new WritableImage(img.getWidth(), img.getHeight());
         SwingFXUtils.toFXImage(img, wimg);
-        imageView.setImage(wimg);
+        imageView.setImage(wimg);*/
     }
 
     /**
@@ -229,25 +262,54 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
      */
     @Override
     public void start() {
-        projectDir = new File(tbProject.getText());
-        if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
-            Utils.showAlert("Ошибка", "Выбрана неверная директория!");
-            this.setStart(false);
-            return;
-        }
-        if (!getuInterface().startProjectAnalyze()) {
-            Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
-            this.setStart(false);
-        } else {
-            this.setStart(true);
-        }
 
-        //showChartOnImageView();
-        showMainInf();
-        showAvtors();
-        showAllFiles();
+        // here runs the JavaFX thread
+        // Boolean as generic parameter since you want to return it
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            public Boolean call() throws GitAPIException {
+                // do your operation in here
+                if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
+                    Utils.showAlert("Ошибка", "Выбрана неверная директория!");
+                    setStart(false);
+                    return false;
+                }
+                if (!getuInterface().startProjectAnalyze()) {
+                    Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
+                    setStart(false);
+                } else {
+                    setStart(true);
+                }
 
-        closeRepository();
+                //выводим данные о репозитории в потоку javafx
+                Platform.runLater(() -> {
+                    showMainInf();
+                    showAvtors();
+                    showAllFiles();
+                    showAllBranches();
+                    showCommitsChart();
+                    showChartOnImageView();
+                    closeRepository();
+                });
+
+
+                return true;
+            }
+        };
+
+        task.setOnRunning((e) -> Utils.openLoadingWindow());
+        task.setOnSucceeded((e) -> {
+            Utils.closeLoadingWindow();
+            // process return value again in JavaFX thread
+        });
+        task.setOnFailed((e) -> {
+            // eventual error handling by catching exceptions from task.get()
+            LOGGER.error(task.getException().getMessage());
+            Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
+                    " либо у вас отсутствует подключение к интернету");
+            Utils.closeLoadingWindow();
+        });
+        new Thread(task).start();
     }
 
     /**
@@ -262,7 +324,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         // берём url
         String url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
 
-        // Открываем окно загрузки
 
         // here runs the JavaFX thread
         // Boolean as generic parameter since you want to return it
@@ -288,6 +349,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showMainInf();
                     showAvtors();
                     showAllFiles();
+                    showAllBranches();
+                    showCommitsChart();
+                    showChartOnImageView();
                     closeRepository();
                 });
 
@@ -361,21 +425,45 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     @Override
     public void showAvtors() {
+
         clmnAvtorName.setCellValueFactory(new PropertyValueFactory<>("name"));
         clmnCommitCount.setCellValueFactory(new PropertyValueFactory<>("commitCount"));
         clmnLinesAdd.setCellValueFactory(new PropertyValueFactory<>("linesAdded"));
         clmnLinesDelete.setCellValueFactory(new PropertyValueFactory<>("linesRemoved"));
         clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
         clmnAvtorEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        clmnAvtorFIO.setCellValueFactory(new PropertyValueFactory<>("FIO"));
+
+
+
         TableModel authors = getuInterface().getAuthors();
         ObservableList<AuthorTable> data = FXCollections.observableArrayList();
+
         for (int i = 0; i < authors.getRowCount(); i++) {
-            data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
+            String gitUsername = (String) (authors.getValueAt(i, 0));
+            String gitEmail = (String) (authors.getValueAt(i, 5));
+            data.add(new AuthorTable(gitUsername, (int) authors.getValueAt(i, 1),
                     (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
-                    (String) (authors.getValueAt(i, 5))));
+                    gitEmail, getFIO(gitUsername, gitEmail)));
         }
 
         avtorTable.setItems(data);
+    }
+
+    public String getFIO(String gitUsername, String gitEmail) {
+        try {
+            PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectDeveloperFIO);
+            preparedStatement.setString(1, gitEmail);
+            ResultSet rs = MysqlConnector.executeQuery();
+
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+            MysqlConnector.closeStmt();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return "";
     }
 
     @Override
@@ -383,13 +471,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
 
         lbNameRep.setText(getuInterface().getRepName());
-        lbNazv.setText("Название репозитория:");
         lbNazvCur.setText(getuInterface().getRepName());
-        lbBranch.setText("Название ветки:");
         lbBranchCur.setText(getuInterface().getBranchName());
-        lbKolCommit.setText("Всего кол-во коммитов:");
         lbKolCommitCur.setText(Integer.toString(getuInterface().getNumberOfCommits()));
-        //lbRemoteName.setText(getuInterface().getRemoteName());
+        lbKolStrokCur.setText(Long.toString(getuInterface().getTotalNumberOfLines()));
 
         String repName = null;
         if (repositoryTable.getSelectionModel().getSelectedItem() != null) {
@@ -399,9 +484,66 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             lbNameRep.setText(repName);
             lbNazvCur.setText(repName);
         }
+        //getuInterface().getListAllBranches();
     }
 
+    public void showAllBranches() {
+        // тек
+        clmnTecName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clmnTecId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
+        ArrayList<Branch> branches = getuInterface().getListCurBranches();
+        ObservableList<BranchesTable> data = FXCollections.observableArrayList();
+
+        for (int i = 0; i < branches.size(); i++) {
+            data.add(new BranchesTable(branches.get(i).getName(), branches.get(i).getId()));
+        }
+
+        tableTecBranches.setItems(data);
+
+        //merged
+        clmnMergedName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clmnMergedId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        branches = getuInterface().getListMergedBranches();
+        data = FXCollections.observableArrayList();
+
+        for (int i = 0; i < branches.size(); i++) {
+            data.add(new BranchesTable(branches.get(i).getName(), branches.get(i).getId()));
+        }
+
+        tableMergedBranches.setItems(data);
+    }
+
+    public void showCommitsChart() {
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Месяц");
+
+        //commitsChart = new LineChart<String,Number>(xAxis,yAxis);
+
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Все Коммиты");
+
+        //
+        final ArrayList<Integer> commitsByMonths = this.getuInterface().getCommitsByMonths();
+
+        series.getData().add(new XYChart.Data("Янв", commitsByMonths.get(0)));
+        series.getData().add(new XYChart.Data("Фев", commitsByMonths.get(1)));
+        series.getData().add(new XYChart.Data("Мар", commitsByMonths.get(2)));
+        series.getData().add(new XYChart.Data("Апр", commitsByMonths.get(3)));
+        series.getData().add(new XYChart.Data("Май", commitsByMonths.get(4)));
+        series.getData().add(new XYChart.Data("Июнь", commitsByMonths.get(5)));
+        series.getData().add(new XYChart.Data("Июль", commitsByMonths.get(6)));
+        series.getData().add(new XYChart.Data("Авг", commitsByMonths.get(7)));
+        series.getData().add(new XYChart.Data("Сен", commitsByMonths.get(8)));
+        series.getData().add(new XYChart.Data("Окт", commitsByMonths.get(9)));
+        series.getData().add(new XYChart.Data("Ноя", commitsByMonths.get(10)));
+        series.getData().add(new XYChart.Data("Дек", commitsByMonths.get(11)));
+
+        commitsChart.getData().clear();
+        commitsChart.getData().add(series);
+    }
 
     /**
      * Подгружаем внешний репозиторий

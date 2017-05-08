@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -28,8 +27,8 @@
         </DatePicker>
         <Button fx:id="btExit" layoutY="298.0" mnemonicParsing="false" onAction="#exitButtonAction" text="Закрыть"
                 AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>
-        <Label fx:id="lbName" text="Коммиты для" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0"
-               AnchorPane.topAnchor="14.0">
+        <Label fx:id="lbName" alignment="CENTER" text="Коммиты " textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
             <font>
                 <Font size="15.0"/>
             </font>

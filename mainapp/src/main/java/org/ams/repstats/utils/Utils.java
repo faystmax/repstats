@@ -214,4 +214,8 @@ public class Utils {
     public static void closeLoadingWindow() {
         loadingStage.close();
     }
+
+    public static void setEmptyTableMessage(TableView tableView) {
+        tableView.setPlaceholder(new Label("Данные отсутствуют"));
+    }
 }
