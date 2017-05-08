@@ -23,6 +23,12 @@ public class RepositoryTable {
     private SimpleStringProperty description;
     private SimpleIntegerProperty id_project_repository;
 
+    //доп. поля
+    private SimpleIntegerProperty commitCount;
+    private SimpleIntegerProperty linesAdd;
+    private SimpleIntegerProperty linesDelete;
+    private SimpleIntegerProperty netContribution;
+
     public RepositoryTable(int id, String name, String url, Date dateOfCreation, int idDeveloperResponsible, String FIO, String description, int id_project_repository) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
@@ -32,6 +38,18 @@ public class RepositoryTable {
         this.FIO = new SimpleStringProperty(FIO);
         this.description = new SimpleStringProperty(description);
         this.id_project_repository = new SimpleIntegerProperty(id_project_repository);
+        commitCount = new SimpleIntegerProperty(0);
+        linesAdd = new SimpleIntegerProperty(0);
+        linesDelete = new SimpleIntegerProperty(0);
+        netContribution = new SimpleIntegerProperty(0);
+    }
+
+    public RepositoryTable(String url, int commitCount, int linesAdd, int linesDelete, int netContribution) {
+        this.url = new SimpleStringProperty(url);
+        this.commitCount = new SimpleIntegerProperty(commitCount);
+        this.linesAdd = new SimpleIntegerProperty(linesAdd);
+        this.linesDelete = new SimpleIntegerProperty(linesDelete);
+        this.netContribution = new SimpleIntegerProperty(netContribution);
     }
 
     public int getId() {
@@ -128,5 +146,53 @@ public class RepositoryTable {
 
     public void setId_project_repository(int id_project_repository) {
         this.id_project_repository.set(id_project_repository);
+    }
+
+    public int getCommitCount() {
+        return commitCount.get();
+    }
+
+    public SimpleIntegerProperty commitCountProperty() {
+        return commitCount;
+    }
+
+    public void setCommitCount(int commitCount) {
+        this.commitCount.set(commitCount);
+    }
+
+    public int getLinesAdd() {
+        return linesAdd.get();
+    }
+
+    public SimpleIntegerProperty linesAddProperty() {
+        return linesAdd;
+    }
+
+    public void setLinesAdd(int linesAdd) {
+        this.linesAdd.set(linesAdd);
+    }
+
+    public int getLinesDelete() {
+        return linesDelete.get();
+    }
+
+    public SimpleIntegerProperty linesDeleteProperty() {
+        return linesDelete;
+    }
+
+    public void setLinesDelete(int linesDelete) {
+        this.linesDelete.set(linesDelete);
+    }
+
+    public int getNetContribution() {
+        return netContribution.get();
+    }
+
+    public SimpleIntegerProperty netContributionProperty() {
+        return netContribution;
+    }
+
+    public void setNetContribution(int netContribution) {
+        this.netContribution.set(netContribution);
     }
 }

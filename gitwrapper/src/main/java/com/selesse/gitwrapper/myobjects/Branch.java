@@ -98,7 +98,12 @@ public class Branch {
                     }
 
                     if (foundInThisBranch) {
-                        revCommitList.add(Commits.fromRevCommit(repository, commit));
+                        // bug with update funct.xml
+                        try {
+                            revCommitList.add(Commits.fromRevCommit(repository, commit));
+                        } catch (Exception e) {
+                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0)));
+                        }
                     }
                 }
             }

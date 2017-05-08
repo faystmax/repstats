@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -21,12 +22,23 @@ public class ProjectTable {
     private SimpleObjectProperty<Date> deadline;
     private SimpleIntegerProperty prior;
 
+    //доп. поля
+    private ArrayList<String> urls = new ArrayList<String>();
+    private SimpleIntegerProperty commitCount;
+    private SimpleIntegerProperty linesAdd;
+    private SimpleIntegerProperty linesDelete;
+    private SimpleIntegerProperty netContribution;
+
     public ProjectTable(int id, String name, Date dateStart, Date deadline, int prior) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.dateStart = new SimpleObjectProperty<Date>(dateStart);
         this.deadline = new SimpleObjectProperty<Date>(deadline);
         this.prior = new SimpleIntegerProperty(prior);
+        commitCount = new SimpleIntegerProperty(0);
+        linesAdd = new SimpleIntegerProperty(0);
+        linesDelete = new SimpleIntegerProperty(0);
+        netContribution = new SimpleIntegerProperty(0);
     }
 
     public int getId() {
@@ -103,6 +115,62 @@ public class ProjectTable {
                 ? "" : smp.format(deadline.get());
 
         return strDate;
+    }
+
+    public ArrayList<String> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(ArrayList<String> urls) {
+        this.urls = urls;
+    }
+
+    public int getCommitCount() {
+        return commitCount.get();
+    }
+
+    public SimpleIntegerProperty commitCountProperty() {
+        return commitCount;
+    }
+
+    public void setCommitCount(int commitCount) {
+        this.commitCount.set(commitCount);
+    }
+
+    public int getLinesAdd() {
+        return linesAdd.get();
+    }
+
+    public SimpleIntegerProperty linesAddProperty() {
+        return linesAdd;
+    }
+
+    public void setLinesAdd(int linesAdd) {
+        this.linesAdd.set(linesAdd);
+    }
+
+    public int getLinesDelete() {
+        return linesDelete.get();
+    }
+
+    public SimpleIntegerProperty linesDeleteProperty() {
+        return linesDelete;
+    }
+
+    public void setLinesDelete(int linesDelete) {
+        this.linesDelete.set(linesDelete);
+    }
+
+    public int getNetContribution() {
+        return netContribution.get();
+    }
+
+    public SimpleIntegerProperty netContributionProperty() {
+        return netContribution;
+    }
+
+    public void setNetContribution(int netContribution) {
+        this.netContribution.set(netContribution);
     }
 }
 

@@ -78,6 +78,11 @@ public class MysqlConnector {
     public static final String deleteProject = "delete from project where id = ?";
     public static final String selectAllDevelopersProjects = "select project.id,project.name,start,deadline,priority from project " +
             "    inner JOIN developer_project on developer_project.id_developer=? && developer_project.id_project=project.id";
+    public static final String selectAllUrlFromProject = "select project.id,repository.url from project\n" +
+            "    inner JOIN project_repository on project_repository.id_project=project.id\n" +
+            "    inner JOIN repository on repository.id=project_repository.id_repository" +
+            "    where project.id = ?";
+
 
     // repository
     public static final String updateNameRepository = "update repository set name = ? WHERE id = ?";

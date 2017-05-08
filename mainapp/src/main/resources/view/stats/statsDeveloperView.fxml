@@ -32,18 +32,13 @@
                                     <columns>
                                         <TableColumn fx:id="developerFamClmn" prefWidth="75.0" text="Фамилия"/>
                                         <TableColumn fx:id="developerNameClmn" prefWidth="75.0" text="Имя"/>
-                                        <TableColumn prefWidth="75.0" text="Git">
-                                            <columns>
-                                                <TableColumn fx:id="developerGitName" prefWidth="75.0" text="name"/>
-                                                <TableColumn fx:id="developerGitEmail" prefWidth="75.0" text="email"/>
-                                            </columns>
-                                        </TableColumn>
+                                        <TableColumn fx:id="developerGitEmail" prefWidth="75.0" text="email"/>
                                     </columns>
                                 </TableColumn>
                             </columns>
                         </TableView>
                         <Button fx:id="btStart" layoutX="126.0" layoutY="420.0" mnemonicParsing="false"
-                                onAction="#startDeveloperAnylyze" prefHeight="25.0" prefWidth="98.0" text="Запуск"
+                                onAction="#start" prefHeight="25.0" prefWidth="98.0" text="Запуск"
                                 AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
                     </children>
                 </AnchorPane>
@@ -53,26 +48,26 @@
                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                  AnchorPane.topAnchor="0.0">
                             <tabs>
-                                <Tab text="Основная информация">
+                                <Tab text="Информация о разработчике">
                                     <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                             <children>
-                                                <Label fx:id="lbNameRep" alignment="TOP_CENTER" contentDisplay="CENTER"
-                                                       prefHeight="50.0" prefWidth="167.0" text="-"
-                                                       textAlignment="CENTER" AnchorPane.leftAnchor="240.0"
-                                                       AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="14.0">
+                                                <Label fx:id="lbMainInfTitle" alignment="TOP_CENTER"
+                                                       contentDisplay="CENTER" prefHeight="50.0" prefWidth="167.0"
+                                                       text="-" textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
+                                                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <font>
-                                                        <Font name="Arial Bold Italic" size="24.0"/>
+                                                        <Font name="Arial Bold Italic" size="20.0"/>
                                                     </font>
                                                     <padding>
                                                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
                                                     </padding>
                                                 </Label>
                                                 <GridPane prefHeight="259.0" prefWidth="530.0"
-                                                          AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="65.0"
-                                                          AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="90.0">
+                                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                                     <children>
-                                                        <Label fx:id="lbNazvCur" maxHeight="1.7976931348623157E308"
+                                                        <Label fx:id="lbFIO" maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308" text="-"
                                                                GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
                                                                GridPane.vgrow="ALWAYS">
@@ -80,7 +75,7 @@
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbBranchCur" maxHeight="1.7976931348623157E308"
+                                                        <Label fx:id="lbGitNameEmail" maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308" text="-"
                                                                GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
                                                                GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
@@ -88,7 +83,7 @@
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbKolCommitCur" maxHeight="1.7976931348623157E308"
+                                                        <Label fx:id="lbKolCommit" maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308" prefHeight="63.0"
                                                                prefWidth="157.0" text="-" GridPane.columnIndex="1"
                                                                GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
@@ -97,23 +92,24 @@
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbNazv" maxHeight="1.7976931348623157E308"
+                                                        <Label maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308"
-                                                               text="Название репозитория:" GridPane.hgrow="ALWAYS"
+                                                               text="ФИО разработчика:" GridPane.hgrow="ALWAYS"
                                                                GridPane.vgrow="ALWAYS">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbBranch" maxHeight="1.7976931348623157E308"
-                                                               maxWidth="1.7976931348623157E308" text="Название ветки:"
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="gitname&lt;email&gt; разработчика:"
                                                                GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
                                                                GridPane.vgrow="ALWAYS">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbKolCommit" maxHeight="1.7976931348623157E308"
+                                                        <Label maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308" text="Всего коммитов:"
                                                                GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
                                                                GridPane.vgrow="ALWAYS">
@@ -121,18 +117,48 @@
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbKolCommit1" maxHeight="1.7976931348623157E308"
-                                                               maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS"
-                                                               GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                                                        <Label fx:id="lbKolStrokAdd" maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="63.0"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
+                                                               GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"
+                                                               GridPane.vgrow="ALWAYS">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
-                                                        <Label fx:id="lbRemoteName" maxHeight="1.7976931348623157E308"
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Всего строк добаавлено:" GridPane.rowIndex="3">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Всего строк удалено:" GridPane.rowIndex="4">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lbKolStrokDel" maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="63.0"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="4">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lbPokr" maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308" prefHeight="63.0"
                                                                prefWidth="157.0" GridPane.columnIndex="1"
-                                                               GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"
-                                                               GridPane.vgrow="ALWAYS">
+                                                               GridPane.rowIndex="5">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" text="Покрытие кода:"
+                                                               GridPane.rowIndex="5">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
@@ -153,32 +179,37 @@
                                                                         prefHeight="66.0" vgrow="SOMETIMES"/>
                                                         <RowConstraints maxHeight="66.0" minHeight="10.0"
                                                                         prefHeight="66.0" vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="66.0" minHeight="10.0"
+                                                                        prefHeight="66.0" vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="66.0" minHeight="10.0"
+                                                                        prefHeight="66.0" vgrow="SOMETIMES"/>
                                                     </rowConstraints>
                                                 </GridPane>
                                             </children>
+                                            <padding>
+                                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                            </padding>
                                         </AnchorPane>
                                     </content>
                                 </Tab>
-                                <Tab text="Авторы">
+                                <Tab text="Проекты разработчика">
                                     <content>
                                         <AnchorPane>
                                             <children>
-                                                <TableView fx:id="avtorTable" layoutX="3.0" layoutY="82.0"
+                                                <TableView fx:id="projectTable" layoutX="3.0" layoutY="82.0"
                                                            prefHeight="271.0" prefWidth="642.0"
                                                            AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0"
                                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
-                                                        <TableColumn fx:id="clmnAvtorName" prefWidth="100.0"
-                                                                     text="Имя Автора"/>
-                                                        <TableColumn fx:id="clmnAvtorEmail" prefWidth="75.0"
-                                                                     text="Email"/>
-                                                        <TableColumn fx:id="clmnCommitCount" prefWidth="123.0"
+                                                        <TableColumn fx:id="clmnProject" prefWidth="166.0"
+                                                                     text="Проект"/>
+                                                        <TableColumn fx:id="clmnCommitCountProj" prefWidth="90.0"
                                                                      text="Кол-во коммитов"/>
-                                                        <TableColumn fx:id="clmnLinesAdd" prefWidth="133.0"
+                                                        <TableColumn fx:id="clmnLinesAddProj" prefWidth="133.0"
                                                                      text="Строк добавлено"/>
-                                                        <TableColumn fx:id="clmnLinesDelete" prefWidth="101.0"
+                                                        <TableColumn fx:id="clmnLinesDeleteProj" prefWidth="101.0"
                                                                      text="Строк удалено"/>
-                                                        <TableColumn fx:id="clmnNetContribution" prefWidth="106.0"
+                                                        <TableColumn fx:id="clmnNetContributionProj" prefWidth="106.0"
                                                                      text="Чистый вклад"/>
                                                     </columns>
                                                     <columnResizePolicy>
@@ -194,14 +225,20 @@
                                         </AnchorPane>
                                     </content>
                                 </Tab>
-                                <Tab text="Все файлы">
+                                <Tab text="Репозитории разработчика">
                                     <content>
-                                        <TableView fx:id="tableAllFiles">
+                                        <TableView fx:id="repositoryTable">
                                             <columns>
-                                                <TableColumn fx:id="clmnPath" prefWidth="369.0" text="Путь"/>
-                                                <TableColumn fx:id="clmnIsBinary" minWidth="0.0" prefWidth="110.0"
-                                                             text="Бинарник"/>
-                                                <TableColumn fx:id="clmnLOC" prefWidth="140.0" text="Кол-во строк"/>
+                                                <TableColumn fx:id="clmnUrlRep" minWidth="0.0" prefWidth="110.0"
+                                                             text="Url"/>
+                                                <TableColumn fx:id="clmnCommitCountRep" prefWidth="140.0"
+                                                             text="Кол-во коммитов"/>
+                                                <TableColumn fx:id="clmnLinesAddRep" prefWidth="133.0"
+                                                             text="Строк добавлено"/>
+                                                <TableColumn fx:id="clmnLinesDeleteRep" prefWidth="101.0"
+                                                             text="Строк удалено"/>
+                                                <TableColumn fx:id="clmnNetContributionRep" prefWidth="106.0"
+                                                             text="Чистый вклад"/>
                                             </columns>
                                             <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

@@ -53,10 +53,9 @@ public class ProjectForDeveloperController {
 
     @FXML
     public void initialize() {
-        configureAndShowProjectsClmn();
     }
 
-    private void configureAndShowProjectsClmn() {
+    public void configureAndShowProjectsClmn() {
 
         projectsTable.getSelectionModel().setSelectionMode(
                 SelectionMode.MULTIPLE
