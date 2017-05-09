@@ -7,6 +7,12 @@
 <AnchorPane prefHeight="307.0" prefWidth="454.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.stats.CommitsController">
     <children>
+        <Label fx:id="lbName" alignment="CENTER" text="Коммиты " textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Label>
         <TableView fx:id="tableForCommits" layoutY="31.0" prefHeight="202.0" prefWidth="410.0"
                    AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
                    AnchorPane.topAnchor="40.0">
@@ -19,21 +25,22 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TableView>
-        <DatePicker fx:id="datePickerStart" layoutY="263.0" onAction="#showCommits" prefHeight="25.0" prefWidth="154.0"
-                    promptText="С" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </DatePicker>
-        <Button fx:id="btExit" layoutY="298.0" mnemonicParsing="false" onAction="#exitButtonAction" text="Закрыть"
-                AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>
-        <Label fx:id="lbName" alignment="CENTER" text="Коммиты " textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
-            <font>
-                <Font size="15.0"/>
-            </font>
-        </Label>
-        <DatePicker fx:id="datePickerEnd" layoutX="178.0" layoutY="268.0" onAction="#showCommits" prefHeight="25.0"
-                    prefWidth="154.0" promptText="По" AnchorPane.bottomAnchor="14.0"/>
+        <HBox layoutX="14.0" layoutY="268.0" spacing="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0"
+              AnchorPane.rightAnchor="14.0">
+            <children>
+                <DatePicker fx:id="datePickerStart" layoutY="263.0" onAction="#showCommits" prefHeight="25.0"
+                            prefWidth="154.0" promptText="С" AnchorPane.bottomAnchor="14.0"
+                            AnchorPane.leftAnchor="14.0">
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </DatePicker>
+                <DatePicker fx:id="datePickerEnd" layoutX="178.0" layoutY="268.0" onAction="#showCommits"
+                            prefHeight="25.0" prefWidth="154.0" promptText="По" AnchorPane.bottomAnchor="14.0"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btExit" layoutY="298.0" mnemonicParsing="false" onAction="#exitButtonAction"
+                        text="Закрыть" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>
+            </children>
+        </HBox>
     </children>
 </AnchorPane>

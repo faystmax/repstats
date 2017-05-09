@@ -1,9 +1,12 @@
 package org.ams.repstats.fortableview;
 
+import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -28,6 +31,8 @@ public class RepositoryTable {
     private SimpleIntegerProperty linesAdd;
     private SimpleIntegerProperty linesDelete;
     private SimpleIntegerProperty netContribution;
+
+    private Collection<Commit> commits = new ArrayList<Commit>();
 
     public RepositoryTable(int id, String name, String url, Date dateOfCreation, int idDeveloperResponsible, String FIO, String description, int id_project_repository) {
         this.id = new SimpleIntegerProperty(id);
@@ -194,5 +199,13 @@ public class RepositoryTable {
 
     public void setNetContribution(int netContribution) {
         this.netContribution.set(netContribution);
+    }
+
+    public Collection<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(Collection<Commit> commits) {
+        this.commits = commits;
     }
 }

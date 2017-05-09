@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -53,6 +54,8 @@ public class ProjectForDeveloperController {
 
     @FXML
     public void initialize() {
+        datePickerStart.setValue(LocalDate.now().minusDays(1));
+        datePickerEnd.setValue(LocalDate.now());
     }
 
     public void configureAndShowProjectsClmn() {

@@ -6,6 +6,7 @@ import com.selesse.gitwrapper.myobjects.Commit;
 import org.ams.repstats.graph.DiffChart;
 
 import javax.swing.table.TableModel;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,6 +21,8 @@ public interface UInterface {
     boolean сhooseProjectDirectory(String Path);
 
     boolean startProjectAnalyze();
+
+    boolean startProjectAnalyze(LocalDate start, LocalDate end);
 
     void closeRepository();
 

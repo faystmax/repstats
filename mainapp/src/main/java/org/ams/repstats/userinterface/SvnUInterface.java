@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.table.TableModel;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +60,11 @@ public class SvnUInterface implements UInterface {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean startProjectAnalyze(LocalDate start, LocalDate end) {
+        return false;
     }
 
     @Override

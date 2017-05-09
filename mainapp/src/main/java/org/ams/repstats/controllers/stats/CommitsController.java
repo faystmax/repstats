@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.ams.repstats.fortableview.CommitTable;
+import org.ams.repstats.fortableview.ProjectTable;
+import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.userinterface.UInterface;
 
 import java.text.DateFormat;
@@ -48,6 +50,8 @@ public class CommitsController {
 
     private Author author;
     private UInterface uInterface;
+    private ProjectTable projectTable;
+    private RepositoryTable repositoryTable;
 
     public void setAuthor(Author author) {
         this.author = author;
@@ -64,7 +68,14 @@ public class CommitsController {
     public void showCommits() {
 
 
-        Collection<Commit> commits = uInterface.getLastCommits(author);
+        Collection<Commit> commits;
+        if (this.projectTable != null) {
+            commits = this.projectTable.getCommits();
+        } else if (this.repositoryTable != null) {
+            commits = this.repositoryTable.getCommits();
+        } else {
+            commits = uInterface.getLastCommits(author);
+        }
 
         clmnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
         //clmnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -76,6 +87,8 @@ public class CommitsController {
                     return property;
                 });
         clmnFilesChanged.setCellValueFactory(new PropertyValueFactory<>("filesChanged"));
+
+
         if (commits != null) {
             ObservableList<CommitTable> data = FXCollections.observableArrayList();
             for (Commit commit : commits) {
@@ -116,4 +129,11 @@ public class CommitsController {
         stage.close();
     }
 
+    public void setProjectTable(ProjectTable projectTable) {
+        this.projectTable = projectTable;
+    }
+
+    public void setRepositoryTable(RepositoryTable repositoryTable) {
+        this.repositoryTable = repositoryTable;
+    }
 }

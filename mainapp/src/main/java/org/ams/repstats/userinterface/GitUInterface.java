@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -137,6 +138,24 @@ public class GitUInterface implements UInterface {
             LOGGER.debug("Creating a BranchAnalyzer for {} on branch {}", gitRoot.getAbsolutePath(), branchName);
             branchAnalyzer = new BranchAnalyzer(gitRoot, branchName);
             branchDetails = branchAnalyzer.getBranchDetails();
+
+        } catch (Exception e) {
+            LOGGER.error("Error while starting analyzer project analyze");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean startProjectAnalyze(LocalDate start, LocalDate end) {
+        String branchName = "master";
+
+        try {
+            File gitRoot = new File(gitPath);
+            String repositoryName = gitRoot.getName();
+            LOGGER.debug("Creating a BranchAnalyzer for {} on branch {}", gitRoot.getAbsolutePath(), branchName);
+            branchAnalyzer = new BranchAnalyzer(gitRoot, branchName);
+            branchDetails = branchAnalyzer.getBranchDetails(start, end);
 
         } catch (Exception e) {
             LOGGER.error("Error while starting analyzer project analyze");

@@ -1,11 +1,13 @@
 package org.ams.repstats.fortableview;
 
+import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -28,6 +30,8 @@ public class ProjectTable {
     private SimpleIntegerProperty linesAdd;
     private SimpleIntegerProperty linesDelete;
     private SimpleIntegerProperty netContribution;
+
+    private Collection<Commit> commits = new ArrayList<Commit>();
 
     public ProjectTable(int id, String name, Date dateStart, Date deadline, int prior) {
         this.id = new SimpleIntegerProperty(id);
@@ -171,6 +175,14 @@ public class ProjectTable {
 
     public void setNetContribution(int netContribution) {
         this.netContribution.set(netContribution);
+    }
+
+    public Collection<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(Collection<Commit> commits) {
+        this.commits = commits;
     }
 }
 

@@ -10,6 +10,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +84,69 @@ public class Branch {
 
                 for (RevCommit commit : commits) {
                     boolean foundInThisBranch = false;
+
+                    RevCommit targetCommit = walk.parseCommit(repository.resolve(commit.getName()));
+                    for (Map.Entry<String, Ref> stringRefEntry : repository.getAllRefs().entrySet()) {
+                        if (stringRefEntry.getKey().startsWith(Constants.R_HEADS)) {
+                            Ref ref = stringRefEntry.getValue();
+                            if (walk.isMergedInto(targetCommit, walk.parseCommit(ref.getObjectId()))) {
+                                String foundInBranch = ref.getName();
+                                if (currentBranchName.equals(foundInBranch)) {
+                                    foundInThisBranch = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (foundInThisBranch) {
+                        // bug with update funct.xml
+                        try {
+                            revCommitList.add(Commits.fromRevCommit(repository, commit));
+                        } catch (Exception e) {
+                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0)));
+                        }
+                    }
+                }
+            }
+        }
+        return revCommitList;
+    }
+
+    /**
+     * Аналогично верхней ветке, но с огранисением по дате
+     * Извлекаем коммиты указанной ветки из репозитория.
+     *
+     * @return список коммитов, выбранной ветки в выбранном репозитории.
+     * Вернёт пустой List, если ветки нет вы выбранном репозитории.
+     * @throws GitAPIException ошибка при взаимодействии с Git Api.
+     * @throws IOException     ошибка чтения репозитория.
+     */
+    public List<Commit> getCommits(LocalDate start, LocalDate end) throws GitAPIException, IOException {
+        if (revCommitList == null) {
+            revCommitList = Lists.newArrayList();
+
+            Git git = new Git(repository);
+            RevWalk walk = new RevWalk(repository);
+
+            List<Ref> branches = git.branchList().call();
+
+            for (Ref branch : branches) {
+                String currentBranchName = branch.getName();
+                String desiredBranch = Constants.R_HEADS + name;
+                if (!desiredBranch.equals(currentBranchName)) {
+                    continue;
+                }
+
+                Iterable<RevCommit> commits = git.log().all().call();
+
+                for (RevCommit commit : commits) {
+                    boolean foundInThisBranch = false;
+
+                    LocalDate commitDate = commit.getAuthorIdent().getWhen().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    if (commitDate.isBefore(start) || commitDate.isAfter(end)) {          // Пропускаем коммит
+                        continue;
+                    }
 
                     RevCommit targetCommit = walk.parseCommit(repository.resolve(commit.getName()));
                     for (Map.Entry<String, Ref> stringRefEntry : repository.getAllRefs().entrySet()) {

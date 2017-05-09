@@ -18,7 +18,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -94,33 +93,21 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     @FXML
     private Button btOutRep;
     @FXML
-    private ChoiceBox choiceBox;
-    @FXML
     private Label lbNameRep;
-    @FXML
-    private Label lbNazv;
-    @FXML
-    private Label lbBranch;
     @FXML
     private Label lbNazvCur;
     @FXML
     private Label lbBranchCur;
     @FXML
-    private Label lbKolCommit;
-    @FXML
     private Label lbKolCommitCur;
     @FXML
-    private Label lbRemoteName;
+    private Label lbNew;
     @FXML
     private TextField tbProject;
-    @FXML
-    private ImageView imageView;
     @FXML
     private Button btChoose;
     @FXML
     private Button btStart;
-    @FXML
-    private Label lbKolStrok;
     @FXML
     private Label lbKolStrokCur;
     @FXML
@@ -262,9 +249,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
      */
     @Override
     public void start() {
-
-        // here runs the JavaFX thread
-        // Boolean as generic parameter since you want to return it
         Task<Boolean> task = new Task<Boolean>() {
             @Override
             public Boolean call() throws GitAPIException {
@@ -291,8 +275,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showChartOnImageView();
                     closeRepository();
                 });
-
-
                 return true;
             }
         };

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -61,6 +62,29 @@ public class BranchAnalyzer {
 
         Branch branch = repository.getBranch(branchName);
         List<Commit> commits = branch.getCommits();
+        LOGGER.info("Found {} commits on {}", commits.size(), branch.getName());
+
+        Commit commit = GitRepositoryReader.loadLastCommit(repository, branch);
+        List<GitFile> filesChanged = commit.getFilesChanged();
+
+        return new BranchDetails(repository, branch, commits, filesChanged);
+    }
+
+    /**
+     * Аналогично верхнему, но с огранисением по дате
+     * Возвращает BranchDetails основываясь на gitRoot и branchName в теле класса.
+     * BranchDetails представляет собой подробное описание всей ветки в выбранном репозитории.
+     *
+     * @return BranchDetails - подробное описание ветки.
+     * @throws IOException     ошибка при чтениии репозитория.
+     * @throws GitAPIException ошибка при взаимодествии с git репозиторием через api.
+     */
+    public BranchDetails getBranchDetails(LocalDate start, LocalDate end) throws IOException, GitAPIException {
+        LOGGER.info("Looking for a Git repository in {}", gitRoot.getAbsolutePath());
+        GitRepository repository = GitRepositoryReader.loadRepository(gitRoot);
+
+        Branch branch = repository.getBranch(branchName);
+        List<Commit> commits = branch.getCommits(start, end);
         LOGGER.info("Found {} commits on {}", commits.size(), branch.getName());
 
         Commit commit = GitRepositoryReader.loadLastCommit(repository, branch);

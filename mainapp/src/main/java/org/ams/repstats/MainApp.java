@@ -35,6 +35,9 @@ public class MainApp extends Application {
     private BorderPane rootLayout;                                              ///< Родительский Layout
     private FXMLLoader loader;                                                  ///< Загрузчик xml
 
+    /**
+     * Переопределяем метод старта приложения
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;

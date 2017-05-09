@@ -218,6 +218,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     public int linesDel = 0;
 
     public long totalLines = 0;
+    DeveloperTable selectedDeveloper;
+    Author selectedAuthor;
 
     /**
      * Кнопка начала анализа разработчиков
@@ -228,6 +230,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             Utils.showAlert("Ошибка", "Сначала выберите Разработчика!");
             return;
         }
+
+        selectedDeveloper = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
 
         start = end = null;
         projects = null;
@@ -278,6 +282,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                     int curCommits = 0;
                     int curlinesAdd = 0;
                     int curlinesDel = 0;
+                    RepositoryTable newRepositoryTable = null;
 
                     for (String url : projectTable.getUrls()) {
                         downloadRepository(url);
@@ -287,7 +292,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                             setStart(false);
                             return false;
                         }
-                        if (!getuInterface().startProjectAnalyze()) {
+                        if (!getuInterface().startProjectAnalyze(start, end)) {
                             Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
                             setStart(false);
                             return false;
@@ -298,6 +303,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         curCommits = 0;
                         curlinesAdd = 0;
                         curlinesDel = 0;
+                        selectedAuthor = getuInterface().getAuthorByName(selectedDeveloper.getGitname());
 
                         //сохраняем данные о репозитории
                         DeveloperTable cur = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem());
@@ -323,7 +329,12 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         linesDelInProject += curlinesDel;
 
                         totalLines += getuInterface().getTotalNumberOfLines();
-                        repositoryData.add(new RepositoryTable(url, curCommits, curlinesAdd, curlinesDel, curlinesAdd - curlinesDel));
+                        newRepositoryTable = new RepositoryTable(url, curCommits, curlinesAdd, curlinesDel, curlinesAdd - curlinesDel);
+                        if (selectedAuthor != null) {
+                            newRepositoryTable.setCommits(getuInterface().getLastCommits(selectedAuthor));
+                            repositoryData.add(newRepositoryTable);
+                            projectTable.getCommits().addAll(newRepositoryTable.getCommits());
+                        }
                     }
 
 
@@ -341,14 +352,16 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         projectTable.setLinesAdd(finalLinesAddInProject);
                         projectTable.setLinesDelete(finalLinesDelInProject);
                         projectTable.setNetContribution(finalLinesAddInProject - finalLinesDelInProject);
+
                     });
                 }
 
-                projectTable.setItems(projectsData);
-                repositoryTable.setItems(repositoryData);
+
 
                 //выводим данные о репозитории в поток javafx
                 Platform.runLater(() -> {
+                    projectTable.setItems(projectsData);
+                    repositoryTable.setItems(repositoryData);
                     showMainInf();
                     showAvtors();
                     showAllFiles();
@@ -407,9 +420,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         File dir = new File("./cloneRep");
         if (dir.exists()) {
             setNewRepDirectory(null);
-            Platform.runLater(() -> {
-                closeRepository();
-            });
+            Platform.runLater(this::closeRepository);
             closeRepository();
             Utils.deleteRecursive(dir);
 
@@ -453,15 +464,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         lbKolStrokAdd.setText(Integer.toString(linesAdd));
         lbKolStrokDel.setText(Integer.toString(linesDel));
         lbPokr.setText(String.valueOf(Math.ceil((((double) linesAdd - linesDel) / totalLines) * 100)) + "%");
-
-     /*  lbNameRep.setText(getuInterface().getRepName());
-        lbNazv.setText("Название репозитория:");
-        lbNazvCur.setText(getuInterface().getRepName());
-        lbBranch.setText("Название ветки:");
-        lbBranchCur.setText(getuInterface().getBranchName());
-        lbKolCommit.setText("Всего кол-во коммитов:");
-        lbKolCommitCur.setText(Integer.toString(getuInterface().getNumberOfCommits()));
-        //lbRemoteName.setText(getuInterface().getRemoteName());*/
     }
 
     @Override
@@ -502,29 +504,19 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
 
     /**
-     * Показать коммиты автора
+     * Показать коммиты разработчика
      *
      * @param event - событие
      */
-    public void ShowCommitsButtonAction(ActionEvent event) {
+    public void ShowCommitsInProjectButtonAction(ActionEvent event) {
         if (isStart()) {
-            AuthorTable tableAuthor = null/*(AuthorTable) avtorTable.getSelectionModel().getSelectedItem()*/;
-
-            Author selectedAuthor = getuInterface().getAuthorByName(tableAuthor.getName());
-            if (selectedAuthor == null) {
-                Utils.showAlert("Внимание", "Вы не выбрали автора!");
-                return;
-            }
-
             try {
-
-
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getClassLoader().getResource("view/stats/сommitsView.fxml"));
                 AnchorPane rootLayout = loader.load();
 
                 Stage stage = new Stage();
-                stage.setTitle("Коммиты");
+                stage.setTitle("Коммиты по проекту");
                 stage.setScene(new Scene(rootLayout));
                 stage.getIcons().add(new Image("icons/gitIcon.png"));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -532,7 +524,33 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 //Инициализируем
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
-                controller.setUInterface(this.getuInterface());
+                controller.setProjectTable((ProjectTable) projectTable.getSelectionModel().getSelectedItem());
+                controller.setLbName(selectedAuthor.getName());
+                controller.showCommits();
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void ShowCommitsInRepositorytButtonAction(ActionEvent event) {
+        if (isStart()) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("view/stats/сommitsView.fxml"));
+                AnchorPane rootLayout = loader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle("Коммиты по проекту");
+                stage.setScene(new Scene(rootLayout));
+                stage.getIcons().add(new Image("icons/gitIcon.png"));
+                stage.initModality(Modality.APPLICATION_MODAL);
+
+                //Инициализируем
+                CommitsController controller = loader.getController();
+                controller.setAuthor(selectedAuthor);
+                controller.setRepositoryTable((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem());
                 controller.setLbName(selectedAuthor.getName());
                 controller.showCommits();
                 stage.showAndWait();

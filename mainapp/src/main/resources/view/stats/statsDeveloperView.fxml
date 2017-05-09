@@ -217,8 +217,9 @@
                                                     </columnResizePolicy>
                                                 </TableView>
                                                 <Button fx:id="btShowCommits" layoutX="490.0" layoutY="38.0"
-                                                        mnemonicParsing="false" onAction="#ShowCommitsButtonAction"
-                                                        prefHeight="25.0" prefWidth="138.0" text="Показать  коммиты"
+                                                        mnemonicParsing="false"
+                                                        onAction="#ShowCommitsInProjectButtonAction" prefHeight="25.0"
+                                                        prefWidth="138.0" text="Показать  коммиты"
                                                         textAlignment="CENTER" wrapText="true"
                                                         AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>
                                             </children>
@@ -227,23 +228,35 @@
                                 </Tab>
                                 <Tab text="Репозитории разработчика">
                                     <content>
-                                        <TableView fx:id="repositoryTable">
-                                            <columns>
-                                                <TableColumn fx:id="clmnUrlRep" minWidth="0.0" prefWidth="110.0"
-                                                             text="Url"/>
-                                                <TableColumn fx:id="clmnCommitCountRep" prefWidth="140.0"
-                                                             text="Кол-во коммитов"/>
-                                                <TableColumn fx:id="clmnLinesAddRep" prefWidth="133.0"
-                                                             text="Строк добавлено"/>
-                                                <TableColumn fx:id="clmnLinesDeleteRep" prefWidth="101.0"
-                                                             text="Строк удалено"/>
-                                                <TableColumn fx:id="clmnNetContributionRep" prefWidth="106.0"
-                                                             text="Чистый вклад"/>
-                                            </columns>
-                                            <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                            </columnResizePolicy>
-                                        </TableView>
+                                        <AnchorPane>
+                                            <children>
+                                                <TableView fx:id="repositoryTable" AnchorPane.bottomAnchor="50.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0">
+                                                    <columns>
+                                                        <TableColumn fx:id="clmnUrlRep" minWidth="0.0" prefWidth="110.0"
+                                                                     text="Url"/>
+                                                        <TableColumn fx:id="clmnCommitCountRep" prefWidth="140.0"
+                                                                     text="Кол-во коммитов"/>
+                                                        <TableColumn fx:id="clmnLinesAddRep" prefWidth="133.0"
+                                                                     text="Строк добавлено"/>
+                                                        <TableColumn fx:id="clmnLinesDeleteRep" prefWidth="101.0"
+                                                                     text="Строк удалено"/>
+                                                        <TableColumn fx:id="clmnNetContributionRep" prefWidth="106.0"
+                                                                     text="Чистый вклад"/>
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <Button fx:id="btShowCommits1" layoutX="491.0" layoutY="390.0"
+                                                        mnemonicParsing="false"
+                                                        onAction="#ShowCommitsInRepositorytButtonAction"
+                                                        prefHeight="25.0" prefWidth="138.0" text="Показать  коммиты"
+                                                        textAlignment="CENTER" wrapText="true"
+                                                        AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>
+                                            </children>
+                                        </AnchorPane>
                                     </content>
                                 </Tab>
                             </tabs>
