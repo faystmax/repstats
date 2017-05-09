@@ -128,7 +128,7 @@
                                                         </Label>
                                                         <Label maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308"
-                                                               text="Всего строк добаавлено:" GridPane.rowIndex="3">
+                                                               text="Всего строк добавлено:" GridPane.rowIndex="3">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
@@ -150,7 +150,7 @@
                                                         </Label>
                                                         <Label fx:id="lbPokr" maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308" prefHeight="63.0"
-                                                               prefWidth="157.0" GridPane.columnIndex="1"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
                                                                GridPane.rowIndex="5">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>

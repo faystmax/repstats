@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="307.0" prefWidth="454.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="309.0" prefWidth="603.0"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.stats.CommitsController">
     <children>
         <Label fx:id="lbName" alignment="CENTER" text="Коммиты " textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
@@ -29,14 +30,13 @@
               AnchorPane.rightAnchor="14.0">
             <children>
                 <DatePicker fx:id="datePickerStart" layoutY="263.0" onAction="#showCommits" prefHeight="25.0"
-                            prefWidth="154.0" promptText="С" AnchorPane.bottomAnchor="14.0"
-                            AnchorPane.leftAnchor="14.0">
+                            promptText="С" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
                     <HBox.margin>
                         <Insets/>
                     </HBox.margin>
                 </DatePicker>
                 <DatePicker fx:id="datePickerEnd" layoutX="178.0" layoutY="268.0" onAction="#showCommits"
-                            prefHeight="25.0" prefWidth="154.0" promptText="По" AnchorPane.bottomAnchor="14.0"/>
+                            prefHeight="25.0" promptText="По" AnchorPane.bottomAnchor="14.0"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button fx:id="btExit" layoutY="298.0" mnemonicParsing="false" onAction="#exitButtonAction"
                         text="Закрыть" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>

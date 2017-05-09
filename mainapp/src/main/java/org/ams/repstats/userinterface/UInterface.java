@@ -40,6 +40,8 @@ public interface UInterface {
 
     Author getAuthorByName(String name);
 
+    Author getAuthorByEmail(String email);
+
     Collection<Commit> getLastCommits(Author author);
 
     String getRemoteName();

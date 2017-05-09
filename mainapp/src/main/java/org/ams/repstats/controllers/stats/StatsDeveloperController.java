@@ -231,16 +231,18 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             return;
         }
 
+        // Инициализация
         selectedDeveloper = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
-
         start = end = null;
         projects = null;
         allCommits = 0;
         linesAdd = 0;
         linesDel = 0;
         totalLines = 0;
+
         // Открываем projectForDeveloperView
         openProjectForDeveloperView();
+        // Проверка на нажатия "Отмена"
         if (start == null || end == null || projects == null) {
             //выход т.к не с чем работать
             return;
@@ -303,7 +305,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         curCommits = 0;
                         curlinesAdd = 0;
                         curlinesDel = 0;
-                        selectedAuthor = getuInterface().getAuthorByName(selectedDeveloper.getGitname());
+                        selectedAuthor = getuInterface().getAuthorByEmail(selectedDeveloper.getGitemail());
 
                         //сохраняем данные о репозитории
                         DeveloperTable cur = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem());
@@ -330,9 +332,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                         totalLines += getuInterface().getTotalNumberOfLines();
                         newRepositoryTable = new RepositoryTable(url, curCommits, curlinesAdd, curlinesDel, curlinesAdd - curlinesDel);
+                        repositoryData.add(newRepositoryTable);
                         if (selectedAuthor != null) {
                             newRepositoryTable.setCommits(getuInterface().getLastCommits(selectedAuthor));
-                            repositoryData.add(newRepositoryTable);
                             projectTable.getCommits().addAll(newRepositoryTable.getCommits());
                         }
                     }
@@ -355,8 +357,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                     });
                 }
-
-
 
                 //выводим данные о репозитории в поток javafx
                 Platform.runLater(() -> {
@@ -382,6 +382,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         task.setOnFailed((e) -> {
             // eventual error handling by catching exceptions from task.get()
             LOGGER.error(task.getException().getMessage());
+            task.getException().printStackTrace();
             Utils.showAlert("Ошибка", "Один из репозиториев не существует," +
                     " либо у вас отсутствует подключение к интернету");
             Utils.closeLoadingWindow();
@@ -416,6 +417,12 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Загрузка репозитория
+     *
+     * @param url репозитория
+     * @throws GitAPIException
+     */
     private void downloadRepository(String url) throws GitAPIException {
         File dir = new File("./cloneRep");
         if (dir.exists()) {
@@ -456,7 +463,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
         DeveloperTable cur = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem());
         lbFIO.setText(cur.getSurname() + " " + cur.getName() + " " + cur.getMiddlename());
-
         lbGitNameEmail.setText(cur.getGitname() + "<" + cur.getGitemail() + ">");
 
         //
@@ -525,7 +531,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
                 controller.setProjectTable((ProjectTable) projectTable.getSelectionModel().getSelectedItem());
-                controller.setLbName(selectedAuthor.getName());
+                controller.setLbName(selectedDeveloper.getGitname());
                 controller.showCommits();
                 stage.showAndWait();
             } catch (IOException e) {
@@ -542,7 +548,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 AnchorPane rootLayout = loader.load();
 
                 Stage stage = new Stage();
-                stage.setTitle("Коммиты по проекту");
+                stage.setTitle("Коммиты по репозиторию");
                 stage.setScene(new Scene(rootLayout));
                 stage.getIcons().add(new Image("icons/gitIcon.png"));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -551,7 +557,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
                 controller.setRepositoryTable((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem());
-                controller.setLbName(selectedAuthor.getName());
+                controller.setLbName(selectedDeveloper.getGitname());
                 controller.showCommits();
                 stage.showAndWait();
             } catch (IOException e) {
@@ -559,5 +565,33 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             }
         }
     }
+/*
+    public CommitsController ShowCommits(String title) {
+        if (isStart()) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("view/stats/сommitsView.fxml"));
+                AnchorPane rootLayout = loader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle(title);
+                stage.setScene(new Scene(rootLayout));
+                stage.getIcons().add(new Image("icons/gitIcon.png"));
+                stage.initModality(Modality.APPLICATION_MODAL);
+
+                //Инициализируем
+                CommitsController controller = loader.getController();
+                controller.setAuthor(selectedAuthor);
+                //controller.setRepositoryTable((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem());
+                controller.setLbName(selectedDeveloper.getGitname());
+                controller.showCommits();
+                stage.showAndWait();
+                return controller;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    */
 }
 

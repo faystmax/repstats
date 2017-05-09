@@ -53,6 +53,23 @@ public class CommitsController {
     private ProjectTable projectTable;
     private RepositoryTable repositoryTable;
 
+    @FXML
+    public void initialize() {
+        configureTableColumn();
+    }
+
+    private void configureTableColumn() {
+        clmnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
+        clmnDate.setCellValueFactory(
+                date -> {
+                    SimpleStringProperty property = new SimpleStringProperty();
+                    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                    property.setValue(dateFormat.format(Date.from(date.getValue().getDate().toInstant())));
+                    return property;
+                });
+        clmnFilesChanged.setCellValueFactory(new PropertyValueFactory<>("filesChanged"));
+    }
+
     public void setAuthor(Author author) {
         this.author = author;
     }
@@ -63,65 +80,6 @@ public class CommitsController {
 
     public void setLbName(String name) {
         lbName.setText("Коммиты " + name);
-    }
-
-    public void showCommits() {
-
-
-        Collection<Commit> commits;
-        if (this.projectTable != null) {
-            commits = this.projectTable.getCommits();
-        } else if (this.repositoryTable != null) {
-            commits = this.repositoryTable.getCommits();
-        } else {
-            commits = uInterface.getLastCommits(author);
-        }
-
-        clmnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
-        //clmnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        clmnDate.setCellValueFactory(
-                date -> {
-                    SimpleStringProperty property = new SimpleStringProperty();
-                    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-                    property.setValue(dateFormat.format(Date.from(date.getValue().getDate().toInstant())));
-                    return property;
-                });
-        clmnFilesChanged.setCellValueFactory(new PropertyValueFactory<>("filesChanged"));
-
-
-        if (commits != null) {
-            ObservableList<CommitTable> data = FXCollections.observableArrayList();
-            for (Commit commit : commits) {
-                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.YYYY");
-
-                if (datePickerStart.getValue() != null && datePickerEnd.getValue() != null) {
-
-                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue()) &&
-                            commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue()))
-                        data.add(new CommitTable(commit.getCommitMessage(),
-                                commit.getCommitDateTime(),
-                                commit.getFilesChanged().size()));
-                } else if (datePickerStart.getValue() != null) {
-                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue()))
-                        data.add(new CommitTable(commit.getCommitMessage(),
-                                commit.getCommitDateTime(),
-                                commit.getFilesChanged().size()));
-                } else if (datePickerEnd.getValue() != null) {
-                    if (commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue()))
-                        data.add(new CommitTable(commit.getCommitMessage(),
-                                commit.getCommitDateTime(),
-                                commit.getFilesChanged().size()));
-                } else {
-                    data.add(new CommitTable(commit.getCommitMessage(),
-                            commit.getCommitDateTime(),
-                            commit.getFilesChanged().size()));
-                }
-
-            }
-
-            tableForCommits.setItems(data);
-
-        }
     }
 
     public void exitButtonAction(ActionEvent event) {
@@ -136,4 +94,51 @@ public class CommitsController {
     public void setRepositoryTable(RepositoryTable repositoryTable) {
         this.repositoryTable = repositoryTable;
     }
+
+    /**
+     * Основной метод отображение коммитов
+     */
+    public void showCommits() {
+
+        Collection<Commit> commits;
+        if (this.projectTable != null) {
+            commits = this.projectTable.getCommits();
+        } else if (this.repositoryTable != null) {
+            commits = this.repositoryTable.getCommits();
+        } else {
+            commits = uInterface.getLastCommits(author);
+        }
+
+        if (commits != null) {
+            ObservableList<CommitTable> data = FXCollections.observableArrayList();
+            for (Commit commit : commits) {
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.YYYY");
+
+                if (datePickerStart.getValue() != null && datePickerEnd.getValue() != null) {
+                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue().minusDays(1)) &&
+                            commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue().plusDays(1)))
+                        data.add(new CommitTable(commit.getCommitMessage(),
+                                commit.getCommitDateTime(),
+                                commit.getFilesChanged().size()));
+                } else if (datePickerStart.getValue() != null) {
+                    if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue().minusDays(1)))
+                        data.add(new CommitTable(commit.getCommitMessage(),
+                                commit.getCommitDateTime(),
+                                commit.getFilesChanged().size()));
+                } else if (datePickerEnd.getValue() != null) {
+                    if (commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue().plusDays(1)))
+                        data.add(new CommitTable(commit.getCommitMessage(),
+                                commit.getCommitDateTime(),
+                                commit.getFilesChanged().size()));
+                } else {
+                    data.add(new CommitTable(commit.getCommitMessage(),
+                            commit.getCommitDateTime(),
+                            commit.getFilesChanged().size()));
+                }
+
+            }
+            tableForCommits.setItems(data);
+        }
+    }
+
 }

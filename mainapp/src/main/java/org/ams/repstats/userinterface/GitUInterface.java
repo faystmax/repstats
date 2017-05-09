@@ -191,6 +191,16 @@ public class GitUInterface implements UInterface {
     }
 
     @Override
+    public Author getAuthorByEmail(String email) {
+        for (Author author : branchDetails.getAuthorToCommitMap().keySet()) {
+            if (author.getEmailAddress().equals(email)) {
+                return author;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Collection<Commit> getLastCommits(Author author) {
         Collection<Commit> commits;
         for (Author authortmp : branchDetails.getAuthorToCommitMap().keySet()) {

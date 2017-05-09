@@ -108,6 +108,11 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
+    public Author getAuthorByEmail(String email) {
+        return null;
+    }
+
+    @Override
     public Collection<Commit> getLastCommits(Author author) {
         return null;
     }
