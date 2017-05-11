@@ -109,7 +109,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     private DirectoryChooser directoryChooser;
     private File projectDir;
-
+    Task<Boolean> task;
 
     @FXML
     public void initialize() {
@@ -254,7 +254,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
      */
     private void startMainTask() {
         // начинаем анализ
-        Task<Boolean> task = new Task<Boolean>() {
+        task = new Task<Boolean>() {
             @Override
             public Boolean call() throws GitAPIException {
 
@@ -351,6 +351,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                             projectTable.addLinesDelete(finalLinesDelInProject);
                             projectTable.addNetContributiont(finalLinesAddInProject - finalLinesDelInProject);
 
+                            allCommits += finalAllCommitsInProject;
+                            linesAdd += finalLinesAddInProject;
+                            linesDel += finalLinesDelInProject;
+
                         });
 
                         totalLines += getuInterface().getTotalNumberOfLines();
@@ -358,9 +362,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         repositoryData.add(newRepositoryTable);
                     }
 
-                    allCommits += projectTable.getCommitCount();
-                    linesAdd += projectTable.getLinesAdd();
-                    linesDel += projectTable.getLinesDelete();
+
 
                 }
 
@@ -380,7 +382,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             }
         };
 
-        task.setOnRunning((e) -> Utils.openLoadingWindow());
+        task.setOnRunning((e) -> Utils.openLoadingWindow(task));
         task.setOnSucceeded((e) -> {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
@@ -451,7 +453,15 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         lbKolCommit.setText(Integer.toString(allCommits));
         lbKolStrokAdd.setText(Integer.toString(linesAdd));
         lbKolStrokDel.setText(Integer.toString(linesDel));
-        lbPokr.setText(String.valueOf(Math.ceil((((double) linesAdd - linesDel) / totalLines) * 100)) + "%");
+        double vklad = Math.ceil((((double) linesAdd - linesDel) / totalLines) * 100);
+        if (vklad < 0) {
+            vklad *= -1;
+        }
+        if (vklad > 100) {
+            vklad = 100;
+        }
+        lbPokr.setText(String.valueOf(vklad) + "%");
+
     }
 
     @Override

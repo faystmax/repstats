@@ -128,7 +128,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     private DirectoryChooser directoryChooser;
     private File projectDir;
-
+    Task<Boolean> task;
 
     @FXML
     public void initialize() {
@@ -249,7 +249,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
      */
     @Override
     public void start() {
-        Task<Boolean> task = new Task<Boolean>() {
+        task = new Task<Boolean>() {
             @Override
             public Boolean call() throws GitAPIException {
                 // do your operation in here
@@ -279,7 +279,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             }
         };
 
-        task.setOnRunning((e) -> Utils.openLoadingWindow());
+        task.setOnRunning((e) -> Utils.openLoadingWindow(task));
         task.setOnSucceeded((e) -> {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
@@ -309,7 +309,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
         // here runs the JavaFX thread
         // Boolean as generic parameter since you want to return it
-        Task<Boolean> task = new Task<Boolean>() {
+        task = new Task<Boolean>() {
             @Override
             public Boolean call() throws GitAPIException {
                 // do your operation in here
@@ -343,7 +343,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             }
         };
 
-        task.setOnRunning((e) -> Utils.openLoadingWindow());
+        task.setOnRunning((e) -> Utils.openLoadingWindow(task));
         task.setOnSucceeded((e) -> {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread

@@ -110,7 +110,8 @@
                                                             </font>
                                                         </Label>
                                                         <Label maxHeight="1.7976931348623157E308"
-                                                               maxWidth="1.7976931348623157E308" text="Всего коммитов:"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Всего коммитов разработчика:"
                                                                GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
                                                                GridPane.vgrow="ALWAYS">
                                                             <font>
@@ -128,14 +129,16 @@
                                                         </Label>
                                                         <Label maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308"
-                                                               text="Всего строк добавлено:" GridPane.rowIndex="3">
+                                                               text="Всего строк добавлено разработчиком:"
+                                                               GridPane.rowIndex="3">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
                                                         <Label maxHeight="1.7976931348623157E308"
                                                                maxWidth="1.7976931348623157E308"
-                                                               text="Всего строк удалено:" GridPane.rowIndex="4">
+                                                               text="Всего строк удалено разработчиком:"
+                                                               GridPane.rowIndex="4">
                                                             <font>
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>

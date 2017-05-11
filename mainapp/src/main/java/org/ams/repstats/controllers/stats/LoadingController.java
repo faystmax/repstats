@@ -1,5 +1,7 @@
 package org.ams.repstats.controllers.stats;
 
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
@@ -19,17 +21,21 @@ public class LoadingController {
     //region << UI Компоненты
     @FXML
     private ProgressBar progressBar;
+    private Task<Boolean> task;
     //endregion
 
     @FXML
     public void initialize() {
     }
 
-    /**
-     * Закрытие окна
-     */
-    public void closeStage() {
+
+    public void cancelAction(ActionEvent event) {
+        task.cancel(true);
         Stage stage = (Stage) progressBar.getScene().getWindow();
         stage.close();
+    }
+
+    public void setTask(Task<Boolean> task) {
+        this.task = task;
     }
 }

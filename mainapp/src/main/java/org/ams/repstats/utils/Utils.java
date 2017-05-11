@@ -1,6 +1,7 @@
 package org.ams.repstats.utils;
 
 import com.sun.istack.internal.NotNull;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,6 +12,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.ams.repstats.controllers.stats.LoadingController;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 
@@ -220,8 +222,9 @@ public class Utils {
 
     /**
      * Открытие окна загрузки
+     * @param task
      */
-    public static void openLoadingWindow() {
+    public static void openLoadingWindow(Task<Boolean> task) {
         try {
             //Запуск анализа - открытие окна загрузки
             FXMLLoader loader = new FXMLLoader();
@@ -233,6 +236,8 @@ public class Utils {
             loadingStage.setScene(new Scene(aboutLayout));
             loadingStage.getIcons().add(new Image("icons/loadIcon.png"));
             loadingStage.initModality(Modality.APPLICATION_MODAL);
+            LoadingController controller = loader.getController();
+            controller.setTask(task);
 
             //Инициализируем и запускаем
             loadingStage.show();
