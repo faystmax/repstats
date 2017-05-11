@@ -68,7 +68,7 @@ public class GitRepositoryReader {
 
         ObjectId lastCommitId = repository.resolve(branch.getName());
         RevWalk revWalk = new RevWalk(repository);
-        Commit commit = Commits.fromRevCommit(repository, revWalk.parseCommit(lastCommitId));
+        Commit commit = Commits.fromRevCommit(repository, revWalk.parseCommit(lastCommitId), null);
         revWalk.release();
 
         return commit;

@@ -1,5 +1,6 @@
 package org.ams.repstats.fortableview;
 
+import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -27,10 +28,11 @@ public class RepositoryTable {
     private SimpleIntegerProperty id_project_repository;
 
     //доп. поля
-    private SimpleIntegerProperty commitCount;
-    private SimpleIntegerProperty linesAdd;
-    private SimpleIntegerProperty linesDelete;
-    private SimpleIntegerProperty netContribution;
+    private SimpleIntegerProperty commitCount = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty linesAdd = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty linesDelete = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty netContribution = new SimpleIntegerProperty(0);
+    private Author author;
 
     private Collection<Commit> commits = new ArrayList<Commit>();
 
@@ -49,12 +51,9 @@ public class RepositoryTable {
         netContribution = new SimpleIntegerProperty(0);
     }
 
-    public RepositoryTable(String url, int commitCount, int linesAdd, int linesDelete, int netContribution) {
+    public RepositoryTable(String url, Author author) {
         this.url = new SimpleStringProperty(url);
-        this.commitCount = new SimpleIntegerProperty(commitCount);
-        this.linesAdd = new SimpleIntegerProperty(linesAdd);
-        this.linesDelete = new SimpleIntegerProperty(linesDelete);
-        this.netContribution = new SimpleIntegerProperty(netContribution);
+        this.author = author;
     }
 
     public int getId() {
@@ -207,5 +206,29 @@ public class RepositoryTable {
 
     public void setCommits(Collection<Commit> commits) {
         this.commits = commits;
+    }
+
+    public void addCommitCount(int commitCount) {
+        this.commitCount.set(this.commitCount.get() + commitCount);
+    }
+
+    public void addLinesAdd(int linesAdd) {
+        this.linesAdd.set(this.linesAdd.get() + linesAdd);
+    }
+
+    public void addLinesDelete(int linesDelete) {
+        this.linesDelete.set(this.linesDelete.get() + linesDelete);
+    }
+
+    public void addNetContributiont(int netContribution) {
+        this.netContribution.set(this.netContribution.get() + netContribution);
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

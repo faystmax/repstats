@@ -1,5 +1,6 @@
 package org.ams.repstats.utils;
 
+import com.sun.istack.internal.NotNull;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 
 import java.io.*;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class Utils {
 
     public static Stage loadingStage;
+
     /**
      * Отображаем Диалоговое окно Alert
      *
@@ -188,6 +191,36 @@ public class Utils {
         path.delete();
     }
 
+    /**
+     * Загрузка репозитория
+     *
+     * @param githubRemoteUrl Remote git http url which ends with .git.
+     * @param branchName      Name of the branch which should be downloaded
+     * @param destinationDir  Destination directory where the downloaded files should be present.
+     * @return
+     * @throws Exception
+     */
+    public static boolean downloadRepoContent(@NotNull String githubRemoteUrl, @NotNull String branchName, @NotNull String destinationDir) throws Exception {
+
+
+        File destinationFile = new File(destinationDir);
+        //delete any existing file
+        FileUtils.deleteDirectory(destinationFile);
+        Git call = Git.cloneRepository().setURI(githubRemoteUrl)
+                .setBranch(branchName)
+                .setDirectory(destinationFile)
+                .call();
+        call.getRepository().close();
+        if (destinationFile.length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Открытие окна загрузки
+     */
     public static void openLoadingWindow() {
         try {
             //Запуск анализа - открытие окна загрузки
@@ -215,7 +248,13 @@ public class Utils {
         loadingStage.close();
     }
 
+    /**
+     * Установка лейбла
+     *
+     * @param tableView label
+     */
     public static void setEmptyTableMessage(TableView tableView) {
         tableView.setPlaceholder(new Label("Данные отсутствуют"));
     }
 }
+

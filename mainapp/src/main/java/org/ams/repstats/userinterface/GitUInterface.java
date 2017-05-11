@@ -99,11 +99,11 @@ public class GitUInterface implements UInterface {
 
     public DiffChart getChart() {
         if (branchDetails != null) {
-                Multimap<Author, CommitDiff> authorToCommitDiffMap = branchDetails.getAuthorToCommitDiffsMap();
-                ArrayList<CommitDiff> commitDiffList = null;
-                for (Author author : authorToCommitDiffMap.keySet()) {
-                    commitDiffList = new ArrayList<CommitDiff>(authorToCommitDiffMap.get(author));
-                }
+            Multimap<Author, CommitDiff> authorToCommitDiffMap = branchDetails.getAuthorToCommitDiffsMap();
+            ArrayList<CommitDiff> commitDiffList = null;
+            for (Author author : authorToCommitDiffMap.keySet()) {
+                commitDiffList = new ArrayList<CommitDiff>(authorToCommitDiffMap.get(author));
+            }
             DiffChart DiffChart = new DiffChart(commitDiffList);
             return DiffChart;
         }
@@ -170,10 +170,14 @@ public class GitUInterface implements UInterface {
     @Override
     public void closeRepository() {
         try {
-            File gitRoot = new File(gitPath);
-            LOGGER.debug("Closing git Repository in {}", gitRoot.getAbsolutePath());
-            branchDetails.closeRepository();
+            LOGGER.debug("Closing git Repository...");
+            if (branchDetails == null) {
+                LOGGER.debug("Nothing to close...");
 
+            } else {
+                branchDetails.closeRepository();
+                LOGGER.debug("Git Repository closed - {}.", new File(gitPath).getAbsolutePath());
+            }
         } catch (Exception e) {
             LOGGER.error("Error while closing git Repository");
         }

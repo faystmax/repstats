@@ -20,21 +20,24 @@ public class GitFile {
     private String path;                ///< Полный путь до файла
     private FileMode fileMode;          ///< Тип файла
     private boolean isBinary;           ///< Если бинариник - истина, иначе - ложь
-    //private byte[] byteContents;        ///< Содержание файла
-    //private List<String> contents;      ///< Список строк файла
+    //private byte[] byteContents;      ///< Содержание файла
+    //private List<String> contents;    ///< Список строк файла
     private int numberOfLines;          ///< Кол-во строк кода
+    private String changeTypeName;      ///< Тип изминения
 
     /**
      * Инициализирует git файл.
      *
-     * @param path     Полный путь до файла
-     * @param fileMode Тип файла
-     * @param bytes    Содержание файла
+     * @param path                  Полный путь до файла
+     * @param fileMode              Тип файла
+     * @param bytes                 Содержание файла
+     * @param changeTypeName        Тип изминения
      */
-    public GitFile(String path, FileMode fileMode, byte[] bytes) {
+    public GitFile(String path, FileMode fileMode, byte[] bytes, String changeTypeName) {
         this.path = path;
         this.fileMode = fileMode;
         this.isBinary = RawText.isBinary(bytes);
+        this.changeTypeName = changeTypeName;
 
         numberOfLines = getContents(bytes).size();
 
@@ -97,4 +100,12 @@ public class GitFile {
         return path;
     }
 
+    /**
+     * Возвращает тип изминения
+     *
+     * @return тип изминения
+     */
+    public String getChangeTypeName() {
+        return changeTypeName;
+    }
 }

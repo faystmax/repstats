@@ -1,6 +1,7 @@
 package com.selesse.gitwrapper.myobjects;
 
 import com.google.common.collect.Lists;
+import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
@@ -37,11 +38,14 @@ class Commits {
      * @return ссылку на коммит
      * @throws IOException ошибка при чтении репозитория
      */
-    public static Commit fromRevCommit(Repository repository, RevCommit revCommit) throws IOException {
+    public static Commit fromRevCommit(Repository repository, RevCommit revCommit, List<DiffEntry> diffs) throws IOException {
         List<GitFile> gitFileList = Lists.newArrayList();
 
         TreeWalk treeWalk = new TreeWalk(repository);
+        treeWalk.reset();
+        treeWalk.setRecursive(true);
         treeWalk.addTree(revCommit.getTree());
+
         while (treeWalk.next()) {
             int objectIdIndex = 0;
 
@@ -52,13 +56,29 @@ class Commits {
 
             if (treeWalk.isSubtree()) {
                 treeWalk.enterSubtree();
+            } else if (fileMode == FileMode.GITLINK) {
+                continue;
             } else {
+
                 ObjectId objectId = treeWalk.getObjectId(objectIdIndex);
                 ObjectLoader objectLoader = repository.open(objectId);
                 byte[] fileBytes = objectLoader.getBytes();
 
-                GitFile gitFile = new GitFile(pathString, treeWalk.getFileMode(objectIdIndex), fileBytes);
-                gitFileList.add(gitFile);
+                if (diffs != null) {
+                    for (DiffEntry diff : diffs) {
+                        //System.out.println(MessageFormat.format("({0} {1} {2}", diff.getChangeType().name(), diff.getNewMode().getBits(), diff.getNewPath()));
+                        if (diff.getNewPath().equals(pathString)) {
+                            GitFile gitFile = new GitFile(pathString, treeWalk.getFileMode(objectIdIndex), fileBytes, diff.getChangeType().name());
+                            gitFileList.add(gitFile);
+                            break;
+                        }
+                    }
+                } else {
+                    GitFile gitFile = new GitFile(pathString, treeWalk.getFileMode(objectIdIndex), fileBytes, null);
+                    gitFileList.add(gitFile);
+                }
+
+
             }
         }
 

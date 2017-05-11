@@ -1,5 +1,6 @@
 package org.ams.repstats.fortableview;
 
+import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,6 +31,7 @@ public class ProjectTable {
     private SimpleIntegerProperty linesAdd;
     private SimpleIntegerProperty linesDelete;
     private SimpleIntegerProperty netContribution;
+    private Author author;
 
     private Collection<Commit> commits = new ArrayList<Commit>();
 
@@ -183,6 +185,31 @@ public class ProjectTable {
 
     public void setCommits(Collection<Commit> commits) {
         this.commits = commits;
+    }
+
+    public void addCommitCount(int commitCount) {
+        this.commitCount.set(this.commitCount.get() + commitCount);
+    }
+
+    public void addLinesAdd(int linesAdd) {
+        this.linesAdd.set(this.linesAdd.get() + linesAdd);
+    }
+
+    public void addLinesDelete(int linesDelete) {
+        this.linesDelete.set(this.linesDelete.get() + linesDelete);
+    }
+
+    public void addNetContributiont(int netContribution) {
+        this.netContribution.set(this.netContribution.get() + netContribution);
+    }
+
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }
 

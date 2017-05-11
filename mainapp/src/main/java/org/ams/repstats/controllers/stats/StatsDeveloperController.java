@@ -27,7 +27,6 @@ import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -247,7 +246,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             //выход т.к не с чем работать
             return;
         }
+        startMainTask();
+    }
 
+    /**
+     * Основной метод анализа
+     */
+    private void startMainTask() {
         // начинаем анализ
         Task<Boolean> task = new Task<Boolean>() {
             @Override
@@ -277,17 +282,20 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                 //основной цикл по проектам и репозиториям
                 for (ProjectTable projectTable : projects) {
-                    int allCommitsInProject = 0;
-                    int linesAddInProject = 0;
-                    int linesDelInProject = 0;
 
-                    int curCommits = 0;
-                    int curlinesAdd = 0;
-                    int curlinesDel = 0;
                     RepositoryTable newRepositoryTable = null;
 
                     for (String url : projectTable.getUrls()) {
-                        downloadRepository(url);
+                        try {
+                            closeRepository();
+                            String destinationDir = "./cloneRep";
+                            Utils.downloadRepoContent(url, "master", destinationDir);
+                            setNewRepDirectory(new File(destinationDir));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Utils.showAlert("Ошибка", "Ошибка загрузки репозитория!");
+                        }
                         // проверяем и начинаем анализ
                         if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
                             Utils.showAlert("Ошибка", "Выбрана неверная директория!");
@@ -295,17 +303,15 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                             return false;
                         }
                         if (!getuInterface().startProjectAnalyze(start, end)) {
-                            Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
+                            Platform.runLater(() -> Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!"));
                             setStart(false);
                             return false;
                         } else {
                             setStart(true);
                         }
 
-                        curCommits = 0;
-                        curlinesAdd = 0;
-                        curlinesDel = 0;
                         selectedAuthor = getuInterface().getAuthorByEmail(selectedDeveloper.getGitemail());
+                        newRepositoryTable = new RepositoryTable(url, selectedAuthor);
 
                         //сохраняем данные о репозитории
                         DeveloperTable cur = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem());
@@ -318,44 +324,44 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                             //автор совпал
                             if (Objects.equals(data.get(i).getEmail(), cur.getGitemail()) /*&& Objects.equals(data.get(i).getName(), cur.getGitname()*/) {
+                                newRepositoryTable.addCommitCount(data.get(i).getCommitCount());
+                                newRepositoryTable.addLinesAdd(data.get(i).getLinesAdded());
+                                newRepositoryTable.addLinesDelete(data.get(i).getLinesRemoved());
 
-                                curCommits += data.get(i).getCommitCount();
-                                curlinesAdd += data.get(i).getLinesAdded();
-                                curlinesDel += data.get(i).getLinesRemoved();
-
+                                if (newRepositoryTable.getAuthor() != null) {
+                                    Author author = getuInterface().getAuthorByName(cur.getGitname());
+                                    if (author == null) {
+                                        author = getuInterface().getAuthorByEmail(cur.getGitemail());
+                                    }
+                                    newRepositoryTable.setCommits(getuInterface().getLastCommits(author));
+                                    projectTable.getCommits().addAll(newRepositoryTable.getCommits());
+                                }
                             }
                         }
+                        newRepositoryTable.addNetContributiont(newRepositoryTable.getLinesAdd() - newRepositoryTable.getLinesDelete());
 
-                        allCommitsInProject += curCommits;
-                        linesAddInProject += curlinesAdd;
-                        linesDelInProject += curlinesDel;
+
+                        int finalAllCommitsInProject = newRepositoryTable.getCommitCount();
+                        int finalLinesAddInProject = newRepositoryTable.getLinesAdd();
+                        int finalLinesDelInProject = newRepositoryTable.getLinesDelete();
+                        Platform.runLater(() -> {
+                            //сохраняем данные о проекте
+                            projectTable.addCommitCount(finalAllCommitsInProject);
+                            projectTable.addLinesAdd(finalLinesAddInProject);
+                            projectTable.addLinesDelete(finalLinesDelInProject);
+                            projectTable.addNetContributiont(finalLinesAddInProject - finalLinesDelInProject);
+
+                        });
 
                         totalLines += getuInterface().getTotalNumberOfLines();
-                        newRepositoryTable = new RepositoryTable(url, curCommits, curlinesAdd, curlinesDel, curlinesAdd - curlinesDel);
+
                         repositoryData.add(newRepositoryTable);
-                        if (selectedAuthor != null) {
-                            newRepositoryTable.setCommits(getuInterface().getLastCommits(selectedAuthor));
-                            projectTable.getCommits().addAll(newRepositoryTable.getCommits());
-                        }
                     }
 
+                    allCommits += projectTable.getCommitCount();
+                    linesAdd += projectTable.getLinesAdd();
+                    linesDel += projectTable.getLinesDelete();
 
-                    allCommits += allCommitsInProject;
-                    linesAdd += linesAddInProject;
-                    linesDel += linesDelInProject;
-
-
-                    int finalAllCommitsInProject = allCommitsInProject;
-                    int finalLinesAddInProject = linesAddInProject;
-                    int finalLinesDelInProject = linesDelInProject;
-                    Platform.runLater(() -> {
-                        //сохраняем данные о проекте
-                        projectTable.setCommitCount(finalAllCommitsInProject);
-                        projectTable.setLinesAdd(finalLinesAddInProject);
-                        projectTable.setLinesDelete(finalLinesDelInProject);
-                        projectTable.setNetContribution(finalLinesAddInProject - finalLinesDelInProject);
-
-                    });
                 }
 
                 //выводим данные о репозитории в поток javafx
@@ -381,6 +387,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         });
         task.setOnFailed((e) -> {
             // eventual error handling by catching exceptions from task.get()
+            task.getException().printStackTrace();
             LOGGER.error(task.getException().getMessage());
             task.getException().printStackTrace();
             Utils.showAlert("Ошибка", "Один из репозиториев не существует," +
@@ -389,7 +396,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         });
         new Thread(task).start();
     }
-
 
     /**
      * Окно для выбора промежутка времени и проектов
@@ -417,31 +423,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
     }
 
-    /**
-     * Загрузка репозитория
-     *
-     * @param url репозитория
-     * @throws GitAPIException
-     */
-    private void downloadRepository(String url) throws GitAPIException {
-        File dir = new File("./cloneRep");
-        if (dir.exists()) {
-            setNewRepDirectory(null);
-            Platform.runLater(this::closeRepository);
-            closeRepository();
-            Utils.deleteRecursive(dir);
 
-            Git git = Git.cloneRepository()
-                    .setURI(url)
-                    .setDirectory(new File("./cloneRep"))
-                    .call();
-            git.getRepository().close();
-            projectDir = dir;
-        }
-        Platform.runLater(() -> {
-            projectDir = dir;
-        });
-    }
 
     @Override
     public void closeRepository() {

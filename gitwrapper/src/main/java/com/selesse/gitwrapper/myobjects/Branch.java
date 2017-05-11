@@ -3,11 +3,16 @@ package com.selesse.gitwrapper.myobjects;
 import com.google.common.collect.Lists;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.filter.TreeFilter;
+import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -100,11 +105,22 @@ public class Branch {
                     }
 
                     if (foundInThisBranch) {
+                        List<DiffEntry> diffs = null;
+
+                        if (commit.getParent(0) != null) {
+                            DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
+                            df.setRepository(repository);
+                            df.setDiffComparator(RawTextComparator.DEFAULT);
+                            df.setDetectRenames(true);
+                            RevCommit parent = walk.parseCommit(commit.getParent(0).getId());
+                            diffs = df.scan(parent.getTree(), commit.getTree());
+                        }
+
                         // bug with update funct.xml
                         try {
-                            revCommitList.add(Commits.fromRevCommit(repository, commit));
+                            revCommitList.add(Commits.fromRevCommit(repository, commit, diffs));
                         } catch (Exception e) {
-                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0)));
+                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0), diffs));
                         }
                     }
                 }
@@ -128,6 +144,7 @@ public class Branch {
 
             Git git = new Git(repository);
             RevWalk walk = new RevWalk(repository);
+            walk.setTreeFilter(TreeFilter.ANY_DIFF);
 
             List<Ref> branches = git.branchList().call();
 
@@ -163,11 +180,23 @@ public class Branch {
                     }
 
                     if (foundInThisBranch) {
+
+                        List<DiffEntry> diffs = null;
+
+                        if (commit.getParentCount() != 0) {
+                            DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
+                            df.setRepository(repository);
+                            df.setDiffComparator(RawTextComparator.DEFAULT);
+                            df.setDetectRenames(true);
+                            RevCommit parent = walk.parseCommit(commit.getParent(0).getId());
+                            diffs = df.scan(parent.getTree(), commit.getTree());
+                        }
+
                         // bug with update funct.xml
                         try {
-                            revCommitList.add(Commits.fromRevCommit(repository, commit));
+                            revCommitList.add(Commits.fromRevCommit(repository, commit, diffs));
                         } catch (Exception e) {
-                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0)));
+                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0), diffs));
                         }
                     }
                 }

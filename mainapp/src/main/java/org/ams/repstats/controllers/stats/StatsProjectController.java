@@ -361,6 +361,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
             }
         }
     }
+
 }
 
 

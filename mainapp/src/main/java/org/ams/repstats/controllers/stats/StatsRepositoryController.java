@@ -598,4 +598,5 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             }
         }
     }
+
 }
