@@ -39,7 +39,6 @@ public class MyProperties {
             // load startwindow property
             StartWindowSetter.setCurrentStartWindow(prop.getProperty("startWindow"));
 
-            // load repository
 
 
         } catch (IOException ex) {
@@ -60,7 +59,6 @@ public class MyProperties {
      */
     public static void writeProperties() {
         try {
-
             output = new FileOutputStream(filePropertyName);
 
             // set database properties value
@@ -74,6 +72,9 @@ public class MyProperties {
 
             // save properties to project root folder
             prop.store(output, null);
+
+            // save local rep path
+            //RepositoryDownloader.loadToProperty(prop);
 
         } catch (IOException io) {
             io.printStackTrace();
@@ -91,6 +92,11 @@ public class MyProperties {
 
     public static String givePropValue(String key) {
         return prop.getProperty(key);
+    }
+
+    public static void loadRepositories() {
+        // load repository
+        RepositoryDownloader.loadRepositoriesFromProperties(prop);
     }
 
 }

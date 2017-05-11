@@ -30,9 +30,9 @@ import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
+import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -327,7 +327,16 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             @Override
             public Boolean call() throws GitAPIException {
                 // do your operation in here
-                downloadRepository(url);
+                try {
+                    closeRepository();
+                    File destinationFile = RepositoryDownloader.downloadRepoContent(url, "master");
+                    setNewRepDirectory(destinationFile);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utils.showAlert("Ошибка", "Ошибка загрузки репозитория!");
+                }
+
                 if (!getuInterface().сhooseProjectDirectory(projectDir.getAbsolutePath())) {
                     Utils.showAlert("Ошибка", "Выбрана неверная директория!");
                     setStart(false);
@@ -362,7 +371,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             // process return value again in JavaFX thread
         });
         task.setOnFailed((e) -> {
-            // eventual error handling by catching exceptions from task.get()
+            // eventual error handling by catching exceptions from task.get
+            task.getException().printStackTrace();
             LOGGER.error(task.getException().getMessage());
             Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
                     " либо у вас отсутствует подключение к интернету");
@@ -371,30 +381,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         new Thread(task).start();
     }
 
-    /**
-     * Загрузка репозитория
-     *
-     * @param url - url репозитория
-     * @throws GitAPIException - при ошибке скачивания
-     */
-    private void downloadRepository(String url) throws GitAPIException {
-        File dir = new File("./cloneRep");
-        if (dir.exists()) {
-            setNewRepDirectory(null);
-            closeRepository();
-            Utils.deleteRecursive(dir);
 
-            Git git = Git.cloneRepository()
-                    .setURI(url)
-                    .setDirectory(new File("./cloneRep"))
-                    .call();
-            git.getRepository().close();
-            projectDir = dir;
-        }
-        Platform.runLater(() -> {
-            projectDir = dir;
-        });
-    }
 
     @Override
     public void closeRepository() {

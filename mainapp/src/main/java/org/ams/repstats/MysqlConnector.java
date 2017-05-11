@@ -101,6 +101,7 @@ public class MysqlConnector {
     public static final String selectAllRepository = "SELECT repository.id,repository.name,url,date_of_creation,repository.id_developer_responsible," +
             "(SELECT concat(surname,\" \",name,\" \",middlename)  FROM developer WHERE  developer.id = repository.id_developer_responsible) as FIO " +
             "FROM repository ";
+    public static final String selectAllRepositoryUrl = "SELECT id,name,url FROM repository ";
     public static final String insertNewProjectRepository = "insert into project_repository ( id_repository, id_project, description) " +
             "values (?, ?, ?)";
     public static final String insertNewRepository = "insert into repository (name, url, id_developer_responsible, date_of_creation) " +
