@@ -9,6 +9,8 @@ import javax.swing.table.TableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA
@@ -36,6 +38,7 @@ public interface UInterface {
 
     TableModel getAuthors();
 
+
     TableModel getAllFiles();
 
     Author getAuthorByName(String name);
@@ -53,6 +56,11 @@ public interface UInterface {
 
     ArrayList<Branch> getListMergedBranches();
 
-    ArrayList<Integer> getCommitsByMonths();
+    HashMap<Author, ArrayList<Integer>> getCommitsByMonths(ArrayList<Author> allAvtors);
 
+    HashMap<Author, ArrayList<Integer>> getCommitsByDaysInCurMonth(ArrayList<Author> allAvtors);
+
+    HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors);
+
+    Set<Author> getAllAuthors();
 }

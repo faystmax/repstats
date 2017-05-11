@@ -15,6 +15,8 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA
@@ -239,10 +241,24 @@ public class GitUInterface implements UInterface {
     }
 
     @Override
-    public ArrayList<Integer> getCommitsByMonths() {
-        return branchDetails.getCommitsByMonths();
+    public HashMap<Author, ArrayList<Integer>> getCommitsByMonths(ArrayList<Author> allAvtors) {
+        return branchDetails.getCommitsByMonths(allAvtors);
     }
 
+    @Override
+    public HashMap<Author, ArrayList<Integer>> getCommitsByDaysInCurMonth(ArrayList<Author> allAvtors) {
+        return branchDetails.getCommitsByDaysInCurMonth(allAvtors);
+    }
+
+    @Override
+    public HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors) {
+        return branchDetails.getCommitsByWeek(allAvtors);
+    }
+
+    @Override
+    public Set<Author> getAllAuthors() {
+        return branchDetails.getAuthorToCommitMap().keySet();
+    }
 }
 
 

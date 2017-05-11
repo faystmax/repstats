@@ -107,7 +107,7 @@ public class Branch {
                     if (foundInThisBranch) {
                         List<DiffEntry> diffs = null;
 
-                        if (commit.getParent(0) != null) {
+                        if (commit.getParentCount() != 0) {
                             DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
                             df.setRepository(repository);
                             df.setDiffComparator(RawTextComparator.DEFAULT);

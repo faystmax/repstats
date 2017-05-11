@@ -13,9 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.table.TableModel;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA
@@ -139,7 +137,22 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
-    public ArrayList<Integer> getCommitsByMonths() {
+    public HashMap<Author, ArrayList<Integer>> getCommitsByMonths(ArrayList<Author> allAvtors) {
+        return null;
+    }
+
+    @Override
+    public HashMap<Author, ArrayList<Integer>> getCommitsByDaysInCurMonth(ArrayList<Author> allAvtors) {
+        return null;
+    }
+
+    @Override
+    public HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors) {
+        return null;
+    }
+
+    @Override
+    public Set<Author> getAllAuthors() {
         return null;
     }
 }

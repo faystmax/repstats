@@ -44,6 +44,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA
@@ -56,6 +57,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsRepositoryController.class); ///< ссылка на логер
 
     //region << UI Компоненты
+    @FXML
+    private ComboBox comboGraph;
     @FXML
     private TableView repositoryTable;
     @FXML
@@ -129,6 +132,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private DirectoryChooser directoryChooser;
     private File projectDir;
     Task<Boolean> task;
+    ObservableList<String> comboGraphOptions =
+            FXCollections.observableArrayList(
+                    "За 7 дней",
+                    "За месяц",
+                    "За год"
+            );
 
     @FXML
     public void initialize() {
@@ -170,6 +179,11 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         });
 
         btStart.defaultButtonProperty().bind(btStart.focusedProperty());
+
+        // Заполняем  Combobox
+        comboGraph.getItems().addAll(comboGraphOptions);
+        comboGraph.setValue(comboGraphOptions.get(0));
+
     }
 
     private void configureRepositoryClmn() {
@@ -271,7 +285,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAvtors();
                     showAllFiles();
                     showAllBranches();
-                    showCommitsChart();
+                    buildGraph(null);
                     showChartOnImageView();
                     closeRepository();
                 });
@@ -332,11 +346,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAvtors();
                     showAllFiles();
                     showAllBranches();
-                    showCommitsChart();
+                    buildGraph(null);
                     showChartOnImageView();
                     closeRepository();
                 });
-
 
 
                 return true;
@@ -415,7 +428,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
         clmnAvtorEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         clmnAvtorFIO.setCellValueFactory(new PropertyValueFactory<>("FIO"));
-
 
 
         TableModel authors = getuInterface().getAuthors();
@@ -497,35 +509,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         tableMergedBranches.setItems(data);
     }
 
-    public void showCommitsChart() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Месяц");
-
-        //commitsChart = new LineChart<String,Number>(xAxis,yAxis);
-
-        XYChart.Series series = new XYChart.Series();
-        series.setName("Все Коммиты");
-
-        //
-        final ArrayList<Integer> commitsByMonths = this.getuInterface().getCommitsByMonths();
-
-        series.getData().add(new XYChart.Data("Янв", commitsByMonths.get(0)));
-        series.getData().add(new XYChart.Data("Фев", commitsByMonths.get(1)));
-        series.getData().add(new XYChart.Data("Мар", commitsByMonths.get(2)));
-        series.getData().add(new XYChart.Data("Апр", commitsByMonths.get(3)));
-        series.getData().add(new XYChart.Data("Май", commitsByMonths.get(4)));
-        series.getData().add(new XYChart.Data("Июнь", commitsByMonths.get(5)));
-        series.getData().add(new XYChart.Data("Июль", commitsByMonths.get(6)));
-        series.getData().add(new XYChart.Data("Авг", commitsByMonths.get(7)));
-        series.getData().add(new XYChart.Data("Сен", commitsByMonths.get(8)));
-        series.getData().add(new XYChart.Data("Окт", commitsByMonths.get(9)));
-        series.getData().add(new XYChart.Data("Ноя", commitsByMonths.get(10)));
-        series.getData().add(new XYChart.Data("Дек", commitsByMonths.get(11)));
-
-        commitsChart.getData().clear();
-        commitsChart.getData().add(series);
-    }
 
     /**
      * Подгружаем внешний репозиторий
@@ -599,4 +582,87 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Строит график коммитов
+     *
+     * @param event - событие
+     */
+    public void buildGraph(ActionEvent event) {
+        if (isStart()) {
+            String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
+
+            final CategoryAxis xAxis = new CategoryAxis();
+            final NumberAxis yAxis = new NumberAxis();
+
+            XYChart.Series series = new XYChart.Series();
+            series.setName("Все Коммиты");
+
+            ArrayList<Author> allAvtors = new ArrayList<Author>();
+            allAvtors.addAll(getuInterface().getAllAuthors());
+
+            commitsChart.getData().clear();
+
+            //
+            if (selected.equals(comboGraphOptions.get(0))) {
+                xAxis.setLabel("Дни недели");
+                HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtors);
+                for (Author author : authorCommitsByWeek.keySet()) {
+                    ArrayList<Integer> commitsByWeek = authorCommitsByWeek.get(author);
+                    XYChart.Series authorSeries = new XYChart.Series();
+
+                    authorSeries.getData().add(new XYChart.Data("Пн", commitsByWeek.get(0)));
+                    authorSeries.getData().add(new XYChart.Data("Вт", commitsByWeek.get(1)));
+                    authorSeries.getData().add(new XYChart.Data("Ср", commitsByWeek.get(2)));
+                    authorSeries.getData().add(new XYChart.Data("Чт", commitsByWeek.get(3)));
+                    authorSeries.getData().add(new XYChart.Data("Пт", commitsByWeek.get(4)));
+                    authorSeries.getData().add(new XYChart.Data("Сб", commitsByWeek.get(5)));
+                    authorSeries.getData().add(new XYChart.Data("Вс", commitsByWeek.get(6)));
+
+                    authorSeries.setName(author.getName());
+                    commitsChart.getData().add(authorSeries);
+                }
+
+            } else if (selected.equals(comboGraphOptions.get(1))) {
+                xAxis.setLabel("Число");
+                HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtors);
+                for (Author author : authorByDaysInCurMonth.keySet()) {
+                    ArrayList<Integer> commitsByDaysInCurMonth = authorByDaysInCurMonth.get(author);
+                    XYChart.Series authorSeries = new XYChart.Series();
+
+                    for (int i = 0; i < commitsByDaysInCurMonth.size(); i++) {
+                        authorSeries.getData().add(new XYChart.Data(String.valueOf(i + 1), commitsByDaysInCurMonth.get(i)));
+                    }
+
+                    authorSeries.setName(author.getName());
+                    commitsChart.getData().add(authorSeries);
+                }
+            } else if (selected.equals(comboGraphOptions.get(2))) {
+                xAxis.setLabel("Месяц");
+                HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtors);
+
+                for (Author author : commitsByMonths.keySet()) {
+                    ArrayList<Integer> commitsByWeek = commitsByMonths.get(author);
+                    XYChart.Series authorSeries = new XYChart.Series();
+
+                    authorSeries.getData().add(new XYChart.Data("Янв", commitsByWeek.get(0)));
+                    authorSeries.getData().add(new XYChart.Data("Фев", commitsByWeek.get(1)));
+                    authorSeries.getData().add(new XYChart.Data("Мар", commitsByWeek.get(2)));
+                    authorSeries.getData().add(new XYChart.Data("Апр", commitsByWeek.get(3)));
+                    authorSeries.getData().add(new XYChart.Data("Май", commitsByWeek.get(4)));
+                    authorSeries.getData().add(new XYChart.Data("Июнь", commitsByWeek.get(5)));
+                    authorSeries.getData().add(new XYChart.Data("Июль", commitsByWeek.get(6)));
+                    authorSeries.getData().add(new XYChart.Data("Авг", commitsByWeek.get(7)));
+                    authorSeries.getData().add(new XYChart.Data("Сен", commitsByWeek.get(8)));
+                    authorSeries.getData().add(new XYChart.Data("Окт", commitsByWeek.get(9)));
+                    authorSeries.getData().add(new XYChart.Data("Ноя", commitsByWeek.get(10)));
+                    authorSeries.getData().add(new XYChart.Data("Дек", commitsByWeek.get(11)));
+
+                    authorSeries.setName(author.getName());
+                    commitsChart.getData().add(authorSeries);
+                }
+            }
+
+
+        }
+    }
 }

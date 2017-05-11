@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 /**
@@ -194,6 +196,11 @@ public class BranchDetails {
         return repository;
     }
 
+    /**
+     * Возвращает текущую ветку
+     *
+     * @return текущую ветку
+     */
     public ArrayList<Branch> getListCurBranches() {
 
         ArrayList<Branch> curBranches = new ArrayList<Branch>();
@@ -215,6 +222,11 @@ public class BranchDetails {
         return curBranches;
     }
 
+    /**
+     * Возвращает все слитые ветки
+     *
+     * @return все слитые ветки
+     */
     public ArrayList<Branch> getListMergedBranches() {
 
         ArrayList<Branch> mergedBranches = new ArrayList<Branch>();
@@ -237,29 +249,120 @@ public class BranchDetails {
         return mergedBranches;
     }
 
+    /**
+     * Возвращает кол-во коммитов по месяцам
+     *
+     * @return кол-во коммитов по месяцам
+     */
+    public HashMap<Author, ArrayList<Integer>> getCommitsByMonths(ArrayList<Author> allAvtors) {
+        HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
 
-    public ArrayList<Integer> getCommitsByMonths() {
-        ArrayList<Commit> revCommitList = null;
-        ArrayList<Integer> commitsByMonths = new ArrayList<Integer>();
         try {
-            revCommitList = (ArrayList) branch.getCommits();
-            for (int i = 0; i < 12; i++) {
-                commitsByMonths.add(0);
+            for (Author author : allAvtors) {
+                ArrayList<Integer> commitsByMonths = new ArrayList<Integer>();
+                int daysInMonth = LocalDate.now().lengthOfMonth();
+                for (int i = 0; i < 12; i++) {
+                    commitsByMonths.add(0);
+                }
+                // Сохранили автора с его коммитами
+                authorCommitMap.put(author, commitsByMonths);
             }
+
+            ArrayList<Commit> revCommitList = null;
+            revCommitList = (ArrayList) branch.getCommits();
 
             // Сортируем
             for (Commit aRevCommitList : revCommitList) {
-                if (aRevCommitList.getCommitDateTime().getYear() != 2017) {
+                if (aRevCommitList.getCommitDateTime().getYear() != LocalDate.now().getYear()) {
                     continue;
                 }
                 int month = aRevCommitList.getCommitDateTime().getMonthValue();
+                month--;
+
+                ArrayList<Integer> commitsByMonths = authorCommitMap.get(aRevCommitList.getAuthor());
                 commitsByMonths.set(month, commitsByMonths.get(month) + 1);
-
             }
-
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
         }
-        return commitsByMonths;
+        return authorCommitMap;
+    }
+
+    /**
+     * Возвращает кол-во коммитов за месяц
+     *
+     * @return кол-во коммитов за месяц
+     */
+    public HashMap<Author, ArrayList<Integer>> getCommitsByDaysInCurMonth(ArrayList<Author> allAvtors) {
+        HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
+
+        try {
+            for (Author author : allAvtors) {
+                ArrayList<Integer> commitsDaysInCurMonth = new ArrayList<Integer>();
+                int daysInMonth = LocalDate.now().lengthOfMonth();
+                for (int i = 0; i < daysInMonth; i++) {
+                    commitsDaysInCurMonth.add(0);
+                }
+                // Сохранили автора с его коммитами
+                authorCommitMap.put(author, commitsDaysInCurMonth);
+            }
+
+            int curNumberOfMonth = LocalDate.now().getMonthValue();
+
+            ArrayList<Commit> revCommitList = null;
+            revCommitList = (ArrayList) branch.getCommits();
+
+            // Сортируем
+            for (Commit aRevCommitList : revCommitList) {
+                if (aRevCommitList.getCommitDateTime().getMonthValue() != curNumberOfMonth) {
+                    continue;
+                }
+                int day = aRevCommitList.getCommitDateTime().getDayOfMonth();
+                day--;
+
+                ArrayList<Integer> commitsByDaysInCurMonth = authorCommitMap.get(aRevCommitList.getAuthor());
+                commitsByDaysInCurMonth.set(day, commitsByDaysInCurMonth.get(day) + 1);
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+        return authorCommitMap;
+    }
+
+    public HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors) {
+        HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
+
+        try {
+            for (Author author : allAvtors) {
+                ArrayList<Integer> commitsByWeek = new ArrayList<Integer>();
+                for (int i = 0; i < 7; i++) {
+                    commitsByWeek.add(0);
+                }
+
+                // Сохранили автора с его коммитами
+                authorCommitMap.put(author, commitsByWeek);
+            }
+
+            ArrayList<Commit> revCommitList = null;
+            revCommitList = (ArrayList) branch.getCommits();
+
+            // Сортируем
+            for (Commit aRevCommitList : revCommitList) {
+
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int commitWeekNumber = aRevCommitList.getCommitDateTime().get(weekFields.weekOfWeekBasedYear());
+                int curWeekNumber = LocalDate.now().get(weekFields.weekOfWeekBasedYear());
+                if (commitWeekNumber != curWeekNumber || aRevCommitList.getCommitDateTime().getYear() != LocalDate.now().getYear()) {
+                    continue;
+                }
+                int dayOfWeek = aRevCommitList.getCommitDateTime().getDayOfWeek().getValue();
+                dayOfWeek--;
+                ArrayList<Integer> commitsByWeek = authorCommitMap.get(aRevCommitList.getAuthor());
+                commitsByWeek.set(dayOfWeek, commitsByWeek.get(dayOfWeek) + 1);
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+        return authorCommitMap;
     }
 }

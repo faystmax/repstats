@@ -39,6 +39,9 @@ public class MyProperties {
             // load startwindow property
             StartWindowSetter.setCurrentStartWindow(prop.getProperty("startWindow"));
 
+            // load repository
+
+
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
