@@ -207,14 +207,14 @@ public class BranchDetails {
         Repository repository = this.getRepository().getRepository();
         Git git = new Git(repository);
 
-        //System.out.println("Listing local branches:");
+        LOGGER.info("Listing local branches:");
         try {
             List<Ref> call = null;
             call = git.branchList().call();
 
             for (Ref ref : call) {
                 curBranches.add(new Branch(repository, ref.getName(), ref.getObjectId().getName()));
-                //System.out.println("Branch: " + ref + " " + ref.getName() + " " + ref.getObjectId().getName());
+                LOGGER.info("Branch: " + ref + " " + ref.getName() + " " + ref.getObjectId().getName());
             }
         } catch (GitAPIException e) {
             e.printStackTrace();
@@ -237,11 +237,11 @@ public class BranchDetails {
             List<Ref> call = null;
             call = git.branchList().call();
 
-            //System.out.println("Now including remote branches:");
+            LOGGER.info("Now including remote branches:");
             call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
             for (Ref ref : call) {
                 mergedBranches.add(new Branch(repository, ref.getName(), ref.getObjectId().getName()));
-                System.out.println("Branch: " + ref + " " + ref.getName() + " " + ref.getObjectId().getName());
+                LOGGER.info("Branch: " + ref + " " + ref.getName() + " " + ref.getObjectId().getName());
             }
         } catch (GitAPIException e) {
             e.printStackTrace();

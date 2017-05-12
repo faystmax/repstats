@@ -1,6 +1,7 @@
 package org.ams.repstats.controllers.stats;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,15 +9,13 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.ams.repstats.controllers.mytask.MyDownloadRepTask;
+import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
-import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA
@@ -82,64 +81,61 @@ public class CloneRepViewController {
     public void chooseButtonAction(ActionEvent event) {
         if (!isStart) {
             isStart = true;
-            try {
-                File dir = new File("./cloneRep");
-                if (dir.exists()) {
-                    fxViewInterfaceController.setNewRepDirectory(null);
-                    deleteRecursive(dir);
+
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                public Boolean call() throws GitAPIException {
+                    // do your operation in here
+                    try {
+                        File destinationFile = RepositoryDownloader.downloadRepoContent(tbURL.getText(), "master");
+                        Platform.runLater(() -> {
+                            fxViewInterfaceController.setNewRepDirectory(destinationFile);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Utils.showAlert("Ошибка", "Ошибка загрузки репозитория!");
+                    }
+
+                    return true;
                 }
-                /*
-                 *  Task для подкачки  внешнего репозитория
-                 */
-                MyDownloadRepTask task = new MyDownloadRepTask(this, fxViewInterfaceController, tbURL);
-                pbDownload.progressProperty().bind(task.progressProperty());
-                new Thread(task).start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            };
+
+            task.setOnRunning((e) -> {
+                Platform.runLater(() -> {
+                    pbDownload.setProgress(-1);
+                });
+            });
+            task.setOnSucceeded((e) -> {
+                Platform.runLater(() -> {
+                    pbDownload.setProgress(1);
+                    isStart = false;
+
+                });
+            });
+            task.setOnFailed((e) -> {
+                // eventual error handling by catching exceptions from task.get
+                task.getException().printStackTrace();
+                Platform.runLater(() -> {
+                    pbDownload.setProgress(0);
+                    isStart = false;
+
+                });
+                Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
+                        " либо у вас отсутствует подключение к интернету");
+            });
+            new Thread(task).start();
+
         }
     }
 
     /**
      * ошибка подкачки репозитория
      */
+
     public void downloadError() {
         Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
                 " либо у вас отсутствует подключение к интернету");
         isStart = false;
         Platform.runLater(() -> btExit.requestFocus());
     }
-
-
-    /**
-     * Удаление дирректории рекурсивно
-     *
-     * @param path - путь для удаления
-     */
-    public void deleteRecursive(File path) {
-        try {
-            Git git = Git.open(path);
-            git.getRepository().close();
-            this.fxViewInterfaceController.closeRepository();
-        } catch (IOException e) {
-        }
-        path.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.isDirectory()) {
-                    pathname.listFiles(this);
-                    pathname.delete();
-                } else {
-                    pathname.delete();
-                }
-                return false;
-            }
-        });
-        path.delete();
-    }
-
-
-
-
-
 }

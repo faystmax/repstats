@@ -25,6 +25,7 @@ import org.ams.repstats.fortableview.ProjectTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
+import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -288,9 +289,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                     for (String url : projectTable.getUrls()) {
                         try {
                             closeRepository();
-                            String destinationDir = "./cloneRep";
-                            Utils.downloadRepoContent(url, "master", destinationDir);
-                            setNewRepDirectory(new File(destinationDir));
+                            File destinationFile = RepositoryDownloader.downloadRepoContent(url, "master");
+                            setNewRepDirectory(destinationFile);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -453,12 +453,12 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         lbKolCommit.setText(Integer.toString(allCommits));
         lbKolStrokAdd.setText(Integer.toString(linesAdd));
         lbKolStrokDel.setText(Integer.toString(linesDel));
-        double vklad = Math.ceil((((double) linesAdd - linesDel) / totalLines) * 100);
-        if (vklad < 0) {
-            vklad *= -1;
-        }
+        double vklad = Math.abs(Math.ceil((((double) linesAdd - linesDel) / totalLines) * 100));
         if (vklad > 100) {
             vklad = 100;
+        }
+        if (vklad == 0) {
+            vklad = Math.abs(Math.ceil((((double) linesAdd) / totalLines) * 100));
         }
         lbPokr.setText(String.valueOf(vklad) + "%");
 

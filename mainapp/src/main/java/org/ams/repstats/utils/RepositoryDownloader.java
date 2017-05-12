@@ -71,32 +71,41 @@ public class RepositoryDownloader {
     public static File downloadRepoContent(@NotNull String githubRemoteUrl, @NotNull String branchName) throws Exception {
         File destinationFile = new File(getPath(githubRemoteUrl));
 
-        updateRep(destinationFile);
+        if (!updateRep(destinationFile)) {
 
-        //delete any existing file
-        FileUtils.deleteDirectory(destinationFile);
-        Git call = Git.cloneRepository().setURI(githubRemoteUrl)
-                .setBranch(branchName)
-                .setDirectory(destinationFile)
-                .call();
-        call.getRepository().close();
-        if (destinationFile.listFiles().length > 0) {
-            return destinationFile;
-        } else {
-            return null;
+            //delete any existing file
+            LOGGER.info("Delete the existing dirr");
+            FileUtils.deleteDirectory(destinationFile);
+
+            LOGGER.info("Start downloading the repository");
+            Git call = Git.cloneRepository().setURI(githubRemoteUrl)
+                    .setBranch(branchName)
+                    .setDirectory(destinationFile)
+                    .call();
+            call.getRepository().close();
+            if (destinationFile.listFiles().length > 0) {
+                LOGGER.info("Download complete");
+                return destinationFile;
+            } else {
+                LOGGER.info("Download Fail!");
+                return null;
+            }
         }
+        return destinationFile;
     }
 
-    public static String getPath(String url) {
+    private static String getPath(String url) {
         if (prop.containsKey(url)) {
             return (String) prop.get(url);
         }
-        String name = "cloneRep";
+        String[] tmp = url.split("/");
+        String name = tmp[tmp.length - 1];
+
         prop.put(url, pathToSave + name);
         return (String) prop.get(url);
     }
 
-    private static void updateRep(File destinationFile) {
+    private static boolean updateRep(File destinationFile) {
         Git git = null;
         try {
             Repository repository = GitRepositoryReader.loadRepository(destinationFile).getRepository();
@@ -107,19 +116,19 @@ public class RepositoryDownloader {
             PullResult call = pullCmd.call();
             if (call.isSuccessful()) {
                 LOGGER.info("Repository up to date!");
-            } else {
-                LOGGER.info("Updating error!");
+                return true;
             }
-        } catch (GitAPIException | IOException e) {
+        } catch (GitAPIException e) {
             e.printStackTrace();
             LOGGER.info("Updating error!");
+        } catch (IOException e) {
+            LOGGER.info("There is no local copy of the selected repository!");
         } finally {
             if (git != null) {
                 git.getRepository().close();
             }
-
         }
-
+        return false;
     }
 
 }
