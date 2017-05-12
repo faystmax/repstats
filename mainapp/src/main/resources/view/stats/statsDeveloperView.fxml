@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -258,6 +261,29 @@
                                                         prefHeight="25.0" prefWidth="138.0" text="Показать  коммиты"
                                                         textAlignment="CENTER" wrapText="true"
                                                         AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Графики активности">
+                                    <content>
+                                        <AnchorPane>
+                                            <children>
+                                                <LineChart fx:id="commitsChart" prefHeight="430.0" prefWidth="643.0"
+                                                           title="Кол-во коммитов" AnchorPane.bottomAnchor="45.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0">
+                                                    <xAxis>
+                                                        <CategoryAxis prefHeight="13.0" prefWidth="576.0"
+                                                                      side="BOTTOM"/>
+                                                    </xAxis>
+                                                    <yAxis>
+                                                        <NumberAxis side="LEFT"/>
+                                                    </yAxis>
+                                                </LineChart>
+                                                <ComboBox fx:id="comboGraph" layoutX="478.0" layoutY="14.0"
+                                                          onAction="#buildGraph" prefWidth="150.0"
+                                                          AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="5.0"/>
                                             </children>
                                         </AnchorPane>
                                     </content>

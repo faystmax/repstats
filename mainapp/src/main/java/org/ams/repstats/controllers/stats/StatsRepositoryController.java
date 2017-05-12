@@ -30,6 +30,7 @@ import org.ams.repstats.fortableview.FilesTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
+import org.ams.repstats.utils.DateAxis;
 import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
@@ -43,7 +44,10 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -56,7 +60,14 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsRepositoryController.class); ///< ссылка на логер
 
+
     //region << UI Компоненты
+    @FXML
+    private AnchorPane GraphAnchor;
+    @FXML
+    private DatePicker graphDatePickerStart;
+    @FXML
+    private DatePicker graphDatePickerEnd;
     @FXML
     private ComboBox comboGraph;
     @FXML
@@ -134,10 +145,15 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     Task<Boolean> task;
     ObservableList<String> comboGraphOptions =
             FXCollections.observableArrayList(
-                    "За 7 дней",
+                    "За неделю",
                     "За месяц",
-                    "За год"
+                    "За год",
+                    "Свой вариант"
             );
+
+    NumberAxis yAxis;
+    DateAxis dateAxis;
+    LineChart<Date, Number> lineChart;
 
     @FXML
     public void initialize() {
@@ -183,6 +199,16 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         // Заполняем  Combobox
         comboGraph.getItems().addAll(comboGraphOptions);
         comboGraph.setValue(comboGraphOptions.get(0));
+
+
+        yAxis = new NumberAxis();
+        dateAxis = new DateAxis();
+        lineChart = new LineChart<>(dateAxis, yAxis);
+        AnchorPane.setLeftAnchor(lineChart, 0.0);
+        AnchorPane.setTopAnchor(lineChart, 0.0);
+        AnchorPane.setRightAnchor(lineChart, 0.0);
+        AnchorPane.setBottomAnchor(lineChart, 53.0);
+        GraphAnchor.getChildren().add(lineChart);
 
     }
 
@@ -382,7 +408,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     }
 
 
-
     @Override
     public void closeRepository() {
         getuInterface().closeRepository();
@@ -569,6 +594,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
     }
 
+
     /**
      * Строит график коммитов
      *
@@ -579,16 +605,22 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
 
             final CategoryAxis xAxis = new CategoryAxis();
-            final NumberAxis yAxis = new NumberAxis();
 
-            XYChart.Series series = new XYChart.Series();
-            series.setName("Все Коммиты");
+
+            //XYChart.Series series = new XYChart.Series();
+            //series.setName("Все Коммиты");
 
             ArrayList<Author> allAvtors = new ArrayList<Author>();
             allAvtors.addAll(getuInterface().getAllAuthors());
 
             commitsChart.getData().clear();
 
+            // Лочим датапикеры
+            graphDatePickerStart.setDisable(true);
+            graphDatePickerEnd.setDisable(true);
+
+            commitsChart.setVisible(true);
+            lineChart.setVisible(false);
             //
             if (selected.equals(comboGraphOptions.get(0))) {
                 xAxis.setLabel("Дни недели");
@@ -647,9 +679,44 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     authorSeries.setName(author.getName());
                     commitsChart.getData().add(authorSeries);
                 }
+            } else if (selected.equals(comboGraphOptions.get(3))) {
+                graphDatePickerStart.setDisable(false);
+                graphDatePickerEnd.setDisable(false);
+
+                if (graphDatePickerStart.getValue() == null || graphDatePickerEnd.getValue() == null) {
+                    return;
+                }
+                if (graphDatePickerStart.getValue().isAfter(graphDatePickerEnd.getValue())) {
+                    Utils.showAlert("Ошибка ввода дат", "Начальная дата должна быть раньше конечной!");
+                    return;
+                }
+
+
+                HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate = this.getuInterface().getCommitsByCustomDate(allAvtors);
+
+                commitsChart.setVisible(false);
+                lineChart.setVisible(true);
+                lineChart.getData().clear();
+
+                ObservableList<XYChart.Series<Date, Number>> series = FXCollections.observableArrayList();
+
+
+                for (Author author : commitsByCustomDate.keySet()) {
+                    HashMap<LocalDate, Integer> commitsByCustom = commitsByCustomDate.get(author);
+                    XYChart.Series<Date, Number> authorSeries = new XYChart.Series<Date, Number>();
+
+                    for (LocalDate localdate : commitsByCustom.keySet()) {
+                        if (localdate.isAfter(graphDatePickerStart.getValue()) && localdate.isBefore(graphDatePickerEnd.getValue())) {
+                            Date date = Date.from(localdate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                            authorSeries.getData().add(new XYChart.Data<>(date, commitsByCustom.get(localdate)));
+                        }
+                    }
+                    authorSeries.setName(author.getName());
+                    lineChart.getData().add(authorSeries);
+                }
+
+
             }
-
-
         }
     }
 }

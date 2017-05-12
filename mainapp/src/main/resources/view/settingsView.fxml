@@ -13,55 +13,58 @@
                 <Font size="19.0"/>
             </font>
         </Label>
-        <HBox layoutX="336.0" layoutY="312.0" spacing="15.0" AnchorPane.bottomAnchor="14.0"
-              AnchorPane.rightAnchor="30.0">
+        <Button fx:id="btExit" layoutX="414.0" layoutY="294.0" mnemonicParsing="false" onAction="#exitButtonAction"
+                prefWidth="80.0" text="Закрыть" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="30.0"/>
+        <HBox layoutX="30.0" layoutY="75.0" spacing="30.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="30.0"
+              AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0">
             <children>
-                <Button fx:id="btExit" layoutX="497.0" layoutY="367.0" mnemonicParsing="false"
-                        onAction="#exitButtonAction" prefWidth="80.0" text="Закрыть"/>
+                <AnchorPane layoutX="33.0" layoutY="75.0" maxHeight="1.7976931348623157E308"
+                            maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+                            prefHeight="200.0" prefWidth="209.0"
+                            style="-fx-border-radius: 5; -fx-border-color: #999A9A;" AnchorPane.bottomAnchor="58.0"
+                            AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="75.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <VBox layoutX="14.0" layoutY="28.0" spacing="15.0">
+                            <children>
+                                <RadioButton fx:id="whiteButton" layoutX="14.0" layoutY="44.0" mnemonicParsing="false"
+                                             text="Белый"/>
+                                <RadioButton fx:id="blueButton" layoutX="14.0" layoutY="73.0" mnemonicParsing="false"
+                                             text="Синий"/>
+                                <RadioButton fx:id="greenButton" layoutX="14.0" layoutY="104.0" mnemonicParsing="false"
+                                             text="Зелёный"/>
+                                <RadioButton fx:id="blackButton" layoutX="14.0" layoutY="132.0" mnemonicParsing="false"
+                                             text="Чёрный"/>
+                                <RadioButton fx:id="pinkButton" layoutX="14.0" layoutY="163.0" mnemonicParsing="false"
+                                             text="Розовый"/>
+                            </children>
+                        </VBox>
+                        <Label layoutX="66.0" layoutY="8.0" text="Внешний вид"/>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="294.0" layoutY="75.0" maxHeight="1.7976931348623157E308"
+                            maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+                            prefHeight="200.0" prefWidth="209.0"
+                            style="-fx-border-radius: 5; -fx-border-color: #999A9A;" AnchorPane.bottomAnchor="58.0"
+                            AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0"
+                            HBox.hgrow="ALWAYS">
+                    <children>
+                        <VBox layoutX="14.0" layoutY="28.0" spacing="15.0">
+                            <children>
+                                <RadioButton fx:id="repButton" layoutX="14.0" layoutY="44.0" mnemonicParsing="false"
+                                             text="Статистика репозитория"/>
+                                <RadioButton fx:id="projectButton" layoutX="14.0" layoutY="73.0" mnemonicParsing="false"
+                                             text="Статистика по проекту"/>
+                                <RadioButton fx:id="developerButton" layoutX="14.0" layoutY="104.0"
+                                             mnemonicParsing="false" text="Статистика разработчика"/>
+                                <RadioButton fx:id="teamButton" layoutX="14.0" layoutY="132.0" mnemonicParsing="false"
+                                             text="Статистика команд"/>
+                            </children>
+                        </VBox>
+                        <Label layoutX="59.0" layoutY="6.0" text="Начальное окно"/>
+                    </children>
+                </AnchorPane>
             </children>
         </HBox>
-        <AnchorPane layoutX="33.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="200.0" prefWidth="209.0"
-                    style="-fx-border-radius: 5; -fx-border-color: #999A9A;" AnchorPane.bottomAnchor="58.0"
-                    AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="75.0">
-            <children>
-                <VBox layoutX="14.0" layoutY="28.0" spacing="15.0">
-                    <children>
-                        <RadioButton fx:id="whiteButton" layoutX="14.0" layoutY="44.0" mnemonicParsing="false"
-                                     text="Белый"/>
-                        <RadioButton fx:id="blueButton" layoutX="14.0" layoutY="73.0" mnemonicParsing="false"
-                                     text="Синий"/>
-                        <RadioButton fx:id="greenButton" layoutX="14.0" layoutY="104.0" mnemonicParsing="false"
-                                     text="Зелёный"/>
-                        <RadioButton fx:id="blackButton" layoutX="14.0" layoutY="132.0" mnemonicParsing="false"
-                                     text="Чёрный"/>
-                        <RadioButton fx:id="pinkButton" layoutX="14.0" layoutY="163.0" mnemonicParsing="false"
-                                     text="Розовый"/>
-                    </children>
-                </VBox>
-                <Label layoutX="66.0" layoutY="8.0" text="Внешний вид"/>
-            </children>
-        </AnchorPane>
-        <AnchorPane layoutX="294.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="200.0" prefWidth="209.0"
-                    style="-fx-border-radius: 5; -fx-border-color: #999A9A;" AnchorPane.bottomAnchor="58.0"
-                    AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0">
-            <children>
-                <VBox layoutX="14.0" layoutY="28.0" spacing="15.0">
-                    <children>
-                        <RadioButton fx:id="repButton" layoutX="14.0" layoutY="44.0" mnemonicParsing="false"
-                                     text="Статистика репозитория"/>
-                        <RadioButton fx:id="projectButton" layoutX="14.0" layoutY="73.0" mnemonicParsing="false"
-                                     text="Статистика по проекту"/>
-                        <RadioButton fx:id="developerButton" layoutX="14.0" layoutY="104.0" mnemonicParsing="false"
-                                     text="Статистика разработчика"/>
-                        <RadioButton fx:id="teamButton" layoutX="14.0" layoutY="132.0" mnemonicParsing="false"
-                                     text="Статистика команд"/>
-                    </children>
-                </VBox>
-                <Label layoutX="59.0" layoutY="6.0" text="Начальное окно"/>
-            </children>
-        </AnchorPane>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="248.0" layoutY="55.0"
                text="(Изменения сразу вступят в силу)" textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0"/>

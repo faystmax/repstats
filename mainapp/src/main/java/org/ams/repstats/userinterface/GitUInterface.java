@@ -259,6 +259,11 @@ public class GitUInterface implements UInterface {
     public Set<Author> getAllAuthors() {
         return branchDetails.getAuthorToCommitMap().keySet();
     }
+
+    @Override
+    public HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors) {
+        return branchDetails.getCommitsByCustomDate(allAvtors);
+    }
 }
 
 

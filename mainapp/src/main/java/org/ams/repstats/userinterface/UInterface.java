@@ -63,4 +63,6 @@ public interface UInterface {
     HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors);
 
     Set<Author> getAllAuthors();
+
+    HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors);
 }

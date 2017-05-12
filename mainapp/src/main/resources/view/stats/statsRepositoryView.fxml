@@ -376,11 +376,11 @@
                                                 </Tab>
                                                 <Tab text="Графики активности">
                                                     <content>
-                                                        <AnchorPane>
+                                                        <AnchorPane fx:id="GraphAnchor">
                                                             <children>
                                                                 <LineChart fx:id="commitsChart" prefHeight="166.0"
                                                                            prefWidth="642.0" title="Кол-во коммитов"
-                                                                           AnchorPane.bottomAnchor="0.0"
+                                                                           AnchorPane.bottomAnchor="53.0"
                                                                            AnchorPane.leftAnchor="0.0"
                                                                            AnchorPane.rightAnchor="0.0"
                                                                            AnchorPane.topAnchor="0.0">
@@ -392,11 +392,30 @@
                                                                         <NumberAxis side="LEFT"/>
                                                                     </yAxis>
                                                                 </LineChart>
-                                                                <ComboBox fx:id="comboGraph" layoutX="478.0"
-                                                                          layoutY="14.0" onAction="#buildGraph"
-                                                                          prefWidth="150.0"
-                                                                          AnchorPane.rightAnchor="14.0"
-                                                                          AnchorPane.topAnchor="5.0"/>
+                                                                <HBox layoutX="14.0" layoutY="372.0" spacing="20.0"
+                                                                      AnchorPane.bottomAnchor="14.0"
+                                                                      AnchorPane.leftAnchor="14.0">
+                                                                    <children>
+                                                                        <ComboBox fx:id="comboGraph" layoutX="14.0"
+                                                                                  layoutY="372.0"
+                                                                                  maxWidth="1.7976931348623157E308"
+                                                                                  onAction="#buildGraph"
+                                                                                  prefWidth="150.0"
+                                                                                  AnchorPane.rightAnchor="478.0"
+                                                                                  AnchorPane.topAnchor="372.0"/>
+
+                                                                        <DatePicker fx:id="graphDatePickerStart"
+                                                                                    disable="true" layoutX="188.0"
+                                                                                    layoutY="372.0"
+                                                                                    onAction="#buildGraph"
+                                                                                    promptText="Начальная дата"/>
+                                                                        <DatePicker fx:id="graphDatePickerEnd"
+                                                                                    disable="true" layoutX="376.0"
+                                                                                    layoutY="372.0"
+                                                                                    onAction="#buildGraph"
+                                                                                    promptText="Конечная дата"/>
+                                                                    </children>
+                                                                </HBox>
                                                             </children>
                                                         </AnchorPane>
                                                     </content>

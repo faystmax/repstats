@@ -155,4 +155,9 @@ public class SvnUInterface implements UInterface {
     public Set<Author> getAllAuthors() {
         return null;
     }
+
+    @Override
+    public HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors) {
+        return null;
+    }
 }

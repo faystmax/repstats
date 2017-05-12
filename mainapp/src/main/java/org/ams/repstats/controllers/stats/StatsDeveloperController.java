@@ -10,6 +10,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -41,6 +44,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -55,41 +59,45 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     //region << UI Компоненты
     @FXML
-    public Label lbMainInfTitle;
+    private Label lbMainInfTitle;
     @FXML
-    public Label lbFIO;
+    private Label lbFIO;
     @FXML
-    public Label lbGitNameEmail;
+    private Label lbGitNameEmail;
     @FXML
-    public Label lbKolStrokAdd;
+    private Label lbKolStrokAdd;
     @FXML
-    public Label lbKolStrokDel;
+    private Label lbKolStrokDel;
     @FXML
-    public Label lbPokr;
+    private Label lbPokr;
     @FXML
-    public TableView projectTable;
+    private TableView projectTable;
     @FXML
-    public TableColumn clmnProject;
+    private TableColumn clmnProject;
     @FXML
-    public TableColumn clmnCommitCountProj;
+    private TableColumn clmnCommitCountProj;
     @FXML
-    public TableColumn clmnLinesAddProj;
+    private TableColumn clmnLinesAddProj;
     @FXML
-    public TableColumn clmnLinesDeleteProj;
+    private TableColumn clmnLinesDeleteProj;
     @FXML
-    public TableColumn clmnNetContributionProj;
+    private TableColumn clmnNetContributionProj;
     @FXML
-    public TableView repositoryTable;
+    private TableView repositoryTable;
     @FXML
-    public TableColumn clmnUrlRep;
+    private TableColumn clmnUrlRep;
     @FXML
-    public TableColumn clmnCommitCountRep;
+    private TableColumn clmnCommitCountRep;
     @FXML
-    public TableColumn clmnLinesAddRep;
+    private TableColumn clmnLinesAddRep;
     @FXML
-    public TableColumn clmnLinesDeleteRep;
+    private TableColumn clmnLinesDeleteRep;
     @FXML
-    public TableColumn clmnNetContributionRep;
+    private TableColumn clmnNetContributionRep;
+    @FXML
+    private ComboBox comboGraph;
+    @FXML
+    private LineChart commitsChart;
     @FXML
     private TableView developersTable;
     @FXML
@@ -111,6 +119,14 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private DirectoryChooser directoryChooser;
     private File projectDir;
     Task<Boolean> task;
+
+    ObservableList<String> comboGraphOptions =
+            FXCollections.observableArrayList(
+                    "За неделю",
+                    "За месяц",
+                    "За год",
+                    "Свой вариант"
+            );
 
     @FXML
     public void initialize() {
@@ -136,6 +152,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         });
         configureProjectsTable();
         configureRepositoryTable();
+
+        // Заполняем  Combobox
+        comboGraph.getItems().addAll(comboGraphOptions);
+        comboGraph.setValue(comboGraphOptions.get(0));
     }
 
     /**
@@ -358,9 +378,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         });
 
                         totalLines += getuInterface().getTotalNumberOfLines();
-
                         repositoryData.add(newRepositoryTable);
                     }
+
 
 
 
@@ -373,6 +393,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                     showMainInf();
                     showAvtors();
                     showAllFiles();
+                    buildGraph(null);
                     //showCommitsChart();
                     closeRepository();
                 });
@@ -557,33 +578,88 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             }
         }
     }
-/*
-    public CommitsController ShowCommits(String title) {
+
+    /**
+     * Строит график коммитов
+     *
+     * @param event - событие
+     */
+    public void buildGraph(ActionEvent event) {
         if (isStart()) {
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getClassLoader().getResource("view/stats/сommitsView.fxml"));
-                AnchorPane rootLayout = loader.load();
+            String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
 
-                Stage stage = new Stage();
-                stage.setTitle(title);
-                stage.setScene(new Scene(rootLayout));
-                stage.getIcons().add(new Image("icons/gitIcon.png"));
-                stage.initModality(Modality.APPLICATION_MODAL);
+            final CategoryAxis xAxis = new CategoryAxis();
 
-                //Инициализируем
-                CommitsController controller = loader.getController();
-                controller.setAuthor(selectedAuthor);
-                //controller.setRepositoryTable((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem());
-                controller.setLbName(selectedDeveloper.getGitname());
-                controller.showCommits();
-                stage.showAndWait();
-                return controller;
-            } catch (IOException e) {
-                e.printStackTrace();
+            XYChart.Series series = new XYChart.Series();
+            series.setName("Все Коммиты по проектам");
+
+            ArrayList<Author> allAvtors = new ArrayList<Author>();
+            allAvtors.addAll(getuInterface().getAllAuthors());
+
+            commitsChart.getData().clear();
+
+            //
+            if (selected.equals(comboGraphOptions.get(0))) {
+                xAxis.setLabel("Дни недели");
+                HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtors);
+                for (Author author : authorCommitsByWeek.keySet()) {
+                    ArrayList<Integer> commitsByWeek = authorCommitsByWeek.get(author);
+                    XYChart.Series authorSeries = new XYChart.Series();
+
+                    authorSeries.getData().add(new XYChart.Data("Пн", commitsByWeek.get(0)));
+                    authorSeries.getData().add(new XYChart.Data("Вт", commitsByWeek.get(1)));
+                    authorSeries.getData().add(new XYChart.Data("Ср", commitsByWeek.get(2)));
+                    authorSeries.getData().add(new XYChart.Data("Чт", commitsByWeek.get(3)));
+                    authorSeries.getData().add(new XYChart.Data("Пт", commitsByWeek.get(4)));
+                    authorSeries.getData().add(new XYChart.Data("Сб", commitsByWeek.get(5)));
+                    authorSeries.getData().add(new XYChart.Data("Вс", commitsByWeek.get(6)));
+
+                    authorSeries.setName(author.getName());
+                    commitsChart.getData().add(authorSeries);
+                }
+
+            } else if (selected.equals(comboGraphOptions.get(1))) {
+                xAxis.setLabel("Число");
+                HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtors);
+                for (Author author : authorByDaysInCurMonth.keySet()) {
+                    ArrayList<Integer> commitsByDaysInCurMonth = authorByDaysInCurMonth.get(author);
+                    XYChart.Series authorSeries = new XYChart.Series();
+
+                    for (int i = 0; i < commitsByDaysInCurMonth.size(); i++) {
+                        authorSeries.getData().add(new XYChart.Data(String.valueOf(i + 1), commitsByDaysInCurMonth.get(i)));
+                    }
+
+                    authorSeries.setName(author.getName());
+                    commitsChart.getData().add(authorSeries);
+                }
+            } else if (selected.equals(comboGraphOptions.get(2))) {
+                xAxis.setLabel("Месяц");
+                HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtors);
+
+                for (Author author : commitsByMonths.keySet()) {
+                    ArrayList<Integer> commitsByWeek = commitsByMonths.get(author);
+                    XYChart.Series authorSeries = new XYChart.Series();
+
+                    authorSeries.getData().add(new XYChart.Data("Янв", commitsByWeek.get(0)));
+                    authorSeries.getData().add(new XYChart.Data("Фев", commitsByWeek.get(1)));
+                    authorSeries.getData().add(new XYChart.Data("Мар", commitsByWeek.get(2)));
+                    authorSeries.getData().add(new XYChart.Data("Апр", commitsByWeek.get(3)));
+                    authorSeries.getData().add(new XYChart.Data("Май", commitsByWeek.get(4)));
+                    authorSeries.getData().add(new XYChart.Data("Июнь", commitsByWeek.get(5)));
+                    authorSeries.getData().add(new XYChart.Data("Июль", commitsByWeek.get(6)));
+                    authorSeries.getData().add(new XYChart.Data("Авг", commitsByWeek.get(7)));
+                    authorSeries.getData().add(new XYChart.Data("Сен", commitsByWeek.get(8)));
+                    authorSeries.getData().add(new XYChart.Data("Окт", commitsByWeek.get(9)));
+                    authorSeries.getData().add(new XYChart.Data("Ноя", commitsByWeek.get(10)));
+                    authorSeries.getData().add(new XYChart.Data("Дек", commitsByWeek.get(11)));
+
+                    authorSeries.setName(author.getName());
+                    commitsChart.getData().add(authorSeries);
+                }
             }
+
+
         }
     }
-    */
 }
 

@@ -365,4 +365,36 @@ public class BranchDetails {
         }
         return authorCommitMap;
     }
+
+    public HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors) {
+        HashMap<Author, HashMap<LocalDate, Integer>> authorCommitMap = new HashMap<Author, HashMap<LocalDate, Integer>>();
+
+        try {
+            for (Author author : allAvtors) {
+                HashMap<LocalDate, Integer> commitsByDate = new HashMap<LocalDate, Integer>();
+
+                // Сохранили автора с его коммитами
+                authorCommitMap.put(author, commitsByDate);
+            }
+
+            ArrayList<Commit> revCommitList = null;
+            revCommitList = (ArrayList) branch.getCommits();
+
+            // Сортируем
+            for (Commit aRevCommitList : revCommitList) {
+
+                LocalDate commitDate = aRevCommitList.getCommitDateTime().toLocalDate();
+
+                HashMap<LocalDate, Integer> commitsByDate = authorCommitMap.get(aRevCommitList.getAuthor());
+                if (commitsByDate.containsKey(commitDate)) {
+                    commitsByDate.put(commitDate, commitsByDate.get(commitDate) + 1);
+                } else {
+                    commitsByDate.put(commitDate, 1);
+                }
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+        return authorCommitMap;
+    }
 }
