@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -378,20 +375,6 @@
                                                     <content>
                                                         <AnchorPane fx:id="GraphAnchor">
                                                             <children>
-                                                                <LineChart fx:id="commitsChart" prefHeight="166.0"
-                                                                           prefWidth="642.0" title="Кол-во коммитов"
-                                                                           AnchorPane.bottomAnchor="53.0"
-                                                                           AnchorPane.leftAnchor="0.0"
-                                                                           AnchorPane.rightAnchor="0.0"
-                                                                           AnchorPane.topAnchor="0.0">
-                                                                    <xAxis>
-                                                                        <CategoryAxis prefHeight="13.0"
-                                                                                      prefWidth="576.0" side="BOTTOM"/>
-                                                                    </xAxis>
-                                                                    <yAxis>
-                                                                        <NumberAxis side="LEFT"/>
-                                                                    </yAxis>
-                                                                </LineChart>
                                                                 <HBox layoutX="14.0" layoutY="372.0" spacing="20.0"
                                                                       AnchorPane.bottomAnchor="14.0"
                                                                       AnchorPane.leftAnchor="14.0">

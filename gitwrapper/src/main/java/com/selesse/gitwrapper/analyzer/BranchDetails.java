@@ -280,7 +280,9 @@ public class BranchDetails {
                 month--;
 
                 ArrayList<Integer> commitsByMonths = authorCommitMap.get(aRevCommitList.getAuthor());
-                commitsByMonths.set(month, commitsByMonths.get(month) + 1);
+                if (commitsByMonths != null) {
+                    commitsByMonths.set(month, commitsByMonths.get(month) + 1);
+                }
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
@@ -321,7 +323,9 @@ public class BranchDetails {
                 day--;
 
                 ArrayList<Integer> commitsByDaysInCurMonth = authorCommitMap.get(aRevCommitList.getAuthor());
-                commitsByDaysInCurMonth.set(day, commitsByDaysInCurMonth.get(day) + 1);
+                if (commitsByDaysInCurMonth != null) {
+                    commitsByDaysInCurMonth.set(day, commitsByDaysInCurMonth.get(day) + 1);
+                }
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
@@ -358,7 +362,9 @@ public class BranchDetails {
                 int dayOfWeek = aRevCommitList.getCommitDateTime().getDayOfWeek().getValue();
                 dayOfWeek--;
                 ArrayList<Integer> commitsByWeek = authorCommitMap.get(aRevCommitList.getAuthor());
-                commitsByWeek.set(dayOfWeek, commitsByWeek.get(dayOfWeek) + 1);
+                if (commitsByWeek != null) {
+                    commitsByWeek.set(dayOfWeek, commitsByWeek.get(dayOfWeek) + 1);
+                }
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
@@ -386,10 +392,12 @@ public class BranchDetails {
                 LocalDate commitDate = aRevCommitList.getCommitDateTime().toLocalDate();
 
                 HashMap<LocalDate, Integer> commitsByDate = authorCommitMap.get(aRevCommitList.getAuthor());
-                if (commitsByDate.containsKey(commitDate)) {
-                    commitsByDate.put(commitDate, commitsByDate.get(commitDate) + 1);
-                } else {
-                    commitsByDate.put(commitDate, 1);
+                if (commitsByDate != null) {
+                    if (commitsByDate.containsKey(commitDate)) {
+                        commitsByDate.put(commitDate, commitsByDate.get(commitDate) + 1);
+                    } else {
+                        commitsByDate.put(commitDate, 1);
+                    }
                 }
             }
         } catch (GitAPIException | IOException e) {

@@ -10,9 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -28,6 +26,7 @@ import org.ams.repstats.fortableview.ProjectTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
+import org.ams.repstats.utils.LineChartCreator;
 import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
@@ -44,6 +43,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -57,7 +57,14 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsDeveloperController.class); ///< ссылка на логер
 
+
     //region << UI Компоненты
+    @FXML
+    private DatePicker graphDatePickerEnd;
+    @FXML
+    private DatePicker graphDatePickerStart;
+    @FXML
+    private AnchorPane GraphAnchor;
     @FXML
     private Label lbMainInfTitle;
     @FXML
@@ -120,13 +127,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private File projectDir;
     Task<Boolean> task;
 
-    ObservableList<String> comboGraphOptions =
-            FXCollections.observableArrayList(
-                    "За неделю",
-                    "За месяц",
-                    "За год",
-                    "Свой вариант"
-            );
+    private LineChart<Date, Number> dateLineChart;
+    private LineChart<String, Number> numberLineChart;
 
     @FXML
     public void initialize() {
@@ -154,8 +156,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         configureRepositoryTable();
 
         // Заполняем  Combobox
-        comboGraph.getItems().addAll(comboGraphOptions);
-        comboGraph.setValue(comboGraphOptions.get(0));
+        comboGraph.getItems().addAll(LineChartCreator.options);
+        comboGraph.setValue(LineChartCreator.options.get(0));
     }
 
     /**
@@ -379,9 +381,11 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                         totalLines += getuInterface().getTotalNumberOfLines();
                         repositoryData.add(newRepositoryTable);
+
+                        // запоминаем  графики
+                        rememberGraphics(projectTable, newRepositoryTable);
                     }
-
-
+                    //
 
 
                 }
@@ -401,6 +405,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                 return true;
             }
+
         };
 
         task.setOnRunning((e) -> Utils.openLoadingWindow(task));
@@ -447,6 +452,38 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     }
 
 
+    private void rememberGraphics(ProjectTable projectTable, RepositoryTable newRepositoryTable) {
+        // Извлекаем выбранного пользователя
+        DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
+        Author selectedAuthor = this.getuInterface().getAuthorByEmail(developerTable.getGitemail());
+        ArrayList<Author> allAvtors = new ArrayList<Author>();
+        allAvtors.addAll(this.getuInterface().getAllAuthors());
+        if (selectedAuthor != null) {
+
+            // Вычёркиваем не нёжных авторов
+            for (Author author : allAvtors) {
+                if (!author.getEmailAddress().equals(selectedAuthor.getEmailAddress())) {
+                    allAvtors.remove(author);
+                }
+            }
+
+            // Извлекаем коммиты
+            HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtors);
+            HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtors);
+            HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtors);
+            HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate = this.getuInterface().getCommitsByCustomDate(allAvtors);
+
+            // Запомнили
+            for (Author author : allAvtors) {
+                projectTable.addCommitsByWeek(authorCommitsByWeek.get(author));
+                projectTable.addCommitsByDaysInCurMonth(authorByDaysInCurMonth.get(author));
+                projectTable.addCommitsByMonths(commitsByMonths.get(author));
+                projectTable.addCommitsByCustomDate(commitsByCustomDate.get(author));
+            }
+
+        }
+
+    }
 
     @Override
     public void closeRepository() {
@@ -586,79 +623,77 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
      */
     public void buildGraph(ActionEvent event) {
         if (isStart()) {
-            String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
-
-            final CategoryAxis xAxis = new CategoryAxis();
-
-            XYChart.Series series = new XYChart.Series();
-            series.setName("Все Коммиты по проектам");
-
             ArrayList<Author> allAvtors = new ArrayList<Author>();
             allAvtors.addAll(getuInterface().getAllAuthors());
 
-            commitsChart.getData().clear();
+            // Лочим датапикеры
+            graphDatePickerStart.setDisable(true);
+            graphDatePickerEnd.setDisable(true);
 
-            //
-            if (selected.equals(comboGraphOptions.get(0))) {
-                xAxis.setLabel("Дни недели");
-                HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtors);
-                for (Author author : authorCommitsByWeek.keySet()) {
-                    ArrayList<Integer> commitsByWeek = authorCommitsByWeek.get(author);
-                    XYChart.Series authorSeries = new XYChart.Series();
-
-                    authorSeries.getData().add(new XYChart.Data("Пн", commitsByWeek.get(0)));
-                    authorSeries.getData().add(new XYChart.Data("Вт", commitsByWeek.get(1)));
-                    authorSeries.getData().add(new XYChart.Data("Ср", commitsByWeek.get(2)));
-                    authorSeries.getData().add(new XYChart.Data("Чт", commitsByWeek.get(3)));
-                    authorSeries.getData().add(new XYChart.Data("Пт", commitsByWeek.get(4)));
-                    authorSeries.getData().add(new XYChart.Data("Сб", commitsByWeek.get(5)));
-                    authorSeries.getData().add(new XYChart.Data("Вс", commitsByWeek.get(6)));
-
-                    authorSeries.setName(author.getName());
-                    commitsChart.getData().add(authorSeries);
-                }
-
-            } else if (selected.equals(comboGraphOptions.get(1))) {
-                xAxis.setLabel("Число");
-                HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtors);
-                for (Author author : authorByDaysInCurMonth.keySet()) {
-                    ArrayList<Integer> commitsByDaysInCurMonth = authorByDaysInCurMonth.get(author);
-                    XYChart.Series authorSeries = new XYChart.Series();
-
-                    for (int i = 0; i < commitsByDaysInCurMonth.size(); i++) {
-                        authorSeries.getData().add(new XYChart.Data(String.valueOf(i + 1), commitsByDaysInCurMonth.get(i)));
-                    }
-
-                    authorSeries.setName(author.getName());
-                    commitsChart.getData().add(authorSeries);
-                }
-            } else if (selected.equals(comboGraphOptions.get(2))) {
-                xAxis.setLabel("Месяц");
-                HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtors);
-
-                for (Author author : commitsByMonths.keySet()) {
-                    ArrayList<Integer> commitsByWeek = commitsByMonths.get(author);
-                    XYChart.Series authorSeries = new XYChart.Series();
-
-                    authorSeries.getData().add(new XYChart.Data("Янв", commitsByWeek.get(0)));
-                    authorSeries.getData().add(new XYChart.Data("Фев", commitsByWeek.get(1)));
-                    authorSeries.getData().add(new XYChart.Data("Мар", commitsByWeek.get(2)));
-                    authorSeries.getData().add(new XYChart.Data("Апр", commitsByWeek.get(3)));
-                    authorSeries.getData().add(new XYChart.Data("Май", commitsByWeek.get(4)));
-                    authorSeries.getData().add(new XYChart.Data("Июнь", commitsByWeek.get(5)));
-                    authorSeries.getData().add(new XYChart.Data("Июль", commitsByWeek.get(6)));
-                    authorSeries.getData().add(new XYChart.Data("Авг", commitsByWeek.get(7)));
-                    authorSeries.getData().add(new XYChart.Data("Сен", commitsByWeek.get(8)));
-                    authorSeries.getData().add(new XYChart.Data("Окт", commitsByWeek.get(9)));
-                    authorSeries.getData().add(new XYChart.Data("Ноя", commitsByWeek.get(10)));
-                    authorSeries.getData().add(new XYChart.Data("Дек", commitsByWeek.get(11)));
-
-                    authorSeries.setName(author.getName());
-                    commitsChart.getData().add(authorSeries);
-                }
+            // Освобождаем имеющиеся графики
+            if (numberLineChart != null) {
+                numberLineChart.setVisible(false);
+                GraphAnchor.getChildren().remove(numberLineChart);
+                numberLineChart = null;
+            }
+            if (dateLineChart != null) {
+                dateLineChart.setVisible(false);
+                GraphAnchor.getChildren().remove(dateLineChart);
+                dateLineChart = null;
             }
 
+            String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
 
+            if (selected.equals(LineChartCreator.options.get(0))) {
+
+                numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
+
+                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
+                AnchorPane.setTopAnchor(numberLineChart, 0.0);
+                AnchorPane.setRightAnchor(numberLineChart, 0.0);
+                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
+                GraphAnchor.getChildren().add(numberLineChart);
+
+            } else if (selected.equals(LineChartCreator.options.get(1))) {
+                numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
+
+                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
+                AnchorPane.setTopAnchor(numberLineChart, 0.0);
+                AnchorPane.setRightAnchor(numberLineChart, 0.0);
+                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
+                GraphAnchor.getChildren().add(numberLineChart);
+
+            } else if (selected.equals(LineChartCreator.options.get(2))) {
+                numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
+
+                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
+                AnchorPane.setTopAnchor(numberLineChart, 0.0);
+                AnchorPane.setRightAnchor(numberLineChart, 0.0);
+                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
+                GraphAnchor.getChildren().add(numberLineChart);
+
+            } else if (selected.equals(LineChartCreator.options.get(3))) {
+                graphDatePickerStart.setDisable(false);
+                graphDatePickerEnd.setDisable(false);
+
+                if (graphDatePickerStart.getValue() == null || graphDatePickerEnd.getValue() == null) {
+                    return;
+                }
+                if (graphDatePickerStart.getValue().isAfter(graphDatePickerEnd.getValue())) {
+                    Utils.showAlert("Ошибка ввода дат", "Начальная дата должна быть раньше конечной!");
+                    return;
+                }
+
+
+                dateLineChart = LineChartCreator.createDateLineChart(selected, projectTable.getItems(),
+                        graphDatePickerStart.getValue(), graphDatePickerEnd.getValue());
+                AnchorPane.setLeftAnchor(dateLineChart, 0.0);
+                AnchorPane.setTopAnchor(dateLineChart, 0.0);
+                AnchorPane.setRightAnchor(dateLineChart, 0.0);
+                AnchorPane.setBottomAnchor(dateLineChart, 53.0);
+                GraphAnchor.getChildren().add(dateLineChart);
+
+            }
         }
     }
 }
