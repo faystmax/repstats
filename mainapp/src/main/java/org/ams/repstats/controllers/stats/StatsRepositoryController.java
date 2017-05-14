@@ -3,6 +3,8 @@ package org.ams.repstats.controllers.stats;
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Branch;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -20,17 +22,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import org.ams.gitapiwrapper.GitApi;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.AuthorTable;
-import org.ams.repstats.fortableview.BranchesTable;
-import org.ams.repstats.fortableview.FilesTable;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.fortableview.*;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.utils.LineChartCreator;
 import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
+import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +44,13 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -58,6 +64,18 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
 
     //region << UI Компоненты
+    @FXML
+    private TableView tablePullRequests;
+    @FXML
+    private TableColumn clmnPullNumber;
+    @FXML
+    private TableColumn clmnPullTitle;
+    @FXML
+    private TableColumn clmnPullAvtor;
+    @FXML
+    private TableColumn clmnPullDateCreated;
+    @FXML
+    private TableColumn clmnPullState;
     @FXML
     private AnchorPane GraphAnchor;
     @FXML
@@ -288,11 +306,14 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAllFiles();
                     showAllBranches();
                     buildGraph(null);
+
                     showChartOnImageView();
+
                     closeRepository();
                 });
                 return true;
             }
+
         };
 
         task.setOnRunning((e) -> Utils.openLoadingWindow(task));
@@ -358,6 +379,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAllFiles();
                     showAllBranches();
                     buildGraph(null);
+
+                    showPullRequests();
+                    showIssues();
+
                     showChartOnImageView();
                     closeRepository();
                 });
@@ -381,6 +406,89 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             Utils.closeLoadingWindow();
         });
         new Thread(task).start();
+    }
+
+
+    /**
+     * Отображает все pull requests
+     */
+    private void showPullRequests() {
+        clmnPullNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
+        clmnPullTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
+        //clmnPullDateCreated.setCellValueFactory(new PropertyValueFactory<PullRequestTable, Date>("createdAt"));
+        clmnPullState.setCellValueFactory(new PropertyValueFactory<>("state"));
+
+        clmnPullDateCreated.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
+                    @Override
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<PullRequestTable, String> film) {
+                        SimpleStringProperty property = new SimpleStringProperty();
+                        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                        property.setValue(dateFormat.format(film.getValue().getCreatedAt()));
+                        return property;
+                    }
+                });
+
+        GitApi gitApi = new GitApi();
+        RepositoryTable selectedRepository = (RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem();
+        String[] tmp = selectedRepository.getUrl().split("/");
+        String repos = tmp[tmp.length - 1];
+        String owner = tmp[tmp.length - 2];
+        try {
+
+            List<PullRequest> allPullRequests = gitApi.getAllPullRequests(repos, owner);
+            ObservableList<PullRequestTable> data = FXCollections.observableArrayList();
+            for (int i = 0; i < allPullRequests.size(); i++) {
+                data.add(new PullRequestTable(allPullRequests.get(0).getNumber(), allPullRequests.get(0).getTitle(), allPullRequests.get(0).getHead().getUser().getLogin(),
+                        allPullRequests.get(0).getCreatedAt(), allPullRequests.get(0).getState()));
+            }
+
+            tablePullRequests.setItems(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Отображает все issues
+     */
+    private void showIssues() {
+      /*  clmnPullNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
+        clmnPullTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
+        //clmnPullDateCreated.setCellValueFactory(new PropertyValueFactory<PullRequestTable, Date>("createdAt"));
+        clmnPullState.setCellValueFactory(new PropertyValueFactory<>("state"));
+
+        clmnPullDateCreated.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
+                    @Override
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<PullRequestTable, String> film) {
+                        SimpleStringProperty property = new SimpleStringProperty();
+                        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                        property.setValue(dateFormat.format(film.getValue().getCreatedAt()));
+                        return property;
+                    }
+                });*/
+
+        GitApi gitApi = new GitApi();
+        RepositoryTable selectedRepository = (RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem();
+        String[] tmp = selectedRepository.getUrl().split("/");
+        String repos = tmp[tmp.length - 1];
+        String owner = tmp[tmp.length - 2];
+        try {
+
+            List<Issue> allIssues = gitApi.getAllIssues(repos, owner);
+            ObservableList<IssuesTable> data = FXCollections.observableArrayList();
+          /*  for (int i = 0; i < allIssues.size(); i++) {
+                data.add(new PullRequestTable(allIssues.get(0).getNumber(), allIssues.get(0).getTitle(), allIssues.get(0).,
+                        allPullRequests.get(0).getCreatedAt(), allPullRequests.get(0).getState()));
+            }
+*/
+            tablePullRequests.setItems(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

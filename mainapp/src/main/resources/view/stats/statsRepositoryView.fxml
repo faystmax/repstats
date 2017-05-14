@@ -403,6 +403,41 @@
                                                         </AnchorPane>
                                                     </content>
                                                 </Tab>
+                                                <Tab text="&quot;pull requests&quot;">
+                                                    <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+                                                                    prefWidth="200.0">
+                                                            <children>
+                                                                <TableView fx:id="tablePullRequests"
+                                                                           AnchorPane.bottomAnchor="0.0"
+                                                                           AnchorPane.leftAnchor="0.0"
+                                                                           AnchorPane.rightAnchor="0.0"
+                                                                           AnchorPane.topAnchor="0.0">
+                                                                    <columnResizePolicy>
+                                                                        <TableView
+                                                                                fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                                    </columnResizePolicy>
+                                                                    <columns>
+                                                                        <TableColumn fx:id="clmnPullNumber"
+                                                                                     prefWidth="75.0" text="Номер"/>
+                                                                        <TableColumn fx:id="clmnPullTitle"
+                                                                                     prefWidth="369.0"
+                                                                                     text="Загаловок"/>
+                                                                        <TableColumn fx:id="clmnPullAvtor"
+                                                                                     minWidth="0.0" prefWidth="110.0"
+                                                                                     text="Автор"/>
+                                                                        <TableColumn fx:id="clmnPullDateCreated"
+                                                                                     prefWidth="75.0"
+                                                                                     text="Дата создания"/>
+                                                                        <TableColumn fx:id="clmnPullState"
+                                                                                     prefWidth="140.0"
+                                                                                     text="Состояние"/>
+                                                                    </columns>
+                                                                </TableView>
+                                                            </children>
+                                                        </AnchorPane>
+                                                    </content>
+                                                </Tab>
                                             </tabs>
                                         </TabPane>
                                     </children>
