@@ -412,4 +412,36 @@ public class BranchDetails {
     public String getUrl() {
         return repository.getUrl();
     }
+
+    public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
+        HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
+
+        try {
+            for (Author author : allAvtors) {
+                ArrayList<Integer> commitsByTime = new ArrayList<Integer>();
+                for (int i = 0; i < 24; i++) {
+                    commitsByTime.add(0);
+                }
+
+                // Сохранили автора с его коммитами
+                authorCommitMap.put(author, commitsByTime);
+            }
+
+            ArrayList<Commit> revCommitList = null;
+            revCommitList = (ArrayList) branch.getCommits();
+
+            // Сортируем
+            for (Commit aRevCommitList : revCommitList) {
+
+                int commitHour = aRevCommitList.getCommitDateTime().getHour();
+                ArrayList<Integer> commitsByTime = authorCommitMap.get(aRevCommitList.getAuthor());
+                if (commitsByTime != null) {
+                    commitsByTime.set(commitHour, commitsByTime.get(commitHour) + 1);
+                }
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+        return authorCommitMap;
+    }
 }

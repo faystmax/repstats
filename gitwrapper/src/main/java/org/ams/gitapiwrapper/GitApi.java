@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class GitApi {
 
-    private String username = "";
+    private String username = "faystmax";
     private String password = "";
 
     private List<PullRequest> pullRequests;

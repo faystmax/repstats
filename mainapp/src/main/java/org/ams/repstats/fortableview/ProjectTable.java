@@ -40,6 +40,7 @@ public class ProjectTable {
     private ArrayList<Integer> commitsByDaysInCurMonth;
     private ArrayList<Integer> commitsByMonths;
     private HashMap<LocalDate, Integer> commitsByCustomDate;
+    private ArrayList<Integer> commitsByTime;
 
     public ProjectTable(int id, String name, Date dateStart, Date deadline, int prior) {
         this.id = new SimpleIntegerProperty(id);
@@ -63,6 +64,10 @@ public class ProjectTable {
         commitsByMonths = new ArrayList<Integer>();
         for (int i = 0; i < 12; i++) {
             commitsByMonths.add(0);
+        }
+        commitsByTime = new ArrayList<Integer>();
+        for (int i = 0; i < 24; i++) {
+            commitsByTime.add(0);
         }
         commitsByCustomDate = new HashMap<LocalDate, Integer>();
     }
@@ -261,6 +266,11 @@ public class ProjectTable {
         }
     }
 
+    public void addCommitsByTime(ArrayList<Integer> commitsByTime) {
+        for (int i = 0; i < commitsByTime.size(); i++) {
+            this.commitsByTime.set(i, this.commitsByTime.get(i) + commitsByTime.get(i));
+        }
+    }
     public ArrayList<Integer> getCommitsByWeek() {
         return commitsByWeek;
     }
@@ -275,6 +285,10 @@ public class ProjectTable {
 
     public HashMap<LocalDate, Integer> getCommitsByCustomDate() {
         return commitsByCustomDate;
+    }
+
+    public ArrayList<Integer> getCommitsByTime() {
+        return commitsByTime;
     }
 }
 

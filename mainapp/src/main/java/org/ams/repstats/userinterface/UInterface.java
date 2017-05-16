@@ -67,4 +67,6 @@ public interface UInterface {
     HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors);
 
     String getUrl();
+
+    HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors);
 }

@@ -269,6 +269,11 @@ public class GitUInterface implements UInterface {
     public String getUrl() {
         return branchDetails.getUrl();
     }
+
+    @Override
+    public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
+        return branchDetails.getCommitsByTime(allAvtors);
+    }
 }
 
 

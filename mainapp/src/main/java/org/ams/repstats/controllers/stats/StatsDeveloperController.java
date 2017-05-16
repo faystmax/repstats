@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -58,7 +59,14 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsDeveloperController.class); ///< ссылка на логер
 
+
     //region << UI Компоненты
+    @FXML
+    private LineChart commitsByTimeChart;
+    @FXML
+    private DatePicker graphDatePickerStartTime;
+    @FXML
+    private DatePicker graphDatePickerEndTime;
     @FXML
     private DatePicker graphDatePickerEnd;
     @FXML
@@ -127,12 +135,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     private DirectoryChooser directoryChooser;
     private File projectDir;
-    Task<Boolean> task;
+    private Task<Boolean> task;
 
     private LineChart<Date, Number> dateLineChart;
     private LineChart<String, Number> numberLineChart;
     private GitApi gitApi = new GitApi();
     private int mergeCount;
+
 
     @FXML
     public void initialize() {
@@ -162,6 +171,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         // Заполняем  Combobox
         comboGraph.getItems().addAll(LineChartCreator.options);
         comboGraph.setValue(LineChartCreator.options.get(0));
+
     }
 
     /**
@@ -405,7 +415,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                     showMainInf();
                     showAvtors();
                     showAllFiles();
-                    buildGraph(null);
+                    buildCommitsCountGraph(null);
+                    buildCommitsbyTimeGraph(null);
                     //showCommitsChart();
                     closeRepository();
                 });
@@ -468,27 +479,31 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         allAvtors.addAll(this.getuInterface().getAllAuthors());
         if (selectedAuthor != null) {
 
-            // Вычёркиваем не нёжных авторов
+            ArrayList<Author> allAvtorsEnd = new ArrayList<Author>();
+
+            // Записываем нужных авторов
             for (Author author : allAvtors) {
-                if (!author.getEmailAddress().equals(selectedAuthor.getEmailAddress())) {
-                    allAvtors.remove(author);
+                if (author.getEmailAddress().equals(selectedAuthor.getEmailAddress())) {
+                    allAvtorsEnd.add(author);
                 }
             }
 
             // Извлекаем коммиты
-            HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtors);
-            HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtors);
-            HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtors);
-            HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate = this.getuInterface().getCommitsByCustomDate(allAvtors);
+            HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtorsEnd);
+            HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtorsEnd);
+            HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtorsEnd);
+            HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate = this.getuInterface().getCommitsByCustomDate(allAvtorsEnd);
+
+            HashMap<Author, ArrayList<Integer>> authorCommitsByTime = this.getuInterface().getCommitsByTime(allAvtorsEnd);
 
             // Запомнили
-            for (Author author : allAvtors) {
+            for (Author author : allAvtorsEnd) {
                 projectTable.addCommitsByWeek(authorCommitsByWeek.get(author));
                 projectTable.addCommitsByDaysInCurMonth(authorByDaysInCurMonth.get(author));
                 projectTable.addCommitsByMonths(commitsByMonths.get(author));
                 projectTable.addCommitsByCustomDate(commitsByCustomDate.get(author));
+                projectTable.addCommitsByTime(authorCommitsByTime.get(author));
             }
-
         }
 
     }
@@ -542,7 +557,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             return gitApi.countMergePullRequests(repos, owner, gitname);
         } catch (Exception e) {
             e.printStackTrace();
-            Utils.showAlert("Ошибка", "Невозможно подтянуть \"pull requests\"!");
+            Platform.runLater(() -> {
+                Utils.showAlert("Ошибка", "Невозможно подтянуть \"pull requests\"!");
+            });
         }
         return 0;
     }
@@ -651,7 +668,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
      *
      * @param event - событие
      */
-    public void buildGraph(ActionEvent event) {
+    public void buildCommitsCountGraph(ActionEvent event) {
         if (isStart()) {
             ArrayList<Author> allAvtors = new ArrayList<Author>();
             allAvtors.addAll(getuInterface().getAllAuthors());
@@ -724,6 +741,33 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 GraphAnchor.getChildren().add(dateLineChart);
 
             }
+        }
+    }
+
+    /**
+     * Строит график времени коммитов
+     *
+     * @param event - событие
+     */
+    public void buildCommitsbyTimeGraph(ActionEvent event) {
+        if (isStart()) {
+            commitsByTimeChart.getData().clear();
+            commitsByTimeChart.setTitle("Коммиты по времени");
+
+            for (Object project : projectTable.getItems()) {
+                ProjectTable selectedProject = (ProjectTable) project;
+                ArrayList<Integer> commitsByTime = selectedProject.getCommitsByTime();
+                XYChart.Series authorSeries = new XYChart.Series();
+
+                for (int i = 0; i < commitsByTime.size(); i++) {
+                    authorSeries.getData().add(new XYChart.Data(String.format("%02d", i) + ":00", commitsByTime.get(i)));
+                }
+
+                authorSeries.setName(selectedProject.getName());
+                commitsByTimeChart.getData().add(authorSeries);
+            }
+
+
         }
     }
 }

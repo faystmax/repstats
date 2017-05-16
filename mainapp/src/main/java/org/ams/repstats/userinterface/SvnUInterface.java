@@ -165,4 +165,9 @@ public class SvnUInterface implements UInterface {
     public String getUrl() {
         return null;
     }
+
+    @Override
+    public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
+        return null;
+    }
 }

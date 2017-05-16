@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane prefHeight="513.0" prefWidth="948.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.stats.StatsDeveloperController">
     <children>
         <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
@@ -280,7 +283,7 @@
                                         </AnchorPane>
                                     </content>
                                 </Tab>
-                                <Tab text="Графики активности">
+                                <Tab text="График активности">
                                     <content>
                                         <AnchorPane fx:id="GraphAnchor">
                                             <children>
@@ -289,17 +292,37 @@
                                                     <children>
                                                         <ComboBox fx:id="comboGraph" layoutX="14.0" layoutY="372.0"
                                                                   maxWidth="1.7976931348623157E308"
-                                                                  onAction="#buildGraph" prefWidth="150.0"
+                                                                  onAction="#buildCommitsCountGraph" prefWidth="150.0"
                                                                   AnchorPane.rightAnchor="478.0"
                                                                   AnchorPane.topAnchor="372.0"/>
                                                         <DatePicker fx:id="graphDatePickerStart" disable="true"
                                                                     layoutX="188.0" layoutY="372.0"
-                                                                    onAction="#buildGraph" promptText="Начальная дата"/>
+                                                                    onAction="#buildCommitsCountGraph"
+                                                                    promptText="Начальная дата"/>
                                                         <DatePicker fx:id="graphDatePickerEnd" disable="true"
                                                                     layoutX="376.0" layoutY="372.0"
-                                                                    onAction="#buildGraph" promptText="Конечная дата"/>
+                                                                    onAction="#buildCommitsCountGraph"
+                                                                    promptText="Конечная дата"/>
                                                     </children>
                                                 </HBox>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Время коммитов">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <LineChart fx:id="commitsByTimeChart" AnchorPane.bottomAnchor="0.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0">
+                                                    <xAxis>
+                                                        <CategoryAxis fx:id="categoryAxisComTime" side="BOTTOM"/>
+                                                    </xAxis>
+                                                    <yAxis>
+                                                        <NumberAxis side="LEFT"/>
+                                                    </yAxis>
+                                                </LineChart>
                                             </children>
                                         </AnchorPane>
                                     </content>
