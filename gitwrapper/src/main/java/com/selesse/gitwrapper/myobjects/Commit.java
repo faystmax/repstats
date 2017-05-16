@@ -29,6 +29,8 @@ public class Commit {
      */
     private Author committer;
     private List<GitFile> filesChanged;     ///< Список изминённых файлов
+    private int linesAdded;
+    private int linesRemoved;
 
     /**
      * Инициализирует коммит.
@@ -118,5 +120,21 @@ public class Commit {
     public String toString() {
         return String.format("%s: \"%s\" by %s",
                 getSHA().substring(0, 7), Ascii.truncate(getCommitMessage(), 50, "..."), author.getName());
+    }
+
+    public void setLinesAdded(int linesAdded) {
+        this.linesAdded = linesAdded;
+    }
+
+    public void setLinesRemoved(int linesRemoved) {
+        this.linesRemoved = linesRemoved;
+    }
+
+    public int getLinesAdded() {
+        return linesAdded;
+    }
+
+    public int getLinesRemoved() {
+        return linesRemoved;
     }
 }

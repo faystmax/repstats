@@ -29,7 +29,10 @@ import java.util.Date;
  */
 public class CommitsController {
 
+
     //region << UI Компоненты
+    @FXML
+    private TableColumn clmnChangeLine;
     @FXML
     private DatePicker datePickerStart;
     @FXML
@@ -68,6 +71,7 @@ public class CommitsController {
                     return property;
                 });
         clmnFilesChanged.setCellValueFactory(new PropertyValueFactory<>("filesChanged"));
+        clmnChangeLine.setCellValueFactory(new PropertyValueFactory<>("changeLines"));
     }
 
     public void setAuthor(Author author) {
@@ -117,28 +121,29 @@ public class CommitsController {
                 if (datePickerStart.getValue() != null && datePickerEnd.getValue() != null) {
                     if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue().minusDays(1)) &&
                             commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue().plusDays(1)))
-                        data.add(new CommitTable(commit.getCommitMessage(),
-                                commit.getCommitDateTime(),
-                                commit.getFilesChanged().size()));
+                        this.addCommit(data, commit);
                 } else if (datePickerStart.getValue() != null) {
                     if (commit.getCommitDateTime().toLocalDate().isAfter(datePickerStart.getValue().minusDays(1)))
-                        data.add(new CommitTable(commit.getCommitMessage(),
-                                commit.getCommitDateTime(),
-                                commit.getFilesChanged().size()));
+                        this.addCommit(data, commit);
                 } else if (datePickerEnd.getValue() != null) {
                     if (commit.getCommitDateTime().toLocalDate().isBefore(datePickerEnd.getValue().plusDays(1)))
-                        data.add(new CommitTable(commit.getCommitMessage(),
-                                commit.getCommitDateTime(),
-                                commit.getFilesChanged().size()));
+                        this.addCommit(data, commit);
                 } else {
-                    data.add(new CommitTable(commit.getCommitMessage(),
-                            commit.getCommitDateTime(),
-                            commit.getFilesChanged().size()));
+                    this.addCommit(data, commit);
                 }
 
             }
             tableForCommits.setItems(data);
         }
     }
+
+    private void addCommit(ObservableList<CommitTable> data, Commit commit) {
+        data.add(new CommitTable(commit.getCommitMessage(),
+                commit.getCommitDateTime(),
+                commit.getFilesChanged().size(),
+                commit.getLinesAdded(),
+                commit.getLinesRemoved()));
+    }
+
 
 }

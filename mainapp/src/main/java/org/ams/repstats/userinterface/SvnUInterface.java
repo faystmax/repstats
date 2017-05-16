@@ -160,4 +160,9 @@ public class SvnUInterface implements UInterface {
     public HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors) {
         return null;
     }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
 }

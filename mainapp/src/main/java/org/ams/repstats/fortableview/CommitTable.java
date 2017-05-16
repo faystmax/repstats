@@ -14,14 +14,21 @@ import java.time.ZonedDateTime;
  * Time: 20:55
  */
 public class CommitTable {
+    private SimpleIntegerProperty changeLines;
+    private SimpleIntegerProperty linesAdded;
+    private SimpleIntegerProperty linesRemoved;
     private SimpleStringProperty message;
     private ObjectProperty<ZonedDateTime> date = new SimpleObjectProperty<ZonedDateTime>();
     private SimpleIntegerProperty filesChanged;
 
-    public CommitTable(String message, ZonedDateTime date, int filesChanged) {
+    public CommitTable(String message, ZonedDateTime date, int filesChanged, int linesAdded, int linesRemoved) {
         this.message = new SimpleStringProperty(message);
         this.date = new SimpleObjectProperty<ZonedDateTime>(date);
         this.filesChanged = new SimpleIntegerProperty(filesChanged);
+        this.linesAdded = new SimpleIntegerProperty(linesAdded);
+        this.linesRemoved = new SimpleIntegerProperty(linesRemoved);
+        this.changeLines = new SimpleIntegerProperty(linesAdded + Math.abs(linesRemoved));
+        
     }
 
     public String getMessage() {
@@ -58,5 +65,41 @@ public class CommitTable {
 
     public void setFilesChanged(int filesChanged) {
         this.filesChanged.set(filesChanged);
+    }
+
+    public int getLinesAdded() {
+        return linesAdded.get();
+    }
+
+    public SimpleIntegerProperty linesAddedProperty() {
+        return linesAdded;
+    }
+
+    public void setLinesAdded(int linesAdded) {
+        this.linesAdded.set(linesAdded);
+    }
+
+    public int getLinesRemoved() {
+        return linesRemoved.get();
+    }
+
+    public SimpleIntegerProperty linesRemovedProperty() {
+        return linesRemoved;
+    }
+
+    public void setLinesRemoved(int linesRemoved) {
+        this.linesRemoved.set(linesRemoved);
+    }
+
+    public int getChangeLines() {
+        return changeLines.get();
+    }
+
+    public SimpleIntegerProperty changeLinesProperty() {
+        return changeLines;
+    }
+
+    public void setChangeLines(int changeLines) {
+        this.changeLines.set(changeLines);
     }
 }

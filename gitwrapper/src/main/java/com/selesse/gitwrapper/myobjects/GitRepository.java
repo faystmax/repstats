@@ -64,4 +64,11 @@ public class GitRepository {
     public void close() {
         repository.close();
     }
+
+    /**
+     * Получаем url внешнего репозитория
+     */
+    public String getUrl() {
+        return repository.getConfig().getString("remote", "origin", "url");
+    }
 }

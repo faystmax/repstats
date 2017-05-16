@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane prefHeight="525.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.stats.StatsRepositoryController">
     <children>
         <SplitPane fx:id="rootSplitPane" dividerPositions="0.11847389558232932" orientation="VERTICAL"
@@ -304,14 +304,13 @@
                                                 <Tab text="Все ветки репозитория">
                                                     <content>
                                                         <SplitPane dividerPositions="0.45742092457420924"
-                                                                   orientation="VERTICAL" prefHeight="200.0"
-                                                                   prefWidth="160.0">
+                                                                   orientation="VERTICAL">
                                                             <items>
                                                                 <AnchorPane minHeight="0.0" minWidth="0.0"
-                                                                            prefHeight="100.0" prefWidth="160.0">
+                                                                            prefHeight="221.0" prefWidth="692.0">
                                                                     <children>
                                                                         <TableView fx:id="tableTecBranches"
-                                                                                   prefHeight="205.0" prefWidth="642.0"
+                                                                                   prefHeight="0.0" prefWidth="0.0"
                                                                                    AnchorPane.bottomAnchor="0.0"
                                                                                    AnchorPane.leftAnchor="0.0"
                                                                                    AnchorPane.rightAnchor="0.0"
@@ -340,7 +339,7 @@
                                                                             prefHeight="100.0" prefWidth="160.0">
                                                                     <children>
                                                                         <TableView fx:id="tableMergedBranches"
-                                                                                   prefHeight="212.0" prefWidth="200.0"
+                                                                                   prefHeight="0.0" prefWidth="0.0"
                                                                                    AnchorPane.bottomAnchor="0.0"
                                                                                    AnchorPane.leftAnchor="0.0"
                                                                                    AnchorPane.rightAnchor="0.0"
@@ -403,39 +402,99 @@
                                                         </AnchorPane>
                                                     </content>
                                                 </Tab>
-                                                <Tab text="&quot;pull requests&quot;">
+                                                <Tab text="&quot;pull and issues&quot;">
                                                     <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
-                                                                    prefWidth="200.0">
-                                                            <children>
-                                                                <TableView fx:id="tablePullRequests"
-                                                                           AnchorPane.bottomAnchor="0.0"
-                                                                           AnchorPane.leftAnchor="0.0"
-                                                                           AnchorPane.rightAnchor="0.0"
-                                                                           AnchorPane.topAnchor="0.0">
-                                                                    <columnResizePolicy>
-                                                                        <TableView
-                                                                                fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                                                    </columnResizePolicy>
-                                                                    <columns>
-                                                                        <TableColumn fx:id="clmnPullNumber"
-                                                                                     prefWidth="75.0" text="Номер"/>
-                                                                        <TableColumn fx:id="clmnPullTitle"
-                                                                                     prefWidth="369.0"
-                                                                                     text="Загаловок"/>
-                                                                        <TableColumn fx:id="clmnPullAvtor"
-                                                                                     minWidth="0.0" prefWidth="110.0"
-                                                                                     text="Автор"/>
-                                                                        <TableColumn fx:id="clmnPullDateCreated"
-                                                                                     prefWidth="75.0"
-                                                                                     text="Дата создания"/>
-                                                                        <TableColumn fx:id="clmnPullState"
-                                                                                     prefWidth="140.0"
-                                                                                     text="Состояние"/>
-                                                                    </columns>
-                                                                </TableView>
-                                                            </children>
-                                                        </AnchorPane>
+                                                        <SplitPane dividerPositions="0.44954128440366975"
+                                                                   orientation="VERTICAL">
+                                                            <items>
+                                                                <AnchorPane prefHeight="259.0" prefWidth="767.0">
+                                                                    <children>
+                                                                        <TableView fx:id="tableIssues"
+                                                                                   prefHeight="193.0" prefWidth="675.0"
+                                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                                   AnchorPane.leftAnchor="0.0"
+                                                                                   AnchorPane.rightAnchor="0.0"
+                                                                                   AnchorPane.topAnchor="0.0">
+                                                                            <columnResizePolicy>
+                                                                                <TableView
+                                                                                        fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                                            </columnResizePolicy>
+                                                                            <columns>
+                                                                                <TableColumn prefWidth="75.0"
+                                                                                             text="issues">
+                                                                                    <columns>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnIssuesNumber"
+                                                                                                prefWidth="75.0"
+                                                                                                text="Номер"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnIssuesTitle"
+                                                                                                prefWidth="369.0"
+                                                                                                text="Загаловок"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnIssuesAvtor"
+                                                                                                minWidth="0.0"
+                                                                                                prefWidth="110.0"
+                                                                                                text="Автор"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnIssuesDateCreated"
+                                                                                                prefWidth="75.0"
+                                                                                                text="Дата создания"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnIssuesState"
+                                                                                                prefWidth="140.0"
+                                                                                                text="Состояние"/>
+                                                                                    </columns>
+                                                                                </TableColumn>
+                                                                            </columns>
+                                                                        </TableView>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                                <AnchorPane>
+                                                                    <children>
+                                                                        <TableView fx:id="tablePullRequests"
+                                                                                   prefHeight="237.0" prefWidth="675.0"
+                                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                                   AnchorPane.leftAnchor="0.0"
+                                                                                   AnchorPane.rightAnchor="0.0"
+                                                                                   AnchorPane.topAnchor="0.0">
+                                                                            <columnResizePolicy>
+                                                                                <TableView
+                                                                                        fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                                                            </columnResizePolicy>
+                                                                            <columns>
+                                                                                <TableColumn prefWidth="75.0"
+                                                                                             text="pull request">
+                                                                                    <columns>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnPullNumber"
+                                                                                                prefWidth="75.0"
+                                                                                                text="Номер"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnPullTitle"
+                                                                                                prefWidth="369.0"
+                                                                                                text="Загаловок"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnPullAvtor"
+                                                                                                minWidth="0.0"
+                                                                                                prefWidth="110.0"
+                                                                                                text="Автор"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnPullDateCreated"
+                                                                                                prefWidth="75.0"
+                                                                                                text="Дата создания"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnPullState"
+                                                                                                prefWidth="140.0"
+                                                                                                text="Состояние"/>
+                                                                                    </columns>
+                                                                                </TableColumn>
+                                                                            </columns>
+                                                                        </TableView>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                            </items>
+                                                        </SplitPane>
                                                     </content>
                                                 </Tab>
                                             </tabs>

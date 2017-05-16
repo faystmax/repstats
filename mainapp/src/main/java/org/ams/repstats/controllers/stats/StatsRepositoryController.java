@@ -62,8 +62,19 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsRepositoryController.class); ///< ссылка на логер
 
-
     //region << UI Компоненты
+    @FXML
+    private TableView tableIssues;
+    @FXML
+    private TableColumn clmnIssuesNumber;
+    @FXML
+    private TableColumn clmnIssuesTitle;
+    @FXML
+    private TableColumn clmnIssuesAvtor;
+    @FXML
+    private TableColumn clmnIssuesDateCreated;
+    @FXML
+    private TableColumn clmnIssuesState;
     @FXML
     private TableView tablePullRequests;
     @FXML
@@ -154,10 +165,14 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     private DirectoryChooser directoryChooser;
     private File projectDir;
+    private String url;
     private Task<Boolean> task;
 
     private LineChart<Date, Number> dateLineChart;
     private LineChart<String, Number> numberLineChart;
+    private List<PullRequest> pullRequests;
+    private List<Issue> issues;
+    private GitApi gitApi;
 
     @FXML
     public void initialize() {
@@ -298,17 +313,19 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 } else {
                     setStart(true);
                 }
-
+                url = getuInterface().getUrl();
+                calcIssuesAndPullRequests();
+                showPullRequests();
+                showIssues();
                 //выводим данные о репозитории в потоку javafx
                 Platform.runLater(() -> {
+
                     showMainInf();
                     showAvtors();
                     showAllFiles();
                     showAllBranches();
                     buildGraph(null);
-
                     showChartOnImageView();
-
                     closeRepository();
                 });
                 return true;
@@ -341,7 +358,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
 
         // берём url
-        String url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
+        url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
 
 
         // here runs the JavaFX thread
@@ -372,6 +389,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     setStart(true);
                 }
 
+                calcIssuesAndPullRequests();
+                showPullRequests();
+                showIssues();
                 //выводим данные о репозитории в потоку javafx
                 Platform.runLater(() -> {
                     showMainInf();
@@ -379,9 +399,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAllFiles();
                     showAllBranches();
                     buildGraph(null);
-
-                    showPullRequests();
-                    showIssues();
 
                     showChartOnImageView();
                     closeRepository();
@@ -409,6 +426,20 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     }
 
 
+    private void calcIssuesAndPullRequests() {
+        this.gitApi = new GitApi();
+        String[] tmp = url.split("/");
+        String repos = tmp[tmp.length - 1];
+        String owner = tmp[tmp.length - 2];
+        try {
+            gitApi.calcAllPullRequests(repos, owner);
+            gitApi.calcAllIssues(repos, owner);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * Отображает все pull requests
      */
@@ -430,65 +461,54 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     }
                 });
 
-        GitApi gitApi = new GitApi();
-        RepositoryTable selectedRepository = (RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem();
-        String[] tmp = selectedRepository.getUrl().split("/");
-        String repos = tmp[tmp.length - 1];
-        String owner = tmp[tmp.length - 2];
-        try {
-
-            List<PullRequest> allPullRequests = gitApi.getAllPullRequests(repos, owner);
-            ObservableList<PullRequestTable> data = FXCollections.observableArrayList();
-            for (int i = 0; i < allPullRequests.size(); i++) {
-                data.add(new PullRequestTable(allPullRequests.get(0).getNumber(), allPullRequests.get(0).getTitle(), allPullRequests.get(0).getHead().getUser().getLogin(),
-                        allPullRequests.get(0).getCreatedAt(), allPullRequests.get(0).getState()));
+        List<PullRequest> pullRequests = gitApi.getPullRequests();
+        ObservableList<PullRequestTable> data = FXCollections.observableArrayList();
+        for (int i = 0; i < pullRequests.size(); i++) {
+            String author = null;
+            if (pullRequests.get(i).getHead().getUser() == null) {
+                author = pullRequests.get(i).getBase().getUser().getLogin();
+            } else {
+                author = pullRequests.get(i).getHead().getUser().getLogin();
             }
 
-            tablePullRequests.setItems(data);
-        } catch (IOException e) {
-            e.printStackTrace();
+            data.add(new PullRequestTable(pullRequests.get(i).getNumber(), pullRequests.get(i).getTitle(),
+                    author, pullRequests.get(i).getCreatedAt(), pullRequests.get(i).getState()));
         }
+
+        tablePullRequests.setItems(data);
+
     }
 
     /**
      * Отображает все issues
      */
     private void showIssues() {
-      /*  clmnPullNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
-        clmnPullTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clmnIssuesNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
+        clmnIssuesTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        clmnIssuesAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
         //clmnPullDateCreated.setCellValueFactory(new PropertyValueFactory<PullRequestTable, Date>("createdAt"));
-        clmnPullState.setCellValueFactory(new PropertyValueFactory<>("state"));
+        clmnIssuesState.setCellValueFactory(new PropertyValueFactory<>("state"));
 
-        clmnPullDateCreated.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
+        clmnIssuesDateCreated.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<IssuesTable, String>, ObservableValue<String>>() {
                     @Override
-                    public ObservableValue<String> call(TableColumn.CellDataFeatures<PullRequestTable, String> film) {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<IssuesTable, String> film) {
                         SimpleStringProperty property = new SimpleStringProperty();
                         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                         property.setValue(dateFormat.format(film.getValue().getCreatedAt()));
                         return property;
                     }
-                });*/
+                });
 
-        GitApi gitApi = new GitApi();
-        RepositoryTable selectedRepository = (RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem();
-        String[] tmp = selectedRepository.getUrl().split("/");
-        String repos = tmp[tmp.length - 1];
-        String owner = tmp[tmp.length - 2];
-        try {
 
-            List<Issue> allIssues = gitApi.getAllIssues(repos, owner);
-            ObservableList<IssuesTable> data = FXCollections.observableArrayList();
-          /*  for (int i = 0; i < allIssues.size(); i++) {
-                data.add(new PullRequestTable(allIssues.get(0).getNumber(), allIssues.get(0).getTitle(), allIssues.get(0).,
-                        allPullRequests.get(0).getCreatedAt(), allPullRequests.get(0).getState()));
-            }
-*/
-            tablePullRequests.setItems(data);
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<Issue> issues = gitApi.getIssues();
+        ObservableList<IssuesTable> data = FXCollections.observableArrayList();
+        for (int i = 0; i < issues.size(); i++) {
+            data.add(new IssuesTable(issues.get(i).getNumber(), issues.get(i).getTitle(),
+                    issues.get(i).getUser().getLogin(), issues.get(i).getCreatedAt(), issues.get(i).getState()));
         }
+
+        tableIssues.setItems(data);
     }
 
 

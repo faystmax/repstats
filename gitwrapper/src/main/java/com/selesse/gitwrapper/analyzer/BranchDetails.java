@@ -74,6 +74,9 @@ public class BranchDetails {
 
                 List<CommitDiff> diffs = repository.getCommitDiffs(commit);
                 for (CommitDiff diff : diffs) {
+                    commit.setLinesAdded(commit.getLinesAdded() + diff.getLinesAdded());
+                    commit.setLinesRemoved(commit.getLinesRemoved() + diff.getLinesRemoved());
+
                     totalLinesAdded += diff.getLinesAdded();
                     totalLinesRemoved += diff.getLinesRemoved();
 
@@ -404,5 +407,9 @@ public class BranchDetails {
             e.printStackTrace();
         }
         return authorCommitMap;
+    }
+
+    public String getUrl() {
+        return repository.getUrl();
     }
 }

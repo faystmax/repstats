@@ -93,7 +93,9 @@ public class CloneRepViewController {
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Utils.showAlert("Ошибка", "Ошибка загрузки репозитория!");
+                        Platform.runLater(() -> {
+                            Utils.showAlert("Ошибка", "Ошибка загрузки репозитория!");
+                        });
                     }
 
                     return true;
