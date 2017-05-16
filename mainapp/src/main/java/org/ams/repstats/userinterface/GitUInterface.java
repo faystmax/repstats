@@ -274,6 +274,11 @@ public class GitUInterface implements UInterface {
     public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
         return branchDetails.getCommitsByTime(allAvtors);
     }
+
+    @Override
+    public int getBugFixesCount(Author selectedAuthor) {
+        return branchDetails.getBugFixesCount(selectedAuthor);
+    }
 }
 
 

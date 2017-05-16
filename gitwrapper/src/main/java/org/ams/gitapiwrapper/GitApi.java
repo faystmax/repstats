@@ -98,7 +98,16 @@ public class GitApi {
         return issues;
     }
 
-    public int countMergePullRequests(String repos, String owner, String gitname) throws Exception {
+    /**
+     * Количество слитых pull request`ов разработчиком
+     *
+     * @param repos
+     * @param owner
+     * @param gitname
+     * @return
+     * @throws Exception
+     */
+    public int countUserMergePullRequests(String repos, String owner, String gitname) throws Exception {
         this.calcAllPullRequests(repos, owner);
 
         int mergeCount = 0;
@@ -108,5 +117,47 @@ public class GitApi {
             }
         }
         return mergeCount;
+    }
+
+    /**
+     * Количество pull-request, которые смерджили другие у данного разработчика
+     *
+     * @param repos
+     * @param owner
+     * @param gitname
+     * @return
+     * @throws Exception
+     */
+    public int countMergedOtherPullRequests(String repos, String owner, String gitname) throws Exception {
+        this.calcAllPullRequests(repos, owner);
+
+        int mergedOtherPullRequests = 0;
+        for (PullRequest pullRequest : pullRequests) {
+            if (pullRequest.isMerged() == true && pullRequest.getUser().getLogin().equals(gitname)) {
+                mergedOtherPullRequests++;
+            }
+        }
+        return mergedOtherPullRequests;
+    }
+
+    /**
+     * Количество pull-request, которые сделал разработчик, но другие их не смерджили
+     *
+     * @param repos
+     * @param owner
+     * @param gitname
+     * @return
+     * @throws Exception
+     */
+    public int countNotMergedOtherPullRequests(String repos, String owner, String gitname) throws Exception {
+        this.calcAllPullRequests(repos, owner);
+
+        int notMergedOtherPullRequests = 0;
+        for (PullRequest pullRequest : pullRequests) {
+            if (pullRequest.isMerged() == false && pullRequest.getUser().getLogin().equals(gitname)) {
+                notMergedOtherPullRequests++;
+            }
+        }
+        return notMergedOtherPullRequests;
     }
 }

@@ -69,4 +69,6 @@ public interface UInterface {
     String getUrl();
 
     HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors);
+
+    int getBugFixesCount(Author selectedAuthor);
 }

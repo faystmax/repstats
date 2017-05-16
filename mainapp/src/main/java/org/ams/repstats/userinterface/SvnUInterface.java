@@ -170,4 +170,9 @@ public class SvnUInterface implements UInterface {
     public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
         return null;
     }
+
+    @Override
+    public int getBugFixesCount(Author selectedAuthor) {
+        return 0;
+    }
 }

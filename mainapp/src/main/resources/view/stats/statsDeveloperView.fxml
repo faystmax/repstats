@@ -185,6 +185,55 @@
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Pull request слитые другими разраб-ми:"
+                                                               GridPane.rowIndex="7">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Pull request не слитые другими разраб-ми:"
+                                                               GridPane.rowIndex="8">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lbOtherMergedPullReq"
+                                                               maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="63.0"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="7">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lbOtherNotMergedPullReq"
+                                                               maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="63.0"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="8">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Исправлено багов(bugs):" GridPane.rowIndex="9">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lbFixBugs" maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="63.0"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="9">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
                                                     </children>
                                                     <columnConstraints>
                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
@@ -193,6 +242,12 @@
                                                                            prefWidth="100.0"/>
                                                     </columnConstraints>
                                                     <rowConstraints>
+                                                        <RowConstraints maxHeight="66.0" minHeight="10.0"
+                                                                        prefHeight="66.0" vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="66.0" minHeight="10.0"
+                                                                        prefHeight="66.0" vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="66.0" minHeight="10.0"
+                                                                        prefHeight="66.0" vgrow="SOMETIMES"/>
                                                         <RowConstraints maxHeight="66.0" minHeight="10.0"
                                                                         prefHeight="66.0" vgrow="SOMETIMES"/>
                                                         <RowConstraints maxHeight="66.0" minHeight="10.0"

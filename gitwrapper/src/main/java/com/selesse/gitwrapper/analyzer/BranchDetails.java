@@ -444,4 +444,28 @@ public class BranchDetails {
         }
         return authorCommitMap;
     }
+
+    public int getBugFixesCount(Author selectedAuthor) {
+        int bugFixes = 0;
+        // Сортируем
+
+        ArrayList<Commit> revCommitList = null;
+        try {
+            revCommitList = (ArrayList) branch.getCommits();
+
+            for (Commit aRevCommitList : revCommitList) {
+
+                for (String keyWord : KeyWords.fixKeyWords) {
+                    if (aRevCommitList.getAuthor().getEmailAddress().equals(selectedAuthor.getEmailAddress())
+                            && aRevCommitList.getCommitMessage().contains(keyWord)) {
+                        bugFixes++;
+                        break;
+                    }
+                }
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+        }
+        return bugFixes;
+    }
 }

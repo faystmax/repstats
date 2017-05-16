@@ -60,7 +60,14 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsDeveloperController.class); ///< ссылка на логер
 
 
+
     //region << UI Компоненты
+    @FXML
+    private Label lbFixBugs;
+    @FXML
+    private Label lbOtherMergedPullReq;
+    @FXML
+    private Label lbOtherNotMergedPullReq;
     @FXML
     private LineChart commitsByTimeChart;
     @FXML
@@ -141,7 +148,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private LineChart<String, Number> numberLineChart;
     private GitApi gitApi = new GitApi();
     private int mergeCount;
-
+    private int mergedOtherPullRequests;
+    private int notMergedOtherPullRequests;
+    private int bugFixes;
 
     @FXML
     public void initialize() {
@@ -293,6 +302,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private void startMainTask() {
         // начинаем анализ
         task = new Task<Boolean>() {
+
+
             @Override
             public Boolean call() throws GitAPIException {
 
@@ -401,7 +412,11 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         rememberGraphics(projectTable, newRepositoryTable);
 
                         //запоминаем кол-во merged pull`ов данным разработчиком
-                        mergeCount += calcMergeCount(url, cur.getGitname());
+                        calcMergeCount(url, cur.getGitname());
+
+                        DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
+                        Author selectedAuthor = getuInterface().getAuthorByEmail(developerTable.getGitemail());
+                        bugFixes = getuInterface().getBugFixesCount(selectedAuthor);
                     }
                     //
 
@@ -544,7 +559,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         lbPokr.setText(String.valueOf(vklad) + "%");
 
         lbMergedPullReq.setText(String.valueOf(this.mergeCount));
-
+        lbOtherMergedPullReq.setText(String.valueOf(this.mergedOtherPullRequests));
+        lbOtherNotMergedPullReq.setText(String.valueOf(this.notMergedOtherPullRequests));
+        lbFixBugs.setText(String.valueOf(this.bugFixes));
     }
 
 
@@ -554,7 +571,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         String repos = tmp[tmp.length - 1];
         String owner = tmp[tmp.length - 2];
         try {
-            return gitApi.countMergePullRequests(repos, owner, gitname);
+            this.mergeCount = gitApi.countUserMergePullRequests(repos, owner, gitname);
+            this.mergedOtherPullRequests = gitApi.countMergedOtherPullRequests(repos, owner, gitname);
+            this.notMergedOtherPullRequests = gitApi.countNotMergedOtherPullRequests(repos, owner, gitname);
         } catch (Exception e) {
             e.printStackTrace();
             Platform.runLater(() -> {
