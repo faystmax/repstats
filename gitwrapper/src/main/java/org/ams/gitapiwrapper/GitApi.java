@@ -7,7 +7,6 @@ import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,8 +35,8 @@ public class GitApi {
     }
 
 
-    public List<PullRequest> calcAllPullRequests(String repositoryName, String ownerName) throws IOException {
-        if (pullRequests == null) {
+    public List<PullRequest> calcAllPullRequests(String repositoryName, String ownerName) throws Exception {
+        if (this.pullRequests == null) {
             RepositoryService serviceRep = new RepositoryService();
             serviceRep.getClient().setCredentials(username, password);
             Repository repository = serviceRep.getRepository(ownerName, repositoryName);
@@ -45,13 +44,21 @@ public class GitApi {
             PullRequestService servicePull = new PullRequestService();
             servicePull.getClient().setCredentials(username, password);
 
-            this.pullRequests = servicePull.getPullRequests(repository, IssueService.STATE_OPEN);
+            List<PullRequest> pullRequests = servicePull.getPullRequests(repository, IssueService.STATE_OPEN);
             pullRequests.addAll(servicePull.getPullRequests(repository, IssueService.STATE_CLOSED));
+
+            //получанм полную информацию о pull request
+            this.pullRequests = new ArrayList<>();
+            for (PullRequest pullRequest : pullRequests) {
+                this.pullRequests.add(servicePull.getPullRequest(repository, pullRequest.getNumber()));
+            }
+
+
         }
-        return pullRequests;
+        return this.pullRequests;
     }
 
-    public List<Issue> calcAllIssues(String repositoryName, String ownerName) throws IOException {
+    public List<Issue> calcAllIssues(String repositoryName, String ownerName) throws Exception {
         if (issues == null) {
             RepositoryService serviceRep = new RepositoryService();
             serviceRep.getClient().setCredentials(username, password);
@@ -73,7 +80,7 @@ public class GitApi {
 
             List<Issue> issuesWhithoutPull = new ArrayList<>();
             for (Issue issue : issues) {
-                if (issue.getPullRequest().getUrl() == null) {  //значит это pull rquest
+                if (issue.getPullRequest().getUrl() == null) {  //значит это pull request
                     issuesWhithoutPull.add(issue);
                 }
             }
@@ -91,4 +98,15 @@ public class GitApi {
         return issues;
     }
 
+    public int countMergePullRequests(String repos, String owner, String gitname) throws Exception {
+        this.calcAllPullRequests(repos, owner);
+
+        int mergeCount = 0;
+        for (PullRequest pullRequest : pullRequests) {
+            if (pullRequest.isMerged() == true && pullRequest.getMergedBy().getLogin().equals(gitname)) {
+                mergeCount++;
+            }
+        }
+        return mergeCount;
+    }
 }

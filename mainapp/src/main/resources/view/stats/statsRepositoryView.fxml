@@ -410,7 +410,6 @@
                                                                 <AnchorPane prefHeight="259.0" prefWidth="767.0">
                                                                     <children>
                                                                         <TableView fx:id="tableIssues"
-                                                                                   prefHeight="193.0" prefWidth="675.0"
                                                                                    AnchorPane.bottomAnchor="0.0"
                                                                                    AnchorPane.leftAnchor="0.0"
                                                                                    AnchorPane.rightAnchor="0.0"
@@ -453,7 +452,6 @@
                                                                 <AnchorPane>
                                                                     <children>
                                                                         <TableView fx:id="tablePullRequests"
-                                                                                   prefHeight="237.0" prefWidth="675.0"
                                                                                    AnchorPane.bottomAnchor="0.0"
                                                                                    AnchorPane.leftAnchor="0.0"
                                                                                    AnchorPane.rightAnchor="0.0"
@@ -484,9 +482,13 @@
                                                                                                 prefWidth="75.0"
                                                                                                 text="Дата создания"/>
                                                                                         <TableColumn
-                                                                                                fx:id="clmnPullState"
+                                                                                                fx:id="clmnPullIsMerged"
                                                                                                 prefWidth="140.0"
-                                                                                                text="Состояние"/>
+                                                                                                text="Merged"/>
+                                                                                        <TableColumn
+                                                                                                fx:id="clmnPullAffectedFiles"
+                                                                                                prefWidth="75.0"
+                                                                                                text="Затронуто файлов"/>
                                                                                     </columns>
                                                                                 </TableColumn>
                                                                             </columns>

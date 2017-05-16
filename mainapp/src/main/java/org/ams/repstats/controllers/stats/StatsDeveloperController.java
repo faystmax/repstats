@@ -19,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.ams.gitapiwrapper.GitApi;
 import org.ams.repstats.MysqlConnector;
 import org.ams.repstats.fortableview.AuthorTable;
 import org.ams.repstats.fortableview.DeveloperTable;
@@ -57,7 +58,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsDeveloperController.class); ///< ссылка на логер
 
-
     //region << UI Компоненты
     @FXML
     private DatePicker graphDatePickerEnd;
@@ -67,6 +67,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private AnchorPane GraphAnchor;
     @FXML
     private Label lbMainInfTitle;
+    @FXML
+    private Label lbMergedPullReq;
     @FXML
     private Label lbFIO;
     @FXML
@@ -129,6 +131,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     private LineChart<Date, Number> dateLineChart;
     private LineChart<String, Number> numberLineChart;
+    private GitApi gitApi = new GitApi();
+    private int mergeCount;
 
     @FXML
     public void initialize() {
@@ -261,6 +265,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         linesAdd = 0;
         linesDel = 0;
         totalLines = 0;
+        mergeCount = 0;
 
         // Открываем projectForDeveloperView
         openProjectForDeveloperView();
@@ -384,6 +389,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                         // запоминаем  графики
                         rememberGraphics(projectTable, newRepositoryTable);
+
+                        //запоминаем кол-во merged pull`ов данным разработчиком
+                        mergeCount += calcMergeCount(url, cur.getGitname());
                     }
                     //
 
@@ -520,6 +528,23 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
         lbPokr.setText(String.valueOf(vklad) + "%");
 
+        lbMergedPullReq.setText(String.valueOf(this.mergeCount));
+
+    }
+
+
+    private int calcMergeCount(String url, String gitname) {
+        this.gitApi = new GitApi();
+        String[] tmp = url.split("/");
+        String repos = tmp[tmp.length - 1];
+        String owner = tmp[tmp.length - 2];
+        try {
+            return gitApi.countMergePullRequests(repos, owner, gitname);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showAlert("Ошибка", "Невозможно подтянуть \"pull requests\"!");
+        }
+        return 0;
     }
 
     @Override
@@ -560,7 +585,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
 
     /**
-     * Показать коммиты разработчика
+     * Показать коммиты разработчика в проекте
      *
      * @param event - событие
      */
@@ -590,6 +615,11 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Показать коммиты разработчика в репозитории
+     *
+     * @param event
+     */
     public void ShowCommitsInRepositorytButtonAction(ActionEvent event) {
         if (isStart()) {
             try {

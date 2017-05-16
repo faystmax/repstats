@@ -166,6 +166,22 @@
                                                                 <Font name="Arial Italic" size="14.0"/>
                                                             </font>
                                                         </Label>
+                                                        <Label maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308"
+                                                               text="Merged pull request:" GridPane.rowIndex="6">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lbMergedPullReq"
+                                                               maxHeight="1.7976931348623157E308"
+                                                               maxWidth="1.7976931348623157E308" prefHeight="63.0"
+                                                               prefWidth="157.0" text="-" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="6">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0"/>
+                                                            </font>
+                                                        </Label>
                                                     </children>
                                                     <columnConstraints>
                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
@@ -174,6 +190,8 @@
                                                                            prefWidth="100.0"/>
                                                     </columnConstraints>
                                                     <rowConstraints>
+                                                        <RowConstraints maxHeight="66.0" minHeight="10.0"
+                                                                        prefHeight="66.0" vgrow="SOMETIMES"/>
                                                         <RowConstraints maxHeight="66.0" minHeight="10.0"
                                                                         prefHeight="66.0" vgrow="SOMETIMES"/>
                                                         <RowConstraints maxHeight="66.0" minHeight="10.0"

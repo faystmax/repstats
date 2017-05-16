@@ -20,13 +20,32 @@ public class PullRequestTable {
     private SimpleStringProperty name;
     private ObjectProperty<Date> createdAt = new SimpleObjectProperty<Date>();
     private SimpleStringProperty state;
+    private SimpleStringProperty isMerged;
+    private SimpleIntegerProperty changedFiles;
+    private SimpleIntegerProperty additions;
+    private SimpleIntegerProperty deletions;
 
-    public PullRequestTable(int number, String title, String name, Date createdAt, String state) {
+    public PullRequestTable(int number, String title, String author, Date createdAt, String state) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
-        this.name = new SimpleStringProperty(name);
+        this.name = new SimpleStringProperty(author);
         this.createdAt = new SimpleObjectProperty<Date>(createdAt);
         this.state = new SimpleStringProperty(state);
+    }
+
+    public PullRequestTable(int number, String title, String author, Date createdAt, String state, String isMerged,
+                            int changedFiles, int additions, int deletions) {
+        this.number = new SimpleIntegerProperty(number);
+        this.title = new SimpleStringProperty(title);
+        this.name = new SimpleStringProperty(author);
+        this.createdAt = new SimpleObjectProperty<Date>(createdAt);
+        this.state = new SimpleStringProperty(state);
+        this.isMerged = new SimpleStringProperty(isMerged);
+
+        this.changedFiles = new SimpleIntegerProperty(changedFiles);
+        this.additions = new SimpleIntegerProperty(additions);
+        this.deletions = new SimpleIntegerProperty(deletions);
+
     }
 
     public int getNumber() {
@@ -87,5 +106,53 @@ public class PullRequestTable {
 
     public void setState(String state) {
         this.state.set(state);
+    }
+
+    public int getChangedFiles() {
+        return changedFiles.get();
+    }
+
+    public SimpleIntegerProperty changedFilesProperty() {
+        return changedFiles;
+    }
+
+    public void setChangedFiles(int changedFiles) {
+        this.changedFiles.set(changedFiles);
+    }
+
+    public int getAdditions() {
+        return additions.get();
+    }
+
+    public SimpleIntegerProperty additionsProperty() {
+        return additions;
+    }
+
+    public void setAdditions(int additions) {
+        this.additions.set(additions);
+    }
+
+    public int getDeletions() {
+        return deletions.get();
+    }
+
+    public SimpleIntegerProperty deletionsProperty() {
+        return deletions;
+    }
+
+    public void setDeletions(int deletions) {
+        this.deletions.set(deletions);
+    }
+
+    public String getIsMerged() {
+        return isMerged.get();
+    }
+
+    public SimpleStringProperty isMergedProperty() {
+        return isMerged;
+    }
+
+    public void setIsMerged(String isMerged) {
+        this.isMerged.set(isMerged);
     }
 }

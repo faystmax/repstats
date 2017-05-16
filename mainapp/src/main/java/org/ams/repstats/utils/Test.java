@@ -1,8 +1,12 @@
 package org.ams.repstats.utils;
 
+import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -19,11 +23,13 @@ public class Test {
         RepositoryService service1 = new RepositoryService();
         // service1.getClient().setCredentials("faystmax", "");
 
-        Repository TicTacToe = service1.getRepository("faystmax", "Tic-tac-toe");
+        Repository repository = service1.getRepository("Robpol86", "terminaltables");
 
         PullRequestService service = new PullRequestService();
         // service.getClient().setCredentials("faystmax", ");
-        service.getPullRequests(TicTacToe, null);
+        List<PullRequest> pullRequests = service.getPullRequests(repository, IssueService.STATE_CLOSED);
+
+        pullRequests.addAll(service.getPullRequests(repository, IssueService.STATE_OPEN));
         for (Repository repo : service1.getRepositories("faystmax"))
             System.out.println(repo.getName() + " Watchers: " + repo.getWatchers());
 

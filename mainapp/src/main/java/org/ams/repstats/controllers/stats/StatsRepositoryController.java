@@ -62,7 +62,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsRepositoryController.class); ///< ссылка на логер
 
+
     //region << UI Компоненты
+    @FXML
+    private TableColumn clmnPullAffectedFiles;
+    @FXML
+    private TableColumn clmnPullIsMerged;
     @FXML
     private TableView tableIssues;
     @FXML
@@ -85,8 +90,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private TableColumn clmnPullAvtor;
     @FXML
     private TableColumn clmnPullDateCreated;
-    @FXML
-    private TableColumn clmnPullState;
     @FXML
     private AnchorPane GraphAnchor;
     @FXML
@@ -315,8 +318,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 }
                 url = getuInterface().getUrl();
                 calcIssuesAndPullRequests();
-                showPullRequests();
-                showIssues();
+
                 //выводим данные о репозитории в потоку javafx
                 Platform.runLater(() -> {
 
@@ -390,8 +392,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 }
 
                 calcIssuesAndPullRequests();
-                showPullRequests();
-                showIssues();
                 //выводим данные о репозитории в потоку javafx
                 Platform.runLater(() -> {
                     showMainInf();
@@ -434,8 +434,11 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         try {
             gitApi.calcAllPullRequests(repos, owner);
             gitApi.calcAllIssues(repos, owner);
-        } catch (IOException e) {
+            showPullRequests();
+            showIssues();
+        } catch (Exception e) {
             e.printStackTrace();
+            Utils.showAlert("Ошибка", "Невозможно поднятуть \"pull requests\" и \"issues\"");
         }
     }
 
@@ -448,7 +451,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnPullTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
         //clmnPullDateCreated.setCellValueFactory(new PropertyValueFactory<PullRequestTable, Date>("createdAt"));
-        clmnPullState.setCellValueFactory(new PropertyValueFactory<>("state"));
 
         clmnPullDateCreated.setCellValueFactory(
                 new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
@@ -460,6 +462,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                         return property;
                     }
                 });
+        clmnPullAffectedFiles.setCellValueFactory(new PropertyValueFactory<>("changedFiles"));
+        clmnPullIsMerged.setCellValueFactory(new PropertyValueFactory<>("isMerged"));
 
         List<PullRequest> pullRequests = gitApi.getPullRequests();
         ObservableList<PullRequestTable> data = FXCollections.observableArrayList();
@@ -471,8 +475,14 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 author = pullRequests.get(i).getHead().getUser().getLogin();
             }
 
-            data.add(new PullRequestTable(pullRequests.get(i).getNumber(), pullRequests.get(i).getTitle(),
-                    author, pullRequests.get(i).getCreatedAt(), pullRequests.get(i).getState()));
+            data.add(new PullRequestTable(pullRequests.get(i).getNumber(),
+                    pullRequests.get(i).getTitle(),
+                    author, pullRequests.get(i).getCreatedAt(),
+                    pullRequests.get(i).getState(),
+                    (pullRequests.get(i).isMerged() == true ? "да" : "нет"),
+                    pullRequests.get(i).getChangedFiles(),
+                    pullRequests.get(i).getAdditions(),
+                    pullRequests.get(i).getDeletions()));
         }
 
         tablePullRequests.setItems(data);
