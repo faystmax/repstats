@@ -279,6 +279,16 @@ public class GitUInterface implements UInterface {
     public int getBugFixesCount(Author selectedAuthor) {
         return branchDetails.getBugFixesCount(selectedAuthor);
     }
+
+    @Override
+    public long getTotalLinesAdded() {
+        return branchDetails.getTotalLinesAdded();
+    }
+
+    @Override
+    public long getTotalLinesRemoved() {
+        return branchDetails.getTotalLinesRemoved();
+    }
 }
 
 

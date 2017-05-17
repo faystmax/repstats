@@ -63,7 +63,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsRepositoryController.class); ///< ссылка на логер
 
 
+
     //region << UI Компоненты
+    @FXML
+    private Label lbKolStrokAdd;
+    @FXML
+    private Label lbKolStrokDel;
     @FXML
     private TableColumn clmnPullAffectedFiles;
     @FXML
@@ -438,7 +443,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             showIssues();
         } catch (Exception e) {
             e.printStackTrace();
-            Utils.showAlert("Ошибка", "Невозможно поднятуть \"pull requests\" и \"issues\"");
+            Platform.runLater(() -> {
+                Utils.showAlert("Ошибка", "Невозможно поднятуть \"pull requests\" и \"issues\"");
+            });
         }
     }
 
@@ -450,7 +457,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnPullNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
         clmnPullTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
-        //clmnPullDateCreated.setCellValueFactory(new PropertyValueFactory<PullRequestTable, Date>("createdAt"));
 
         clmnPullDateCreated.setCellValueFactory(
                 new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
@@ -588,8 +594,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     @Override
     public void showMainInf() {
-
-
         lbNameRep.setText(getuInterface().getRepName());
         lbNazvCur.setText(getuInterface().getRepName());
         lbBranchCur.setText(getuInterface().getBranchName());
@@ -604,7 +608,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             lbNameRep.setText(repName);
             lbNazvCur.setText(repName);
         }
-        //getuInterface().getListAllBranches();
+        lbKolStrokAdd.setText(Long.toString(getuInterface().getTotalLinesAdded()));
+        lbKolStrokDel.setText(Long.toString(getuInterface().getTotalLinesRemoved()));
     }
 
     public void showAllBranches() {
@@ -691,7 +696,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
                 Stage stage = new Stage();
                 stage.setTitle("Коммиты");
-                stage.setScene(new Scene(rootLayout, 480, 370));
+                stage.setScene(new Scene(rootLayout));
                 stage.getIcons().add(new Image("icons/gitIcon.png"));
                 stage.initModality(Modality.APPLICATION_MODAL);
 

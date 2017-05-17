@@ -29,8 +29,8 @@ public class Commit {
      */
     private Author committer;
     private List<GitFile> filesChanged;     ///< Список изминённых файлов
-    private int linesAdded;
-    private int linesRemoved;
+    private int linesAdded;                 ///< Строк добавленных в коммите
+    private int linesRemoved;               ///< Строк удалённых в коммите
 
     /**
      * Инициализирует коммит.
@@ -122,18 +122,38 @@ public class Commit {
                 getSHA().substring(0, 7), Ascii.truncate(getCommitMessage(), 50, "..."), author.getName());
     }
 
+    /**
+     * Устанавливает кол-во добавленных строк
+     *
+     * @param linesAdded кол-во добавленных строк
+     */
     public void setLinesAdded(int linesAdded) {
         this.linesAdded = linesAdded;
     }
 
+    /**
+     * Устанавливает кол-во удалённых строк
+     *
+     * @param linesRemoved кол-во удалённых строк
+     */
     public void setLinesRemoved(int linesRemoved) {
         this.linesRemoved = linesRemoved;
     }
 
+    /**
+     * Возвращает кол-во добавленных строк
+     *
+     * @return кол-во добавленных строк
+     */
     public int getLinesAdded() {
         return linesAdded;
     }
 
+    /**
+     * Возвращает кол-во удалённых строк
+     *
+     * @return кол-во удалённых строк
+     */
     public int getLinesRemoved() {
         return linesRemoved;
     }

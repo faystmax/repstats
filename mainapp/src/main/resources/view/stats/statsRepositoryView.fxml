@@ -126,6 +126,10 @@
                                                                                         minHeight="10.0"
                                                                                         prefHeight="66.0"
                                                                                         vgrow="SOMETIMES"/>
+                                                                        <RowConstraints maxHeight="66.0"
+                                                                                        minHeight="10.0"
+                                                                                        prefHeight="66.0"
+                                                                                        vgrow="SOMETIMES"/>
                                                                     </rowConstraints>
                                                                     <children>
                                                                         <Label fx:id="lbNazvCur"
@@ -182,7 +186,7 @@
                                                                         </Label>
                                                                         <Label maxHeight="1.7976931348623157E308"
                                                                                maxWidth="1.7976931348623157E308"
-                                                                               text="Всего кол-во коммитов:"
+                                                                               text="Всего сделано коммитов:"
                                                                                GridPane.hgrow="ALWAYS"
                                                                                GridPane.rowIndex="2"
                                                                                GridPane.vgrow="ALWAYS">
@@ -217,12 +221,38 @@
                                                                                 <Font name="Arial Italic" size="14.0"/>
                                                                             </font>
                                                                         </Label>
-                                                                        <Label fx:id="lbNew"
+                                                                        <Label fx:id="lbKolStrokAdd"
                                                                                maxHeight="1.7976931348623157E308"
                                                                                maxWidth="1.7976931348623157E308"
                                                                                prefHeight="63.0" prefWidth="157.0"
-                                                                               GridPane.columnIndex="1"
+                                                                               text="-" GridPane.columnIndex="1"
                                                                                GridPane.rowIndex="4">
+                                                                            <font>
+                                                                                <Font name="Arial Italic" size="14.0"/>
+                                                                            </font>
+                                                                        </Label>
+                                                                        <Label maxHeight="1.7976931348623157E308"
+                                                                               maxWidth="1.7976931348623157E308"
+                                                                               text="Всего строк добавлено:"
+                                                                               GridPane.rowIndex="4">
+                                                                            <font>
+                                                                                <Font name="Arial Italic" size="14.0"/>
+                                                                            </font>
+                                                                        </Label>
+                                                                        <Label maxHeight="1.7976931348623157E308"
+                                                                               maxWidth="1.7976931348623157E308"
+                                                                               text="Всего строк удалено:"
+                                                                               GridPane.rowIndex="5">
+                                                                            <font>
+                                                                                <Font name="Arial Italic" size="14.0"/>
+                                                                            </font>
+                                                                        </Label>
+                                                                        <Label fx:id="lbKolStrokDel"
+                                                                               maxHeight="1.7976931348623157E308"
+                                                                               maxWidth="1.7976931348623157E308"
+                                                                               prefHeight="63.0" prefWidth="157.0"
+                                                                               text="-" GridPane.columnIndex="1"
+                                                                               GridPane.rowIndex="5">
                                                                             <font>
                                                                                 <Font name="Arial Italic" size="14.0"/>
                                                                             </font>

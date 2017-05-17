@@ -1,5 +1,7 @@
 package org.ams.repstats.utils;
 
+import org.ams.gitapiwrapper.GitApi;
+
 import java.io.*;
 import java.util.Properties;
 
@@ -39,7 +41,8 @@ public class MyProperties {
             // load startwindow property
             StartWindowSetter.setCurrentStartWindow(prop.getProperty("startWindow"));
 
-
+            // load git username and password
+            GitApi.setUsernameAndPasswoed(prop.getProperty("gitUsername"), prop.getProperty("gitPassword"));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -69,6 +72,10 @@ public class MyProperties {
             // set user setting  properties value
             prop.setProperty("style", CssSetter.getCurrentStyleSheet());
             prop.setProperty("startWindow", StartWindowSetter.getCurrentStartWindowAsString());
+
+            // set git username and password
+            prop.setProperty("gitUsername", GitApi.getUsername());
+            prop.setProperty("gitPassword", GitApi.getPassword());
 
             // save properties to project root folder
             prop.store(output, null);

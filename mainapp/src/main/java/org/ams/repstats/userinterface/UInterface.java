@@ -71,4 +71,8 @@ public interface UInterface {
     HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors);
 
     int getBugFixesCount(Author selectedAuthor);
+
+    long getTotalLinesAdded();
+
+    long getTotalLinesRemoved();
 }

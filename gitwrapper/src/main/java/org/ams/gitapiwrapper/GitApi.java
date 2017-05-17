@@ -3,10 +3,14 @@ package org.ams.gitapiwrapper;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.UserService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,11 +21,14 @@ import java.util.Map;
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 14.05.2017
  * Time: 14:07
+ *
+ * Оболочка для org.eclipse.egit
+ * используется для получения pull request`ов, issues и других данных
  */
 public class GitApi {
 
-    private String username = "faystmax";
-    private String password = "";
+    private static String username = "faystmax";           ///< Логин github
+    private static String password = "vfrcbvrf77777";      ///< Пароль github
 
     private List<PullRequest> pullRequests;
     private List<Issue> issues;
@@ -29,12 +36,54 @@ public class GitApi {
     public GitApi() {
     }
 
+    /**
+     * Конструктор с параметрами
+     *
+     * @param username логин
+     * @param password пароль
+     */
     public GitApi(String username, String password) {
-        this.username = username;
-        this.password = password;
+        GitApi.username = username;
+        GitApi.password = password;
     }
 
+    /**
+     * Устанавливает логин и пароль
+     *
+     * @param username логин
+     * @param password пароль
+     */
+    public static void setUsernameAndPasswoed(String username, String password) {
+        GitApi.username = username;
+        GitApi.password = password;
+    }
 
+    /**
+     * Получаем логин
+     *
+     * @return логин
+     */
+    public static String getUsername() {
+        return username;
+    }
+
+    /**
+     * Получаем пароль
+     *
+     * @return пароль
+     */
+    public static String getPassword() {
+        return password;
+    }
+
+    /**
+     * Создаёт запрос на получение всех pull request`ов
+     *
+     * @param repositoryName имя репозитория
+     * @param ownerName      имя владельца
+     * @return List<PullRequest>
+     * @throws Exception при ошибке ввода либо отсутствия подключения к интернету
+     */
     public List<PullRequest> calcAllPullRequests(String repositoryName, String ownerName) throws Exception {
         if (this.pullRequests == null) {
             RepositoryService serviceRep = new RepositoryService();
@@ -58,6 +107,14 @@ public class GitApi {
         return this.pullRequests;
     }
 
+    /**
+     * Создаёт запрос на получение всех issues`ов
+     *
+     * @param repositoryName    имя репозитория
+     * @param ownerName         имя владельца
+     * @return List<Issue>
+     * @throws Exception        при ошибке ввода либо отсутствия подключения к интернету
+     */
     public List<Issue> calcAllIssues(String repositoryName, String ownerName) throws Exception {
         if (issues == null) {
             RepositoryService serviceRep = new RepositoryService();
@@ -90,22 +147,32 @@ public class GitApi {
         return this.issues;
     }
 
+    /**
+     * Возвращает список pull request`ов полученных методом calcAllPullRequests
+     *
+     * @return List<PullRequest>
+     */
     public List<PullRequest> getPullRequests() {
         return pullRequests;
     }
 
+    /**
+     * Возвращает список issues полученных методом calcAllIssues
+     *
+     * @return List<Issue>
+     */
     public List<Issue> getIssues() {
         return issues;
     }
 
     /**
-     * Количество слитых pull request`ов разработчиком
+     * Считает количество слитых pull request`ов разработчиком
      *
-     * @param repos
-     * @param owner
-     * @param gitname
-     * @return
-     * @throws Exception
+     * @param repos     имя репозитория
+     * @param owner     имя владельца
+     * @param gitname   имя пользователя для поиска
+     * @return int количество слитых pull request`ов разработчиком
+     * @throws Exception при ошибке ввода либо отсутствия подключения к интернету
      */
     public int countUserMergePullRequests(String repos, String owner, String gitname) throws Exception {
         this.calcAllPullRequests(repos, owner);
@@ -120,13 +187,13 @@ public class GitApi {
     }
 
     /**
-     * Количество pull-request, которые смерджили другие у данного разработчика
+     * Считает количество pull-request, которые смерджили другие у данного разработчика
      *
-     * @param repos
-     * @param owner
-     * @param gitname
-     * @return
-     * @throws Exception
+     * @param repos     имя репозитория
+     * @param owner     имя владельца
+     * @param gitname   имя пользователя для поиска
+     * @return int количество слитых pull request`ов разработчиком
+     * @throws Exception при ошибке ввода либо отсутствия подключения к интернету
      */
     public int countMergedOtherPullRequests(String repos, String owner, String gitname) throws Exception {
         this.calcAllPullRequests(repos, owner);
@@ -143,11 +210,11 @@ public class GitApi {
     /**
      * Количество pull-request, которые сделал разработчик, но другие их не смерджили
      *
-     * @param repos
-     * @param owner
-     * @param gitname
-     * @return
-     * @throws Exception
+     * @param repos     имя репозитория
+     * @param owner     имя владельца
+     * @param gitname   имя пользователя для поиска
+     * @return int количество слитых pull request`ов разработчиком
+     * @throws Exception при ошибке ввода либо отсутствия подключения к интернету
      */
     public int countNotMergedOtherPullRequests(String repos, String owner, String gitname) throws Exception {
         this.calcAllPullRequests(repos, owner);
@@ -159,5 +226,26 @@ public class GitApi {
             }
         }
         return notMergedOtherPullRequests;
+    }
+
+    /**
+     * Проверяет правильность ввода логина и пароля
+     *
+     * @param username имя пользователя
+     * @param password пароль пользователя
+     * @return boolean true данные верные, false иначе
+     */
+    public static boolean checkUsernameAndPass(String username, String password) {
+        GitHubClient client = new GitHubClient();
+        client.setCredentials(username, password);
+        UserService uService = new UserService(client);
+        try {
+            User us = uService.getUser();
+            String login = us.getLogin();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

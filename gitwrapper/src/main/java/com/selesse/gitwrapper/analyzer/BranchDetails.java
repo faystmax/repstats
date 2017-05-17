@@ -62,7 +62,7 @@ public class BranchDetails {
     /**
      * Необходим для инициализации BranchDetails.
      * Бежит по коммитам и инициализирует списки authorToCommitMap, authorToCommitDiffMap
-     * и переменные totalLinesAdded и totalLinesRemoved.
+     * и переменные totalLinesAdded и totalLinesRemoved, а таже пишет кол-во доб/удал строк коммит
      *
      * @param commits список коммитов
      */
@@ -253,9 +253,10 @@ public class BranchDetails {
     }
 
     /**
-     * Возвращает кол-во коммитов по месяцам
+     * Возвращает кол-во коммитов за год
      *
-     * @return кол-во коммитов по месяцам
+     * @param allAvtors список авторов
+     * @return кол-во коммитов за год
      */
     public HashMap<Author, ArrayList<Integer>> getCommitsByMonths(ArrayList<Author> allAvtors) {
         HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
@@ -289,6 +290,7 @@ public class BranchDetails {
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return authorCommitMap;
     }
@@ -296,6 +298,7 @@ public class BranchDetails {
     /**
      * Возвращает кол-во коммитов за месяц
      *
+     * @param allAvtors список авторов
      * @return кол-во коммитов за месяц
      */
     public HashMap<Author, ArrayList<Integer>> getCommitsByDaysInCurMonth(ArrayList<Author> allAvtors) {
@@ -332,10 +335,17 @@ public class BranchDetails {
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return authorCommitMap;
     }
 
+    /**
+     * Возвращает кол-во коммитов за неделю
+     *
+     * @param allAvtors список авторов
+     * @return кол-во коммитов за неделю
+     */
     public HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors) {
         HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
 
@@ -371,10 +381,17 @@ public class BranchDetails {
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return authorCommitMap;
     }
 
+    /**
+     * Возвращает кол-во коммитов за всё время с приаязкой к датам
+     *
+     * @param allAvtors список авторов
+     * @return кол-во коммитов за всё время с приаязкой к датам
+     */
     public HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors) {
         HashMap<Author, HashMap<LocalDate, Integer>> authorCommitMap = new HashMap<Author, HashMap<LocalDate, Integer>>();
 
@@ -405,14 +422,26 @@ public class BranchDetails {
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return authorCommitMap;
     }
 
+    /**
+     * Получаем url удалённого репозитория
+     *
+     * @return url удалённого репозитория
+     */
     public String getUrl() {
         return repository.getUrl();
     }
 
+    /**
+     * Возвращает кол-во коммитов по времени за сутки
+     *
+     * @param allAvtors allAvtors список авторов
+     * @return кол-во коммитов по времени за сутки
+     */
     public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
         HashMap<Author, ArrayList<Integer>> authorCommitMap = new HashMap<Author, ArrayList<Integer>>();
 
@@ -430,9 +459,8 @@ public class BranchDetails {
             ArrayList<Commit> revCommitList = null;
             revCommitList = (ArrayList) branch.getCommits();
 
-            // Сортируем
+            // Сортируем по времени
             for (Commit aRevCommitList : revCommitList) {
-
                 int commitHour = aRevCommitList.getCommitDateTime().getHour();
                 ArrayList<Integer> commitsByTime = authorCommitMap.get(aRevCommitList.getAuthor());
                 if (commitsByTime != null) {
@@ -445,16 +473,24 @@ public class BranchDetails {
         return authorCommitMap;
     }
 
+    /**
+     * Считает количество исправленных багов(bug) по ключевым словам в классе Keyword
+     *
+     * @param selectedAuthor выбранный автор
+     * @return int количество исправленных багов(bug)
+     */
     public int getBugFixesCount(Author selectedAuthor) {
         int bugFixes = 0;
-        // Сортируем
 
+        if (selectedAuthor == null) {
+            return bugFixes;
+        }
         ArrayList<Commit> revCommitList = null;
         try {
             revCommitList = (ArrayList) branch.getCommits();
 
+            // Бежим по коммитам и считаем кол-во исправленных файлов
             for (Commit aRevCommitList : revCommitList) {
-
                 for (String keyWord : KeyWords.fixKeyWords) {
                     if (aRevCommitList.getAuthor().getEmailAddress().equals(selectedAuthor.getEmailAddress())
                             && aRevCommitList.getCommitMessage().contains(keyWord)) {
@@ -465,6 +501,7 @@ public class BranchDetails {
             }
         } catch (GitAPIException | IOException e) {
             e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return bugFixes;
     }

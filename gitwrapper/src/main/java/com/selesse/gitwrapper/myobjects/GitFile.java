@@ -20,8 +20,6 @@ public class GitFile {
     private String path;                ///< Полный путь до файла
     private FileMode fileMode;          ///< Тип файла
     private boolean isBinary;           ///< Если бинариник - истина, иначе - ложь
-    //private byte[] byteContents;      ///< Содержание файла
-    //private List<String> contents;    ///< Список строк файла
     private int numberOfLines;          ///< Кол-во строк кода
     private String changeTypeName;      ///< Тип изминения
 
@@ -39,8 +37,7 @@ public class GitFile {
         this.isBinary = RawText.isBinary(bytes);
         this.changeTypeName = changeTypeName;
 
-        numberOfLines = getContents(bytes).size();
-
+        this.numberOfLines = getContents(bytes).size();
     }
 
     /**
@@ -61,10 +58,9 @@ public class GitFile {
      *
      * @return список строк файла
      */
-    public List<String> getContents(byte[] byteContents) {
+    private List<String> getContents(byte[] byteContents) {
         List<String> contents = null;
         try {
-            // UTF-8 is the only encoding, ever, right?
             String fileContents = new String(byteContents, "UTF-8");
             contents = Splitter.onPattern("\r?\n").splitToList(fileContents);
         } catch (UnsupportedEncodingException e) {

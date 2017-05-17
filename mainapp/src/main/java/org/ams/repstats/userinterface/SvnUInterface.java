@@ -175,4 +175,14 @@ public class SvnUInterface implements UInterface {
     public int getBugFixesCount(Author selectedAuthor) {
         return 0;
     }
+
+    @Override
+    public long getTotalLinesAdded() {
+        return 0;
+    }
+
+    @Override
+    public long getTotalLinesRemoved() {
+        return 0;
+    }
 }

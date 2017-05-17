@@ -1,17 +1,26 @@
 package org.ams.repstats.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA
@@ -23,8 +32,10 @@ public class RootController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class); ///< ссылка на логер
 
-    private Stage primaryStage;                                                         ///< Главный каркас
-    public static BorderPane rootLayout;                                                ///< Layout
+    private Stage primaryStage;                             ///< Главный каркас
+    public static BorderPane rootLayout;                    ///< Layout
+    public String username = new String();                  ///< Логин админа
+    public String password = new String();                  ///< Пароль админа
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -46,7 +57,6 @@ public class RootController {
             loader.setLocation(this.getClass().getClassLoader().getResource(fxmlfile));
             AnchorPane adminTeamView = (AnchorPane) loader.load();
 
-
             // Помещаем итерфейс  в центр корневого макета.
             rootLayout.setCenter(adminTeamView);
         } catch (IOException e) {
@@ -58,28 +68,36 @@ public class RootController {
      * Администрирование -> Команда
      */
     public void showAdminTeam() {
-        setCenterFxml("view/admin/teams/teamEditView.fxml");
+        if (checkAdminPermission()) {
+            setCenterFxml("view/admin/teams/teamEditView.fxml");
+        }
     }
 
     /**
      * Администрирование -> Разработчики
      */
     public void showAdminDevelopers() {
-        setCenterFxml("view/admin/developers/developersEditView.fxml");
+        if (checkAdminPermission()) {
+            setCenterFxml("view/admin/developers/developersEditView.fxml");
+        }
     }
 
     /**
      * Администрирование -> Проекты
      */
     public void showAdminProjects() {
-        setCenterFxml("view/admin/projects/projectEditView.fxml");
+        if (checkAdminPermission()) {
+            setCenterFxml("view/admin/projects/projectEditView.fxml");
+        }
     }
 
     /**
      * Администрирование -> Репозитории
      */
     public void showAdminRepository() {
-        setCenterFxml("view/admin/repository/repositoryEditView.fxml");
+        if (checkAdminPermission()) {
+            setCenterFxml("view/admin/repository/repositoryEditView.fxml");
+        }
     }
 
     /**
@@ -165,4 +183,80 @@ public class RootController {
     public void exitButtonAction(ActionEvent event) {
         System.exit(0);
     }
+
+    /**
+     * Проверка на администратора
+     *
+     * @return true если верный ввод, false иначе
+     */
+    public boolean checkAdminPermission() {
+        if (!username.equals("admin") || !password.equals("admin")) {
+            // Create the custom dialog.
+            Dialog<Pair<String, String>> dialog = new Dialog<>();
+            dialog.setTitle("Окно авторизации");
+            dialog.setHeaderText("Введите логин и пароль администратора");
+
+            // Set the icon (must be included in the project).
+            dialog.setGraphic(new ImageView(this.getClass().getClassLoader().getResource("icons/login.png").toString()));
+
+            // Set the button types.
+            ButtonType loginButtonType = new ButtonType("Вход", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Отмена", ButtonBar.ButtonData.CANCEL_CLOSE);
+            dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+
+            // Create the username and password labels and fields.
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField username = new TextField();
+            username.setPromptText("Username");
+            PasswordField password = new PasswordField();
+            password.setPromptText("Password");
+
+            grid.add(new Label("Username:"), 0, 0);
+            grid.add(username, 1, 0);
+            grid.add(new Label("Password:"), 0, 1);
+            grid.add(password, 1, 1);
+
+            // Enable/Disable login button depending on whether a username was entered.
+            Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+            loginButton.setDisable(true);
+
+            // Do some validation (using the Java 8 lambda syntax).
+            username.textProperty().addListener((observable, oldValue, newValue) -> {
+                loginButton.setDisable(newValue.trim().isEmpty());
+            });
+
+            dialog.getDialogPane().setContent(grid);
+
+            // Request focus on the username field by default.
+            Platform.runLater(() -> username.requestFocus());
+
+            // Convert the result to a username-password-pair when the login button is clicked.
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == loginButtonType) {
+                    return new Pair<>(username.getText(), password.getText());
+                }
+                return null;
+            });
+
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                if (result.get().getKey().equals("admin") && result.get().getValue().equals("admin")) {
+                    this.username = result.get().getKey();
+                    this.password = result.get().getValue();
+                    return true;
+                } else {
+                    Utils.showAlert("Ошибка", "Неверный логин или пароль!");
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

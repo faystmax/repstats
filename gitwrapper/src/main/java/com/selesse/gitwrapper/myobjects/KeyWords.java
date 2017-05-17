@@ -7,5 +7,8 @@ package com.selesse.gitwrapper.myobjects;
  * Time: 23:27
  */
 public class KeyWords {
+    /**
+     * Ключевые слова для fix bugs
+     */
     public static final String[] fixKeyWords = {"fix ", "correct ", "исправл"};
 }

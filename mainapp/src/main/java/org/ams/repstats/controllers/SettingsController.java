@@ -4,11 +4,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.ams.gitapiwrapper.GitApi;
 import org.ams.repstats.utils.CssSetter;
 import org.ams.repstats.utils.EStartWindow;
 import org.ams.repstats.utils.StartWindowSetter;
@@ -25,7 +25,14 @@ public class SettingsController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class); ///< ссылка на логер
 
+
     //region <<<  элементы UI
+    @FXML
+    private ImageView imCheck;
+    @FXML
+    private TextField tbPassword;
+    @FXML
+    private TextField tbUsername;
     @FXML
     private RadioButton whiteButton;
     @FXML
@@ -126,6 +133,10 @@ public class SettingsController {
                 }
             }
         });
+
+        // подгрузка git username и password
+        tbUsername.setText(GitApi.getUsername());
+        tbPassword.setText(GitApi.getPassword());
     }
 
     public void exitButtonAction(ActionEvent event) {
@@ -133,7 +144,15 @@ public class SettingsController {
         stage.close();
     }
 
-    public void saveButtonAction(ActionEvent event) {
-
+    public void CheckAndRememberUsernameAndPass(ActionEvent event) {
+        if (GitApi.checkUsernameAndPass(tbUsername.getText(), tbPassword.getText())) {
+            GitApi.setUsernameAndPasswoed(tbUsername.getText(), tbPassword.getText());
+            Image successIcon = new Image(getClass().getClassLoader().getResourceAsStream("icons/success.png"));
+            imCheck.setImage(successIcon);
+        } else {
+            Image errorIcon = new Image(getClass().getClassLoader().getResourceAsStream("icons/error.png"));
+            imCheck.setImage(errorIcon);
+        }
     }
+
 }
