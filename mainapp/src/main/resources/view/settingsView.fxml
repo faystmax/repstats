@@ -124,7 +124,7 @@
                                     </children>
                                 </VBox>
                                 <Text layoutX="115.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="При неправильном логине и пароле  некоторые функции приложения могут быть недоступны"
+                                      text="При неправильном логине или пароле  некоторые функции приложения могут быть недоступны"
                                       textAlignment="CENTER" wrappingWidth="346.099609375" AnchorPane.leftAnchor="115.0"
                                       AnchorPane.rightAnchor="115.900390625" AnchorPane.topAnchor="14.0"/>
                             </children>

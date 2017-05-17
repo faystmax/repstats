@@ -151,7 +151,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private int mergedOtherPullRequests;
     private int notMergedOtherPullRequests;
     private int bugFixes;
-
+    private int authorLinesAffected;
+    private int totalLinesAffected;
     @FXML
     public void initialize() {
         this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));

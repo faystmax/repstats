@@ -51,10 +51,6 @@ public class StatsProjectController extends ViewInterfaceAbstract {
     @FXML
     private TableColumn projectPriorClmn;
     @FXML
-    private SplitPane mainSplitPane;
-    @FXML
-    private Button btShowCommits;
-    @FXML
     private TableView tableAllFiles;
     @FXML
     private TableColumn clmnPath;
