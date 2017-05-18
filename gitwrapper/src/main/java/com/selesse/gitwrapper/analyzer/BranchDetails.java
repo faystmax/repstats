@@ -30,9 +30,12 @@ public class BranchDetails {
     private GitRepository repository;                               ///< Ссылка на репозиторий
     private final Branch branch;                                    ///< Ссылка на ветку
     private final List<Commit> commits;                             ///< Список коммитов
+    private final List<Commit> allCommits;                          ///< Список всех коммитов
     private final List<GitFile> gitFileList;                        ///< Список файлов репозитория
-    private long totalLinesAdded;                                   ///< Всего строк добавлено
-    private long totalLinesRemoved;                                 ///< Всего строк удалено
+    private long totalLinesAddedWithDate;                           ///< Всего строк добавлено с учётом дат
+    private long totalLinesRemovedWithDate;                         ///< Всего строк удалено с учёом дат
+    private long totalLinesAddedAll;                                ///< Всего строк добавлено
+    private long totalLinesRemovedAll;                              ///< Всего строк удалено
     private Multimap<Author, Commit> authorToCommitMap;             ///< Список: Авторов - их коммитов
     private Multimap<Author, CommitDiff> authorToCommitDiffMap;     ///< Список: Автор - их изменённый файл
 
@@ -48,6 +51,7 @@ public class BranchDetails {
         this.repository = repository;
         this.branch = branch;
         this.commits = commits;
+        this.allCommits = commits;
         this.gitFileList = gitFileList;
 
         Map<Author, Collection<Commit>> authorToCommitTreeMap = Maps.newTreeMap(getAuthorComparator());
@@ -56,17 +60,45 @@ public class BranchDetails {
         this.authorToCommitMap = Multimaps.newListMultimap(authorToCommitTreeMap, Lists::newArrayList);
         this.authorToCommitDiffMap = Multimaps.newListMultimap(authorToCommitDiffTreeMap, Lists::newArrayList);
 
-        computeMembers(commits);
+        computeMembersWithDate(commits);
+        computeMembersAll(allCommits);
+    }
+
+
+    /**
+     * Инициализируем BranchDetails
+     *
+     * @param repository  ссылка на репозиторий
+     * @param branch      ссылка на ветку
+     * @param commits     список коммитов
+     * @param allCommits  список всех коммитов
+     * @param gitFileList список файлов в репозитории
+     */
+    public BranchDetails(GitRepository repository, Branch branch, List<Commit> commits, List<Commit> allCommits, List<GitFile> gitFileList) {
+        this.repository = repository;
+        this.branch = branch;
+        this.commits = commits;
+        this.allCommits = allCommits;       // Все коммиты. Нужно для подсчёта покрытия при заданном промежутке времени
+        this.gitFileList = gitFileList;
+
+        Map<Author, Collection<Commit>> authorToCommitTreeMap = Maps.newTreeMap(getAuthorComparator());
+        Map<Author, Collection<CommitDiff>> authorToCommitDiffTreeMap = Maps.newTreeMap(getAuthorComparator());
+
+        this.authorToCommitMap = Multimaps.newListMultimap(authorToCommitTreeMap, Lists::newArrayList);
+        this.authorToCommitDiffMap = Multimaps.newListMultimap(authorToCommitDiffTreeMap, Lists::newArrayList);
+
+        computeMembersWithDate(commits);
+        computeMembersAll(allCommits);
     }
 
     /**
      * Необходим для инициализации BranchDetails.
      * Бежит по коммитам и инициализирует списки authorToCommitMap, authorToCommitDiffMap
-     * и переменные totalLinesAdded и totalLinesRemoved, а таже пишет кол-во доб/удал строк коммит
+     * и переменные totalLinesAddedWithDate и totalLinesRemovedWithDate, а таже пишет кол-во доб/удал строк коммит
      *
      * @param commits список коммитов
      */
-    private void computeMembers(List<Commit> commits) {
+    private void computeMembersWithDate(List<Commit> commits) {
         for (Commit commit : commits) {
             try {
                 Author author = commit.getAuthor();
@@ -77,10 +109,30 @@ public class BranchDetails {
                     commit.setLinesAdded(commit.getLinesAdded() + diff.getLinesAdded());
                     commit.setLinesRemoved(commit.getLinesRemoved() + diff.getLinesRemoved());
 
-                    totalLinesAdded += diff.getLinesAdded();
-                    totalLinesRemoved += diff.getLinesRemoved();
+                    totalLinesAddedWithDate += diff.getLinesAdded();
+                    totalLinesRemovedWithDate += diff.getLinesRemoved();
 
                     authorToCommitDiffMap.put(author, diff);
+                }
+            } catch (IOException e) {
+                LOGGER.error("Error getting diffs for repository {} and commit {}", repository, commit);
+            }
+        }
+    }
+
+    private void computeMembersAll(List<Commit> allCommits) {
+        for (Commit commit : allCommits) {
+            try {
+
+
+                List<CommitDiff> diffs = repository.getCommitDiffs(commit);
+                for (CommitDiff diff : diffs) {
+                    // commit.setLinesAdded(commit.getLinesAdded() + diff.getLinesAdded());
+                    // commit.setLinesRemoved(commit.getLinesRemoved() + diff.getLinesRemoved());
+
+                    totalLinesAddedAll += diff.getLinesAdded();
+                    totalLinesRemovedAll += diff.getLinesRemoved();
+
                 }
             } catch (IOException e) {
                 LOGGER.error("Error getting diffs for repository {} and commit {}", repository, commit);
@@ -95,6 +147,16 @@ public class BranchDetails {
      */
     public List<Commit> getCommits() {
         return commits;
+    }
+
+    /**
+     * Получить список всех коммитов,
+     * если мы считали ветку с учётом промежутка времени
+     *
+     * @return список всех коммитов
+     */
+    public List<Commit> getAllCommits() {
+        return allCommits;
     }
 
     /**
@@ -134,21 +196,21 @@ public class BranchDetails {
     }
 
     /**
-     * Возвращает всего кол-во добавленных строк в репозиторий.
+     * Возвращает кол-во добавленных строк в репозиторий с учётом дат
      *
-     * @return кол-во добавленных строк в репозиторий
+     * @return добавленных строк в репозиторий с учётом дат
      */
-    public long getTotalLinesAdded() {
-        return totalLinesAdded;
+    public long getTotalLinesAddedWithDate() {
+        return totalLinesAddedWithDate;
     }
 
     /**
-     * Возвращает всего кол-во удалённых строк в репозитории.
+     * Возвращает кол-во удалённых строк в репозитории с учётом дат
      *
-     * @return всего кол-во удалённых строк в репозитории
+     * @return кол-во удалённых строк в репозитории с учётом дат
      */
-    public long getTotalLinesRemoved() {
-        return totalLinesRemoved;
+    public long getTotalLinesRemovedWithDate() {
+        return totalLinesRemovedWithDate;
     }
 
     /**
@@ -504,5 +566,23 @@ public class BranchDetails {
             LOGGER.error(e.getMessage());
         }
         return bugFixes;
+    }
+
+    /**
+     * Возвращает кол-во всех добавленных строк в репозиторий.
+     *
+     * @return кол-во добавленных строк в репозиторий
+     */
+    public long getTotalLinesAddedAll() {
+        return totalLinesAddedAll;
+    }
+
+    /**
+     * Возвращает кол-во всех удалённых строк в репозитории
+     *
+     * @return кол-во удалённых строк в репозитории с учётом дат
+     */
+    public long getTotalLinesRemovedAll() {
+        return totalLinesRemovedAll;
     }
 }

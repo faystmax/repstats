@@ -15,7 +15,7 @@ import java.util.List;
  * \author faystmax
  * \version 0.5
  * \date 18 февраля 2017 года
- *
+ * <p>
  * Является по сути оболочкой для BranchDetails, хранит в себе минимум информации о репозитории
  * и предназначен для создания конкретного BranchDetails.
  */
@@ -85,12 +85,15 @@ public class BranchAnalyzer {
 
         Branch branch = repository.getBranch(branchName);
         List<Commit> commits = branch.getCommits(start, end);
-        LOGGER.info("Found {} commits on {}", commits.size(), branch.getName());
+        LOGGER.info("Found {} commits between " + start + " - " + end + "  on {}", commits.size(), branch.getName());
+
+        List<Commit> allCommits = branch.getAllCommits();
+        LOGGER.info("Found {} all commits on {}", commits.size(), branch.getName());
 
         Commit commit = GitRepositoryReader.loadLastCommit(repository, branch);
         List<GitFile> filesChanged = commit.getFilesChanged();
 
-        return new BranchDetails(repository, branch, commits, filesChanged);
+        return new BranchDetails(repository, branch, commits, allCommits, filesChanged);
     }
 
 }

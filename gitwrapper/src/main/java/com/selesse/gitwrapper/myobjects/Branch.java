@@ -30,10 +30,14 @@ import java.util.Map;
  */
 public class Branch {
 
-    private Repository repository;      ///< Ссылка на репозиторий
-    private String name;                ///< Имя ветки
-    private String id;                  ///< id ветки
-    private List<Commit> revCommitList; ///< Все коммиты этой ветки
+    private Repository repository;          ///< Ссылка на репозиторий
+    private String name;                    ///< Имя ветки
+    private String id;                      ///< id ветки
+    /**
+     * Коммиты ветки с учётом заданного промежутка времени(если промежуток не задан revCommitList=revAllCommitList)
+     */
+    private List<Commit> revCommitList;
+    private List<Commit> revAllCommitList;  ///< Все коммиты этой ветки
 
     /**
      * Инициализирует ветку по её имени и репозиторию.
@@ -71,7 +75,8 @@ public class Branch {
      */
     public List<Commit> getCommits() throws GitAPIException, IOException {
         if (revCommitList == null) {
-            revCommitList = Lists.newArrayList();
+            revAllCommitList = Lists.newArrayList();
+            revCommitList = revAllCommitList;
 
             Git git = new Git(repository);
             RevWalk walk = new RevWalk(repository);
@@ -118,9 +123,9 @@ public class Branch {
 
                         // bug with update funct.xml
                         try {
-                            revCommitList.add(Commits.fromRevCommit(repository, commit, diffs));
+                            revAllCommitList.add(Commits.fromRevCommit(repository, commit, diffs));
                         } catch (Exception e) {
-                            revCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0), diffs));
+                            revAllCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0), diffs));
                         }
                     }
                 }
@@ -204,6 +209,77 @@ public class Branch {
         }
         return revCommitList;
     }
+
+    /**
+     * Извлекаем все коммиты указанной ветки из репозитория.
+     *
+     * @return список коммитов, выбранной ветки в выбранном репозитории.
+     * Вернёт пустой List, если ветки нет вы выбранном репозитории.
+     * @throws GitAPIException ошибка при взаимодействии с Git Api.
+     * @throws IOException     ошибка чтения репозитория.
+     */
+    public List<Commit> getAllCommits() throws GitAPIException, IOException {
+        if (revAllCommitList == null) {
+            revAllCommitList = Lists.newArrayList();
+
+            Git git = new Git(repository);
+            RevWalk walk = new RevWalk(repository);
+            walk.setTreeFilter(TreeFilter.ANY_DIFF);
+
+            List<Ref> branches = git.branchList().call();
+
+            for (Ref branch : branches) {
+                String currentBranchName = branch.getName();
+                String desiredBranch = Constants.R_HEADS + name;
+                if (!desiredBranch.equals(currentBranchName)) {
+                    continue;
+                }
+
+                Iterable<RevCommit> commits = git.log().all().call();
+
+                for (RevCommit commit : commits) {
+                    boolean foundInThisBranch = false;
+
+                    RevCommit targetCommit = walk.parseCommit(repository.resolve(commit.getName()));
+                    for (Map.Entry<String, Ref> stringRefEntry : repository.getAllRefs().entrySet()) {
+                        if (stringRefEntry.getKey().startsWith(Constants.R_HEADS)) {
+                            Ref ref = stringRefEntry.getValue();
+                            if (walk.isMergedInto(targetCommit, walk.parseCommit(ref.getObjectId()))) {
+                                String foundInBranch = ref.getName();
+                                if (currentBranchName.equals(foundInBranch)) {
+                                    foundInThisBranch = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (foundInThisBranch) {
+
+                        List<DiffEntry> diffs = null;
+
+                        if (commit.getParentCount() != 0) {
+                            DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
+                            df.setRepository(repository);
+                            df.setDiffComparator(RawTextComparator.DEFAULT);
+                            df.setDetectRenames(true);
+                            RevCommit parent = walk.parseCommit(commit.getParent(0).getId());
+                            diffs = df.scan(parent.getTree(), commit.getTree());
+                        }
+
+                        // bug with update funct.xml
+                        try {
+                            revAllCommitList.add(Commits.fromRevCommit(repository, commit, diffs));
+                        } catch (Exception e) {
+                            revAllCommitList.add(Commits.fromRevCommit(repository, commit.getParent(0), diffs));
+                        }
+                    }
+                }
+            }
+        }
+        return revAllCommitList;
+    }
+
 
     /**
      * Возвращает имя ветки.

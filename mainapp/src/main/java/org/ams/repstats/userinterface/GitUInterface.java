@@ -281,13 +281,23 @@ public class GitUInterface implements UInterface {
     }
 
     @Override
-    public long getTotalLinesAdded() {
-        return branchDetails.getTotalLinesAdded();
+    public long getTotalLinesAddedWithDate() {
+        return branchDetails.getTotalLinesAddedWithDate();
     }
 
     @Override
-    public long getTotalLinesRemoved() {
-        return branchDetails.getTotalLinesRemoved();
+    public long getTotalLinesRemovedWithDate() {
+        return branchDetails.getTotalLinesRemovedWithDate();
+    }
+
+    @Override
+    public long getTotalLinesAddedAll() {
+        return branchDetails.getTotalLinesAddedAll();
+    }
+
+    @Override
+    public long getTotalLinesRemovedAll() {
+        return branchDetails.getTotalLinesRemovedAll();
     }
 }
 

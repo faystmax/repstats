@@ -72,7 +72,11 @@ public interface UInterface {
 
     int getBugFixesCount(Author selectedAuthor);
 
-    long getTotalLinesAdded();
+    long getTotalLinesAddedWithDate();
 
-    long getTotalLinesRemoved();
+    long getTotalLinesRemovedWithDate();
+
+    long getTotalLinesAddedAll();
+
+    long getTotalLinesRemovedAll();
 }

@@ -608,8 +608,8 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             lbNameRep.setText(repName);
             lbNazvCur.setText(repName);
         }
-        lbKolStrokAdd.setText(Long.toString(getuInterface().getTotalLinesAdded()));
-        lbKolStrokDel.setText(Long.toString(getuInterface().getTotalLinesRemoved()));
+        lbKolStrokAdd.setText(Long.toString(getuInterface().getTotalLinesAddedWithDate()));
+        lbKolStrokDel.setText(Long.toString(getuInterface().getTotalLinesRemovedWithDate()));
     }
 
     public void showAllBranches() {

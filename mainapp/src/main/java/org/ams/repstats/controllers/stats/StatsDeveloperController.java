@@ -151,8 +151,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private int mergedOtherPullRequests;
     private int notMergedOtherPullRequests;
     private int bugFixes;
-    private int authorLinesAffected;
-    private int totalLinesAffected;
+    private long authorLinesAffected;
+    private long totalLinesAffected;
     @FXML
     public void initialize() {
         this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
@@ -286,6 +286,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         linesDel = 0;
         totalLines = 0;
         mergeCount = 0;
+        authorLinesAffected = 0;
+        totalLinesAffected = 0;
 
         // Открываем projectForDeveloperView
         openProjectForDeveloperView();
@@ -377,6 +379,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                                 newRepositoryTable.addLinesAdd(data.get(i).getLinesAdded());
                                 newRepositoryTable.addLinesDelete(data.get(i).getLinesRemoved());
 
+
                                 if (newRepositoryTable.getAuthor() != null) {
                                     Author author = getuInterface().getAuthorByName(cur.getGitname());
                                     if (author == null) {
@@ -387,6 +390,11 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                                 }
                             }
                         }
+
+                        //подсчитывае покрытие
+                        authorLinesAffected = newRepositoryTable.getLinesAdd() + newRepositoryTable.getLinesDelete();
+                        totalLinesAffected = getuInterface().getTotalLinesAddedAll() + getuInterface().getTotalLinesRemovedAll();
+
                         newRepositoryTable.addNetContributiont(newRepositoryTable.getLinesAdd() - newRepositoryTable.getLinesDelete());
 
 
@@ -403,7 +411,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                             allCommits += finalAllCommitsInProject;
                             linesAdd += finalLinesAddInProject;
                             linesDel += finalLinesDelInProject;
-
                         });
 
                         totalLines += getuInterface().getTotalNumberOfLines();
@@ -550,13 +557,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         lbKolCommit.setText(Integer.toString(allCommits));
         lbKolStrokAdd.setText(Integer.toString(linesAdd));
         lbKolStrokDel.setText(Integer.toString(linesDel));
-        double vklad = Math.abs(Math.ceil((((double) linesAdd - linesDel) / totalLines) * 100));
+        double vklad = Math.abs(Math.ceil((((double) authorLinesAffected) / totalLinesAffected) * 100));
         if (vklad > 100) {
             vklad = 100;
         }
-        if (vklad == 0) {
+    /*   if (vklad == 0) {
             vklad = Math.abs(Math.ceil((((double) linesAdd) / totalLines) * 100));
-        }
+        }*/
         lbPokr.setText(String.valueOf(vklad) + "%");
 
         lbMergedPullReq.setText(String.valueOf(this.mergeCount));

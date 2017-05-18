@@ -177,12 +177,22 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
-    public long getTotalLinesAdded() {
+    public long getTotalLinesAddedWithDate() {
         return 0;
     }
 
     @Override
-    public long getTotalLinesRemoved() {
+    public long getTotalLinesRemovedWithDate() {
+        return 0;
+    }
+
+    @Override
+    public long getTotalLinesAddedAll() {
+        return 0;
+    }
+
+    @Override
+    public long getTotalLinesRemovedAll() {
         return 0;
     }
 }
