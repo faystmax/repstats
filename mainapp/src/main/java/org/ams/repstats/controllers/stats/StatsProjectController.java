@@ -123,14 +123,11 @@ public class StatsProjectController extends ViewInterfaceAbstract {
     private void configureAndShowProjectsClmn() {
 
         ObservableList<ProjectTable> data = FXCollections.observableArrayList();
-
         // Название
         projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, String>("name"));
 
-
         // Приоритет
         projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Integer>("prior"));
-
 
         // Извлекаем данные из базы
         try {
@@ -154,14 +151,6 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
     }
 
-
-    // TODO  в будущем
-    public void showChartOnImageView() {
-       /* BufferedImage img = getuInterface().getChart();
-        WritableImage wimg = new WritableImage(img.getWidth(), img.getHeight());
-        SwingFXUtils.toFXImage(img, wimg);
-        imageView.setImage(wimg);*/
-    }
 
     /**
      * Кнопка выбора директории

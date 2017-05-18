@@ -281,6 +281,11 @@ public class GitUInterface implements UInterface {
     }
 
     @Override
+    public int getBugFixesCount() {
+        return branchDetails.getBugFixesCount();
+    }
+
+    @Override
     public long getTotalLinesAddedWithDate() {
         return branchDetails.getTotalLinesAddedWithDate();
     }

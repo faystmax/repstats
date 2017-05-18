@@ -187,6 +187,27 @@ public class GitApi {
     }
 
     /**
+     * Считает количество слитых pull request`ов всеми
+     *
+     * @param repos имя репозитория
+     * @param owner имя владельца
+     * @return int количество слитых pull request`ов разработчиком
+     * @throws Exception при ошибке ввода либо отсутствия подключения к интернету
+     */
+    public int countUserMergePullRequests(String repos, String owner) throws Exception {
+        this.calcAllPullRequests(repos, owner);
+
+        int mergeCount = 0;
+        for (PullRequest pullRequest : pullRequests) {
+            if (pullRequest.isMerged() == true) {
+                mergeCount++;
+            }
+        }
+        return mergeCount;
+    }
+
+
+    /**
      * Считает количество pull-request, которые смерджили другие у данного разработчика
      *
      * @param repos     имя репозитория

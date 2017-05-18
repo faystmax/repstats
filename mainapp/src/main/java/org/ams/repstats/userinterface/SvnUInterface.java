@@ -177,6 +177,11 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
+    public int getBugFixesCount() {
+        return 0;
+    }
+
+    @Override
     public long getTotalLinesAddedWithDate() {
         return 0;
     }

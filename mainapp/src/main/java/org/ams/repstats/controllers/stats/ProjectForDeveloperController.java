@@ -108,6 +108,12 @@ public class ProjectForDeveloperController {
             Utils.showAlert("Ошибка", "Выберите проект(ы) и выберите промежуток времени!");
             return;
         }
+
+        if (datePickerStart.getValue().isAfter(datePickerEnd.getValue())) {
+            Utils.showAlert("Ошибка", "Выберите корректный  промежуток времени!");
+            return;
+        }
+
         ObservableList<ProjectTable> selectedItems = projectsTable.getSelectionModel().getSelectedItems();
 
         //

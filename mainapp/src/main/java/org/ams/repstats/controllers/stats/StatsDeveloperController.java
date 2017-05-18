@@ -153,6 +153,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private int bugFixes;
     private long authorLinesAffected;
     private long totalLinesAffected;
+
     @FXML
     public void initialize() {
         this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
@@ -392,8 +393,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         }
 
                         //подсчитывае покрытие
-                        authorLinesAffected = newRepositoryTable.getLinesAdd() + newRepositoryTable.getLinesDelete();
-                        totalLinesAffected = getuInterface().getTotalLinesAddedAll() + getuInterface().getTotalLinesRemovedAll();
+                        authorLinesAffected += newRepositoryTable.getLinesAdd() + newRepositoryTable.getLinesDelete();
+                        totalLinesAffected += getuInterface().getTotalLinesAddedAll() + getuInterface().getTotalLinesRemovedAll();
 
                         newRepositoryTable.addNetContributiont(newRepositoryTable.getLinesAdd() - newRepositoryTable.getLinesDelete());
 
@@ -424,7 +425,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                         DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
                         Author selectedAuthor = getuInterface().getAuthorByEmail(developerTable.getGitemail());
-                        bugFixes = getuInterface().getBugFixesCount(selectedAuthor);
+                        bugFixes += getuInterface().getBugFixesCount(selectedAuthor);
                     }
                     //
 
@@ -579,9 +580,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         String repos = tmp[tmp.length - 1];
         String owner = tmp[tmp.length - 2];
         try {
-            this.mergeCount = gitApi.countUserMergePullRequests(repos, owner, gitname);
-            this.mergedOtherPullRequests = gitApi.countMergedOtherPullRequests(repos, owner, gitname);
-            this.notMergedOtherPullRequests = gitApi.countNotMergedOtherPullRequests(repos, owner, gitname);
+            this.mergeCount += gitApi.countUserMergePullRequests(repos, owner, gitname);
+            this.mergedOtherPullRequests += gitApi.countMergedOtherPullRequests(repos, owner, gitname);
+            this.notMergedOtherPullRequests += gitApi.countNotMergedOtherPullRequests(repos, owner, gitname);
         } catch (Exception e) {
             e.printStackTrace();
             Platform.runLater(() -> {

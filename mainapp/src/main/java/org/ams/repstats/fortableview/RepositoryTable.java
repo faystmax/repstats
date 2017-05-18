@@ -208,6 +208,10 @@ public class RepositoryTable {
         this.commits = commits;
     }
 
+    public void addCommits(Collection<Commit> commits) {
+        this.commits.addAll(commits);
+    }
+
     public void addCommitCount(int commitCount) {
         this.commitCount.set(this.commitCount.get() + commitCount);
     }

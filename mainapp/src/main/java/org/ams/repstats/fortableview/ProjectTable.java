@@ -290,5 +290,12 @@ public class ProjectTable {
     public ArrayList<Integer> getCommitsByTime() {
         return commitsByTime;
     }
+
+    /**
+     * Indicates whether some other projectTable is "equal to" this one.
+     */
+    public boolean equals(ProjectTable projectTable) {
+        return this.getId() == projectTable.getId();
+    }
 }
 

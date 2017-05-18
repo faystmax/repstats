@@ -569,6 +569,35 @@ public class BranchDetails {
     }
 
     /**
+     * Считает количество исправленных багов(bug) по ключевым словам в классе Keyword всеми разраб-ми
+     *
+     * @return int количество исправленных багов(bug)
+     */
+    public int getBugFixesCount() {
+        int bugFixes = 0;
+
+        ArrayList<Commit> revCommitList = null;
+        try {
+            revCommitList = (ArrayList) branch.getCommits();
+
+            // Бежим по коммитам и считаем кол-во исправленных файлов
+            for (Commit aRevCommitList : revCommitList) {
+                for (String keyWord : KeyWords.fixKeyWords) {
+                    if (aRevCommitList.getCommitMessage().contains(keyWord)) {
+                        bugFixes++;
+                        break;
+                    }
+                }
+            }
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+        }
+        return bugFixes;
+    }
+
+
+    /**
      * Возвращает кол-во всех добавленных строк в репозиторий.
      *
      * @return кол-во добавленных строк в репозиторий

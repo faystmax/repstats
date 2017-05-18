@@ -1,7 +1,11 @@
 package org.ams.repstats.fortableview;
 
+import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA
@@ -27,6 +31,18 @@ public class DeveloperTable {
 
     private SimpleStringProperty gitname;
     private SimpleStringProperty gitemail;
+
+    //extended
+    private SimpleIntegerProperty commitCount;
+    private SimpleIntegerProperty linesAdded;
+    private SimpleIntegerProperty linesRemoved;
+    private SimpleIntegerProperty netContribution;
+
+    private SimpleStringProperty FIO;
+
+    //доп. поля
+    private ArrayList<ProjectTable> projectTables = new ArrayList<ProjectTable>();
+    private Collection<Commit> commits = new ArrayList<Commit>();
 
     public DeveloperTable(int id, String name, String surname, String middleName,
                           int id_role, int id_team, int age, String phone, String role_name) {
@@ -103,6 +119,27 @@ public class DeveloperTable {
         this.gitname = new SimpleStringProperty(gitname);
         this.gitemail = new SimpleStringProperty(gitemail);
     }
+
+    public DeveloperTable(int id, String name, String surname, String middleName,
+                          String gitname, String gitemail,
+                          int commitCount, int linesAdded, int linesRemoved, int netContribution) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.surname = new SimpleStringProperty(surname);
+        this.middlename = new SimpleStringProperty(middleName);
+
+        this.gitname = new SimpleStringProperty(gitname);
+        this.gitemail = new SimpleStringProperty(gitemail);
+
+        this.commitCount = new SimpleIntegerProperty(commitCount);
+        this.linesAdded = new SimpleIntegerProperty(linesAdded);
+        this.linesRemoved = new SimpleIntegerProperty(linesRemoved);
+        this.netContribution = new SimpleIntegerProperty(netContribution);
+
+        this.FIO = new SimpleStringProperty(surname + " " + name + " " + middleName);
+    }
+
+
 
     public int getId() {
         return id.get();
@@ -271,4 +308,105 @@ public class DeveloperTable {
     public void setId_developer_project(int id_developer_project) {
         this.id_developer_project.set(id_developer_project);
     }
+
+    public int getCommitCount() {
+        return commitCount.get();
+    }
+
+    public SimpleIntegerProperty commitCountProperty() {
+        return commitCount;
+    }
+
+    public void setCommitCount(int commitCount) {
+        this.commitCount.set(commitCount);
+    }
+
+    public int getLinesAdded() {
+        return linesAdded.get();
+    }
+
+    public SimpleIntegerProperty linesAddedProperty() {
+        return linesAdded;
+    }
+
+    public void setLinesAdded(int linesAdded) {
+        this.linesAdded.set(linesAdded);
+    }
+
+    public int getLinesRemoved() {
+        return linesRemoved.get();
+    }
+
+    public SimpleIntegerProperty linesRemovedProperty() {
+        return linesRemoved;
+    }
+
+    public void setLinesRemoved(int linesRemoved) {
+        this.linesRemoved.set(linesRemoved);
+    }
+
+    public int getNetContribution() {
+        return netContribution.get();
+    }
+
+    public SimpleIntegerProperty netContributionProperty() {
+        return netContribution;
+    }
+
+    public void setNetContribution(int netContribution) {
+        this.netContribution.set(netContribution);
+    }
+
+    public String getFIO() {
+        return FIO.get();
+    }
+
+    public SimpleStringProperty FIOProperty() {
+        return FIO;
+    }
+
+    public void setFIO(String FIO) {
+        this.FIO.set(FIO);
+    }
+
+    public void addProjectTable(ProjectTable projectTable) {
+        projectTables.add(projectTable);
+    }
+
+    public ArrayList<ProjectTable> getProjectTables() {
+        return projectTables;
+    }
+
+    public void setProjectTables(ArrayList<ProjectTable> projectTables) {
+        this.projectTables = projectTables;
+    }
+
+    public void addCommitCount(int commitCount) {
+        this.commitCount.set(this.commitCount.get() + commitCount);
+    }
+
+    public void addLinesAdd(int linesAdd) {
+        this.linesAdded.set(this.linesAdded.get() + linesAdd);
+    }
+
+    public void addLinesDelete(int linesDelete) {
+        this.linesRemoved.set(this.linesRemoved.get() + linesDelete);
+    }
+
+    public void addNetContributiont(int netContribution) {
+        this.netContribution.set(this.netContribution.get() + netContribution);
+    }
+
+    public Collection<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(Collection<Commit> commits) {
+        this.commits = commits;
+    }
+
+    public void addCommits(Collection<Commit> commits) {
+        this.commits.addAll(commits);
+    }
+
 }

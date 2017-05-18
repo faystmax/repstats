@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.ams.repstats.fortableview.CommitTable;
+import org.ams.repstats.fortableview.DeveloperTable;
 import org.ams.repstats.fortableview.ProjectTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.userinterface.UInterface;
@@ -55,6 +56,7 @@ public class CommitsController {
     private UInterface uInterface;
     private ProjectTable projectTable;
     private RepositoryTable repositoryTable;
+    private DeveloperTable developerTable;
 
     @FXML
     public void initialize() {
@@ -99,6 +101,10 @@ public class CommitsController {
         this.repositoryTable = repositoryTable;
     }
 
+    public void setDeveloperTable(DeveloperTable developerTable) {
+        this.developerTable = developerTable;
+    }
+
     /**
      * Основной метод отображение коммитов
      */
@@ -109,6 +115,8 @@ public class CommitsController {
             commits = this.projectTable.getCommits();
         } else if (this.repositoryTable != null) {
             commits = this.repositoryTable.getCommits();
+        } else if (this.developerTable != null) {
+            commits = this.developerTable.getCommits();
         } else {
             commits = uInterface.getLastCommits(author);
         }

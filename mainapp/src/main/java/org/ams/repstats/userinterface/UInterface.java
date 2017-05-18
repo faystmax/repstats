@@ -72,6 +72,8 @@ public interface UInterface {
 
     int getBugFixesCount(Author selectedAuthor);
 
+    int getBugFixesCount();
+
     long getTotalLinesAddedWithDate();
 
     long getTotalLinesRemovedWithDate();

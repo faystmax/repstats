@@ -20,6 +20,7 @@ public class AuthorTable {
 
     private SimpleStringProperty FIO;
 
+
     public AuthorTable(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution) {
         this.name = new SimpleStringProperty(name);
         this.commitCount = new SimpleIntegerProperty(commitCount);
@@ -47,6 +48,7 @@ public class AuthorTable {
         this.email = new SimpleStringProperty(email);
         this.FIO = new SimpleStringProperty(FIO);
     }
+
     public String getName() {
         return name.get();
     }
@@ -130,4 +132,6 @@ public class AuthorTable {
     public void setFIO(String FIO) {
         this.FIO.set(FIO);
     }
+
+
 }
