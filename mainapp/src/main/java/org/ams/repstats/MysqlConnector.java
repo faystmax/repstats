@@ -41,6 +41,10 @@ public class MysqlConnector {
             " inner JOIN role on role.id=developer.id_role" +
             " where id_team = ?";
 
+    public static final String selectDevelopersFromProject = "select developer.id,developer.name,surname,middlename,gitname,gitemail from developer " +
+            " inner JOIN developer_project on developer_project.id_developer=developer.id " +
+            " where developer_project.id_project = ?";
+
     public static final String selectAllDevelopers = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name from developer" +
             " inner JOIN role on role.id=developer.id_role";
     public static final String selectAllDevelopersWithTeamName = "select developer.id,developer.name,surname,middlename,id_role,id_team,age,phone,role.name," +

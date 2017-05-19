@@ -30,6 +30,7 @@ public class DateForTeamController {
     //endregion
 
     private StatsTeamController statsTeamController;
+    private StatsProjectController statsProjectController;
 
     @FXML
     public void initialize() {
@@ -47,9 +48,13 @@ public class DateForTeamController {
             Utils.showAlert("Ошибка", "Выберите корректный  промежуток времени!");
             return;
         }
-
-        statsTeamController.start = datePickerStart.getValue();
-        statsTeamController.end = datePickerEnd.getValue();
+        if (statsTeamController != null) {
+            statsTeamController.start = datePickerStart.getValue();
+            statsTeamController.end = datePickerEnd.getValue();
+        } else if (statsProjectController != null) {
+            statsProjectController.start = datePickerStart.getValue();
+            statsProjectController.end = datePickerEnd.getValue();
+        }
         exitButtonAction(null);
     }
 
@@ -63,5 +68,9 @@ public class DateForTeamController {
 
     public void setStatsTeamController(StatsTeamController statsTeamController) {
         this.statsTeamController = statsTeamController;
+    }
+
+    public void setStatsProjectController(StatsProjectController statsProjectController) {
+        this.statsProjectController = statsProjectController;
     }
 }
