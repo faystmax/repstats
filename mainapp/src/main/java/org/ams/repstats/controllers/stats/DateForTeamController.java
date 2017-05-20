@@ -31,6 +31,7 @@ public class DateForTeamController {
 
     private StatsTeamController statsTeamController;
     private StatsProjectController statsProjectController;
+    private StatsRepositoryController statsRepositoryController;
 
     @FXML
     public void initialize() {
@@ -54,6 +55,9 @@ public class DateForTeamController {
         } else if (statsProjectController != null) {
             statsProjectController.start = datePickerStart.getValue();
             statsProjectController.end = datePickerEnd.getValue();
+        } else if (statsRepositoryController != null) {
+            statsRepositoryController.start = datePickerStart.getValue();
+            statsRepositoryController.end = datePickerEnd.getValue();
         }
         exitButtonAction(null);
     }
@@ -72,5 +76,9 @@ public class DateForTeamController {
 
     public void setStatsProjectController(StatsProjectController statsProjectController) {
         this.statsProjectController = statsProjectController;
+    }
+
+    public void setStatsRepositoryController(StatsRepositoryController statsRepositoryController) {
+        this.statsRepositoryController = statsRepositoryController;
     }
 }

@@ -49,6 +49,8 @@ public class ProjectConnectWithTeamController {
     @FXML
     public void initialize() {
         showAllTeams();
+
+        Utils.setEmptyTableMessage(teamTable);
     }
 
     /**

@@ -64,6 +64,8 @@ public class ProjectConnectWithDeveloperController {
     public void initialize() {
         configureDevelopersTable();
         showDevelopersInTeam();
+
+        Utils.setEmptyTableMessage(developersTable);
     }
 
     /**

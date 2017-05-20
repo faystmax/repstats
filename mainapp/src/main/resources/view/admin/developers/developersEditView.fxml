@@ -24,7 +24,7 @@
                         <TableColumn fx:id="developerTeamClmn" prefWidth="75.0" text="Команда"/>
                         <TableColumn prefWidth="75.0" text="Git">
                             <columns>
-                                <TableColumn fx:id="developerGitName" prefWidth="75.0" text="name"/>
+                                <TableColumn fx:id="developerGitName" prefWidth="75.0" text="author"/>
                                 <TableColumn fx:id="developerGitEmail" prefWidth="75.0" text="email"/>
                             </columns>
                         </TableColumn>

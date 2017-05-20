@@ -15,6 +15,7 @@ import org.ams.repstats.fortableview.DeveloperTable;
 import org.ams.repstats.fortableview.ProjectTable;
 import org.ams.repstats.fortableview.RepositoryTable;
 import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.utils.Utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,6 +62,9 @@ public class CommitsController {
     @FXML
     public void initialize() {
         configureTableColumn();
+
+        // Крепим свой placeholder
+        Utils.setEmptyTableMessage(tableForCommits);
     }
 
     private void configureTableColumn() {

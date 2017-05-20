@@ -29,7 +29,7 @@ public class MainApp extends Application {
 
     private static UInterfaceFactory factory = new UInterfaceFactory();         ///< Фабрика для UInterface
     private static ViewInterface viewInterface;                                 ///< Bнтерфейс - консоль,gui
-    private static UInterface uInterface;                                       ///< Vост для Фасада
+    private static UInterface uInterface;                                       ///< Мост для Фасада
 
     private Stage primaryStage;                                                 ///< Главный каркас
     private BorderPane rootLayout;                                              ///< Родительский Layout

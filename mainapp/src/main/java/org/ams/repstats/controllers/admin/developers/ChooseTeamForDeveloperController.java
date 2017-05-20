@@ -49,6 +49,7 @@ public class ChooseTeamForDeveloperController {
     @FXML
     public void initialize() {
         showAllTeams();
+        Utils.setEmptyTableMessage(teamTable);
     }
 
     /**

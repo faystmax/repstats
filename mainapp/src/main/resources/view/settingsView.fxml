@@ -7,11 +7,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="387.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/8"
+            minWidth="-Infinity" prefHeight="372.0" prefWidth="574.0" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ams.repstats.controllers.SettingsController">
     <children>
         <Label alignment="CENTER" layoutY="27.0" text="Настройки" textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
             <font>
                 <Font size="19.0"/>
             </font>
@@ -20,120 +20,143 @@
                 prefWidth="80.0" text="Закрыть" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="30.0"/>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="248.0" layoutY="55.0"
                text="(Изменения сразу вступят в силу)" textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0"/>
-        <TabPane layoutX="20.0" layoutY="72.0" prefHeight="273.0" prefWidth="531.0" tabClosingPolicy="UNAVAILABLE"
-                 AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                 AnchorPane.topAnchor="72.0">
-            <tabs>
-                <Tab text="Персонализация">
-                    <content>
-                        <HBox spacing="30.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="30.0"
-                              AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0">
-                            <children>
-                                <AnchorPane layoutX="33.0" layoutY="75.0" maxHeight="1.7976931348623157E308"
-                                            maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
-                                            prefHeight="200.0" prefWidth="209.0"
-                                            style="-fx-border-radius: 5; -fx-border-color: #999A9A;"
-                                            AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="30.0"
-                                            AnchorPane.topAnchor="75.0" HBox.hgrow="ALWAYS">
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0"/>
+        <VBox layoutY="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+            <children>
+                <TabPane layoutX="20.0" layoutY="72.0" prefWidth="574.0" tabClosingPolicy="UNAVAILABLE"
+                         AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                         AnchorPane.topAnchor="72.0">
+                    <tabs>
+                        <Tab text="Персонализация">
+                            <content>
+                                <HBox prefWidth="577.0" spacing="30.0" AnchorPane.bottomAnchor="58.0"
+                                      AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0"
+                                      AnchorPane.topAnchor="75.0">
                                     <children>
-                                        <VBox layoutX="14.0" layoutY="28.0" spacing="15.0">
+                                        <AnchorPane layoutX="33.0" layoutY="75.0" maxHeight="1.7976931348623157E308"
+                                                    maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                                                    minWidth="-Infinity" prefWidth="209.0"
+                                                    style="-fx-border-radius: 5; -fx-border-color: #999A9A;"
+                                                    AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="30.0"
+                                                    AnchorPane.topAnchor="75.0" HBox.hgrow="ALWAYS">
                                             <children>
-                                                <RadioButton fx:id="whiteButton" layoutX="14.0" layoutY="44.0"
-                                                             mnemonicParsing="false" text="Белый"/>
-                                                <RadioButton fx:id="blueButton" layoutX="14.0" layoutY="73.0"
-                                                             mnemonicParsing="false" text="Синий"/>
-                                                <RadioButton fx:id="greenButton" layoutX="14.0" layoutY="104.0"
-                                                             mnemonicParsing="false" text="Зелёный"/>
-                                                <RadioButton fx:id="blackButton" layoutX="14.0" layoutY="132.0"
-                                                             mnemonicParsing="false" text="Чёрный"/>
-                                                <RadioButton fx:id="pinkButton" layoutX="14.0" layoutY="163.0"
-                                                             mnemonicParsing="false" text="Розовый"/>
+                                                <VBox layoutX="14.0" layoutY="28.0" spacing="15.0"
+                                                      AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0"
+                                                      AnchorPane.topAnchor="28.0">
+                                                    <children>
+                                                        <RadioButton fx:id="whiteButton" layoutX="14.0" layoutY="44.0"
+                                                                     mnemonicParsing="false" text="Белый"/>
+                                                        <RadioButton fx:id="blueButton" layoutX="14.0" layoutY="73.0"
+                                                                     mnemonicParsing="false" text="Синий"/>
+                                                        <RadioButton fx:id="greenButton" layoutX="14.0" layoutY="104.0"
+                                                                     mnemonicParsing="false" text="Зелёный"/>
+                                                        <RadioButton fx:id="blackButton" layoutX="14.0" layoutY="132.0"
+                                                                     mnemonicParsing="false" text="Чёрный"/>
+                                                        <RadioButton fx:id="pinkButton" layoutX="14.0" layoutY="163.0"
+                                                                     mnemonicParsing="false" text="Розовый"/>
+                                                    </children>
+                                                </VBox>
+                                                <Label alignment="CENTER" layoutX="66.0" layoutY="8.0"
+                                                       text="Внешний вид" textAlignment="CENTER"
+                                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                       AnchorPane.topAnchor="8.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane layoutX="294.0" layoutY="75.0" maxHeight="1.7976931348623157E308"
+                                                    maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                                                    minWidth="-Infinity" prefWidth="209.0"
+                                                    style="-fx-border-radius: 5; -fx-border-color: #999A9A;"
+                                                    AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="285.0"
+                                                    AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0"
+                                                    HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <VBox layoutX="14.0" layoutY="28.0" spacing="15.0"
+                                                      AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="14.0"
+                                                      AnchorPane.topAnchor="28.0">
+                                                    <children>
+                                                        <RadioButton fx:id="repButton" layoutX="14.0" layoutY="44.0"
+                                                                     mnemonicParsing="false"
+                                                                     text="Статистика репозитория"/>
+                                                        <RadioButton fx:id="projectButton" layoutX="14.0" layoutY="73.0"
+                                                                     mnemonicParsing="false"
+                                                                     text="Статистика по проекту"/>
+                                                        <RadioButton fx:id="developerButton" layoutX="14.0"
+                                                                     layoutY="104.0" mnemonicParsing="false"
+                                                                     text="Статистика разработчика"/>
+                                                        <RadioButton fx:id="teamButton" layoutX="14.0" layoutY="132.0"
+                                                                     mnemonicParsing="false" text="Статистика команд"/>
+                                                    </children>
+                                                </VBox>
+                                                <Label alignment="CENTER" layoutX="59.0" layoutY="6.0"
+                                                       text="Начальное окно" textAlignment="CENTER"
+                                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                       AnchorPane.topAnchor="8.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                                    </padding>
+                                </HBox>
+                            </content>
+                        </Tab>
+                        <Tab text="Git настройки">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="20.0" layoutY="69.0" spacing="10.0"
+                                              AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="20.0"
+                                              AnchorPane.rightAnchor="309.0" AnchorPane.topAnchor="69.0">
+                                            <children>
+                                                <VBox layoutX="21.0" layoutY="69.0" minHeight="-Infinity"
+                                                      minWidth="-Infinity">
+                                                    <children>
+                                                        <Label layoutX="21.0" layoutY="69.0" text="Git username "/>
+                                                        <TextField fx:id="tbUsername" layoutX="21.0" layoutY="86.0"
+                                                                   minHeight="-Infinity" minWidth="-Infinity"
+                                                                   prefHeight="25.0" prefWidth="201.0"/>
+                                                    </children>
+                                                </VBox>
+                                                <VBox layoutX="21.0" layoutY="125.0">
+                                                    <children>
+                                                        <Label layoutX="21.0" layoutY="125.0" text="Git password"/>
+                                                        <PasswordField fx:id="tbPassword" minHeight="-Infinity"
+                                                                       minWidth="-Infinity" prefHeight="25.0"
+                                                                       prefWidth="201.0"/>
+                                                    </children>
+                                                </VBox>
+                                                <HBox layoutX="20.0" layoutY="181.0" minHeight="-Infinity"
+                                                      minWidth="-Infinity" prefWidth="202.0">
+                                                    <children>
+                                                        <Button layoutX="20.0" layoutY="182.0" minHeight="-Infinity"
+                                                                minWidth="-Infinity" mnemonicParsing="false"
+                                                                onAction="#CheckAndRememberUsernameAndPass"
+                                                                text="Проверить и запомнить"/>
+                                                        <Region HBox.hgrow="ALWAYS"/>
+                                                        <ImageView fx:id="imCheck" fitHeight="24.0" fitWidth="33.0"
+                                                                   layoutX="189.0" layoutY="181.0" pickOnBounds="true"
+                                                                   preserveRatio="true"/>
+                                                    </children>
+                                                </HBox>
                                             </children>
                                         </VBox>
-                                        <Label layoutX="66.0" layoutY="8.0" text="Внешний вид"/>
+                                        <Text layoutX="115.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="При неправильном логине или пароле  некоторые функции приложения могут быть недоступны"
+                                              textAlignment="CENTER" wrappingWidth="346.099609375"
+                                              AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.900390625"
+                                              AnchorPane.topAnchor="14.0"/>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="294.0" layoutY="75.0" maxHeight="1.7976931348623157E308"
-                                            maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
-                                            prefHeight="200.0" prefWidth="209.0"
-                                            style="-fx-border-radius: 5; -fx-border-color: #999A9A;"
-                                            AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="285.0"
-                                            AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0"
-                                            HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <VBox layoutX="14.0" layoutY="28.0" spacing="15.0">
-                                            <children>
-                                                <RadioButton fx:id="repButton" layoutX="14.0" layoutY="44.0"
-                                                             mnemonicParsing="false" text="Статистика репозитория"/>
-                                                <RadioButton fx:id="projectButton" layoutX="14.0" layoutY="73.0"
-                                                             mnemonicParsing="false" text="Статистика по проекту"/>
-                                                <RadioButton fx:id="developerButton" layoutX="14.0" layoutY="104.0"
-                                                             mnemonicParsing="false" text="Статистика разработчика"/>
-                                                <RadioButton fx:id="teamButton" layoutX="14.0" layoutY="132.0"
-                                                             mnemonicParsing="false" text="Статистика команд"/>
-                                            </children>
-                                        </VBox>
-                                        <Label layoutX="59.0" layoutY="6.0" text="Начальное окно"/>
-                                    </children>
-                                </AnchorPane>
-                            </children>
-                            <padding>
-                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-                            </padding>
-                        </HBox>
-                    </content>
-                </Tab>
-                <Tab text="Git настройки">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <VBox layoutX="20.0" layoutY="69.0" spacing="10.0" AnchorPane.bottomAnchor="34.0"
-                                      AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="309.0"
-                                      AnchorPane.topAnchor="69.0">
-                                    <children>
-                                        <VBox layoutX="21.0" layoutY="69.0" minHeight="-Infinity" minWidth="-Infinity">
-                                            <children>
-                                                <Label layoutX="21.0" layoutY="69.0" text="Git username "/>
-                                                <TextField fx:id="tbUsername" layoutX="21.0" layoutY="86.0"
-                                                           minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
-                                                           prefWidth="201.0"/>
-                                            </children>
-                                        </VBox>
-                                        <VBox layoutX="21.0" layoutY="125.0">
-                                            <children>
-                                                <Label layoutX="21.0" layoutY="125.0" text="Git password"/>
-                                                <PasswordField fx:id="tbPassword" minHeight="-Infinity"
-                                                               minWidth="-Infinity" prefHeight="25.0"
-                                                               prefWidth="201.0"/>
-                                            </children>
-                                        </VBox>
-                                        <HBox layoutX="20.0" layoutY="181.0" minHeight="-Infinity" minWidth="-Infinity"
-                                              prefWidth="202.0">
-                                            <children>
-                                                <Button layoutX="20.0" layoutY="182.0" minHeight="-Infinity"
-                                                        minWidth="-Infinity" mnemonicParsing="false"
-                                                        onAction="#CheckAndRememberUsernameAndPass"
-                                                        text="Проверить и запомнить"/>
-                                                <Region HBox.hgrow="ALWAYS"/>
-                                                <ImageView fx:id="imCheck" fitHeight="24.0" fitWidth="33.0"
-                                                           layoutX="189.0" layoutY="181.0" pickOnBounds="true"
-                                                           preserveRatio="true"/>
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
-                                <Text layoutX="115.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="При неправильном логине или пароле  некоторые функции приложения могут быть недоступны"
-                                      textAlignment="CENTER" wrappingWidth="346.099609375" AnchorPane.leftAnchor="115.0"
-                                      AnchorPane.rightAnchor="115.900390625" AnchorPane.topAnchor="14.0"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-            </tabs>
-        </TabPane>
-        <Separator layoutY="335.0" prefWidth="200.0" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"/>
+                            </content>
+                        </Tab>
+                    </tabs>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </TabPane>
+                <Separator layoutY="335.0" prefWidth="200.0" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0"/>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>

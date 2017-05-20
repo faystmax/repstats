@@ -7,35 +7,42 @@
             prefWidth="1030.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.ams.repstats.controllers.RootController">
     <top>
-        <MenuBar BorderPane.alignment="CENTER">
+        <MenuBar fx:id="menu" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showSettings" text="Настройки"/>
+                        <MenuItem fx:id="menuSettings" mnemonicParsing="false" onAction="#showSettings"
+                                  text="Настройки"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="buttonAboutAction" mnemonicParsing="false" onAction="#exitButtonAction"
+                        <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#exitButtonAction"
                                   text="Закрыть"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Статистика">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showStatsTeam" text="Статистика команд"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showStatsDeveloper"
+                        <MenuItem fx:id="menuStatsTeam" mnemonicParsing="false" onAction="#showStatsTeam"
+                                  text="Статистика команд"/>
+                        <MenuItem fx:id="menuStatsDeveloper" mnemonicParsing="false" onAction="#showStatsDeveloper"
                                   text="Статистика разработчиков"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showStatsProject" text="Статистика по проекту"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showStatsRepository"
+                        <MenuItem fx:id="menuStatsProject" mnemonicParsing="false" onAction="#showStatsProject"
+                                  text="Статистика по проекту"/>
+                        <MenuItem fx:id="menuStatsRep" mnemonicParsing="false" onAction="#showStatsRepository"
                                   text="Статистика репозитория"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Администрирование">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showAdminTeam" text="Команда"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showAdminDevelopers" text="Разработчики"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showAdminProjects" text="Проекты"/>
-                        <MenuItem mnemonicParsing="false" onAction="#showAdminRepository" text="Репозитории"/>
+                        <MenuItem fx:id="menuAdminTeam" mnemonicParsing="false" onAction="#showAdminTeam"
+                                  text="Команда"/>
+                        <MenuItem fx:id="menuAdminDevelop" mnemonicParsing="false" onAction="#showAdminDevelopers"
+                                  text="Разработчики"/>
+                        <MenuItem fx:id="menuAdminProject" mnemonicParsing="false" onAction="#showAdminProjects"
+                                  text="Проекты"/>
+                        <MenuItem fx:id="menuAdminRep" mnemonicParsing="false" onAction="#showAdminRepository"
+                                  text="Репозитории"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Помощь">
+                <Menu fx:id="menuHelp" mnemonicParsing="false" text="Помощь">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#buttonAboutAction" text="О программе"/>
                     </items>

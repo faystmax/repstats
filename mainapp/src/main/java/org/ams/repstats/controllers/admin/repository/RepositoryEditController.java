@@ -58,6 +58,8 @@ public class RepositoryEditController {
     public void initialize() {
         configureRepositoryClmn();
         showRepository();
+
+        Utils.setEmptyTableMessage(repositoryTable);
     }
 
     private void configureRepositoryClmn() {
@@ -141,7 +143,7 @@ public class RepositoryEditController {
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
+                            changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
                             projectDateClmn.setVisible(false);
                             projectDateClmn.setVisible(true);

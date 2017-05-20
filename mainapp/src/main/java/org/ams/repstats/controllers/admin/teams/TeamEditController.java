@@ -68,6 +68,10 @@ public class TeamEditController {
     public void initialize() {
         showAllTeams();
         configureDevelopersTable();
+
+        Utils.setEmptyTableMessage(teamTable);
+        Utils.setEmptyTableMessage(developersTable);
+
         // добавили listener`a
         teamTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {

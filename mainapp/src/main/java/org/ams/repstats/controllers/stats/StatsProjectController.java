@@ -97,14 +97,6 @@ public class StatsProjectController extends ViewInterfaceAbstract {
     @FXML
     private TableColumn projectPriorClmn;
     @FXML
-    private TableView tableAllFiles;
-    @FXML
-    private TableColumn clmnPath;
-    @FXML
-    private TableColumn clmnIsBinary;
-    @FXML
-    private TableColumn clmnLOC;
-    @FXML
     private TableView avtorTable;
     @FXML
     private TableColumn clmnAvtorName;
@@ -118,22 +110,6 @@ public class StatsProjectController extends ViewInterfaceAbstract {
     private TableColumn clmnLinesDelete;
     @FXML
     private TableColumn clmnNetContribution;
-    @FXML
-    private Label lbNameRep;
-    @FXML
-    private Label lbNazv;
-    @FXML
-    private Label lbBranch;
-    @FXML
-    private Label lbNazvCur;
-    @FXML
-    private Label lbBranchCur;
-    @FXML
-    private Label lbKolCommit;
-    @FXML
-    private Label lbKolCommitCur;
-    @FXML
-    private Label lbRemoteName;
     @FXML
     private Button btStart;
     //endregion
@@ -166,12 +142,37 @@ public class StatsProjectController extends ViewInterfaceAbstract {
             }
         });
 
+        // Крепим свой placeholder
+        Utils.setEmptyTableMessage(projectsTable);
+        Utils.setEmptyTableMessage(repositoryTable);
+        Utils.setEmptyTableMessage(avtorTable);
+
         // добавили listener`a
         projectsTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                     start();
+                }
+            }
+        });
+
+        // добавили listener`a
+        avtorTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsAvtorButtonAction(null);
+                }
+            }
+        });
+
+        // добавили listener`a
+        repositoryTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsInRepositorytButtonAction(null);
                 }
             }
         });
@@ -422,17 +423,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
                     bugFixes += getuInterface().getBugFixesCount();
                 }
 
-                //выводим данные о репозитории в поток javafx
-                Platform.runLater(() -> {
-                    repositoryTable.setItems(repositoryData);
-                    showMainInf();
-                    showAvtors();
-                    showAllFiles();
-                    //   buildCommitsCountGraph(null);
-                    //    buildCommitsbyTimeGraph(null);
-                    //showCommitsChart();
-                    closeRepository();
-                });
+                repositoryTable.setItems(repositoryData);
                 return true;
             }
         }
@@ -444,6 +435,16 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
+            //выводим данные о репозитории в поток javafx
+            Platform.runLater(() -> {
+                showMainInf();
+                showAvtors();
+                showAllFiles();
+                //   buildCommitsCountGraph(null);
+                //    buildCommitsbyTimeGraph(null);
+                //showCommitsChart();
+                closeRepository();
+            });
         });
 
         task.setOnFailed((e) ->
@@ -670,7 +671,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
                 controller.setUInterface(this.getuInterface());
-                //controller.setLbName(selectedAuthor.getName());
+                //controller.setLbName(selectedAuthor.getAuthor());
                 controller.setDeveloperTable(developerTable);
                 controller.showCommits();
                 stage.showAndWait();

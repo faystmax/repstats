@@ -92,6 +92,11 @@ public class ProjectEditController {
         configureAndShowProjectsClmn();
         configureRepositoryClmn();
         configureDevelopersTable();
+
+        Utils.setEmptyTableMessage(projectsTable);
+        Utils.setEmptyTableMessage(repositoryTable);
+        Utils.setEmptyTableMessage(developersTable);
+
         // добавили listener`a
         projectsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -153,7 +158,7 @@ public class ProjectEditController {
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
+                            changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
                             projectDateClmn.setVisible(false);
                             projectDateClmn.setVisible(true);
@@ -191,7 +196,7 @@ public class ProjectEditController {
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
+                            changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
                             projectDeadlineClmn.setVisible(false);
                             projectDeadlineClmn.setVisible(true);
@@ -348,7 +353,7 @@ public class ProjectEditController {
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
-                            changeable.setName(t.getOldValue());
+                            changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
                             projectDateClmn.setVisible(false);
                             projectDateClmn.setVisible(true);

@@ -61,6 +61,8 @@ public class RepositoryResponsibleSelectController {
     public void initialize() {
         configureDevelopersTable();
         showDevelopersInTeam();
+
+
     }
 
     /**

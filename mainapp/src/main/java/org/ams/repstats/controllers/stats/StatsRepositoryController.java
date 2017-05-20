@@ -47,6 +47,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +62,6 @@ import java.util.List;
 public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsRepositoryController.class); ///< ссылка на логер
-
 
 
     //region << UI Компоненты
@@ -190,10 +190,15 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         // Отключаем редактирование таблицы
         repositoryTable.setEditable(false);
 
-        // Крепим всвой placeholder
+        // Крепим свой placeholder
         Utils.setEmptyTableMessage(avtorTable);
         Utils.setEmptyTableMessage(tableAllFiles);
+        Utils.setEmptyTableMessage(tableIssues);
+        Utils.setEmptyTableMessage(tablePullRequests);
         Utils.setEmptyTableMessage(repositoryTable);
+        Utils.setEmptyTableMessage(repositoryTable);
+        Utils.setEmptyTableMessage(tableTecBranches);
+        Utils.setEmptyTableMessage(tableMergedBranches);
 
         // Отображаем репозитории
         configureRepositoryClmn();
@@ -301,6 +306,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
     }
 
+
     /**
      * Кнопка начала анализа
      */
@@ -355,6 +361,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         new Thread(task).start();
     }
 
+
+    public LocalDate start;
+    public LocalDate end;
+
     /**
      * Кнопка начала анализа Репозитория
      */
@@ -363,6 +373,17 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             Utils.showAlert("Ошибка", "Сначала выберите репозиторий!");
             return;
         }
+
+        start = end = null;
+
+        // выбираем промежутток времени
+        openDateForTeamrView();
+        // Проверка на нажатия "Отмена"
+        if (start == null || end == null) {
+            //выход т.к не с чем работать
+            return;
+        }
+
 
         // берём url
         url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
@@ -389,7 +410,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     setStart(false);
                     return false;
                 }
-                if (!getuInterface().startProjectAnalyze()) {
+                if (!getuInterface().startProjectAnalyze(start, end)) {
                     Utils.showAlert("Ошибка", "Ошибка анализа файлов проекта!");
                     setStart(false);
                 } else {
@@ -397,18 +418,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 }
 
                 calcIssuesAndPullRequests();
-                //выводим данные о репозитории в потоку javafx
-                Platform.runLater(() -> {
-                    showMainInf();
-                    showAvtors();
-                    showAllFiles();
-                    showAllBranches();
-                    buildGraph(null);
-
-                    showChartOnImageView();
-                    closeRepository();
-                });
-
 
                 return true;
             }
@@ -416,6 +425,19 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
         task.setOnRunning((e) -> Utils.openLoadingWindow(task));
         task.setOnSucceeded((e) -> {
+
+            //выводим данные о репозитории в потоку javafx
+            Platform.runLater(() -> {
+                showMainInf();
+                showAvtors();
+                showAllFiles();
+                showAllBranches();
+                buildGraph(null);
+
+                showChartOnImageView();
+                closeRepository();
+            });
+
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
         });
@@ -430,6 +452,30 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         new Thread(task).start();
     }
 
+
+    /**
+     * Окно для выбора промежутка времени и проектов
+     */
+    private void openDateForTeamrView() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("view/stats/dateForTeamView.fxml"));
+            AnchorPane aboutLayout = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Выбор промежутка времени");
+            stage.setScene(new Scene(aboutLayout));
+            stage.getIcons().add(new Image("icons/gitIcon.png"));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            DateForTeamController dateForTeamController = loader.getController();
+            dateForTeamController.setStatsRepositoryController(this);
+            //Инициализируем и запускаем
+            stage.showAndWait();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
 
     private void calcIssuesAndPullRequests() {
         this.gitApi = new GitApi();
@@ -456,7 +502,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private void showPullRequests() {
         clmnPullNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
         clmnPullTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("author"));
 
         clmnPullDateCreated.setCellValueFactory(
                 new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
@@ -502,7 +548,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnIssuesNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
         clmnIssuesTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         clmnIssuesAvtor.setCellValueFactory(new PropertyValueFactory<>("name"));
-        //clmnPullDateCreated.setCellValueFactory(new PropertyValueFactory<PullRequestTable, Date>("createdAt"));
         clmnIssuesState.setCellValueFactory(new PropertyValueFactory<>("state"));
 
         clmnIssuesDateCreated.setCellValueFactory(
@@ -594,7 +639,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     @Override
     public void showMainInf() {
-        lbNameRep.setText(getuInterface().getRepName());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedStartDateTime = start.format(formatter);
+        String formattedEndDateTime = end.format(formatter);
+
+        lbNameRep.setText("Анализ репозитория с " + formattedStartDateTime + " по " + formattedEndDateTime);
+
         lbNazvCur.setText(getuInterface().getRepName());
         lbBranchCur.setText(getuInterface().getBranchName());
         lbKolCommitCur.setText(Integer.toString(getuInterface().getNumberOfCommits()));

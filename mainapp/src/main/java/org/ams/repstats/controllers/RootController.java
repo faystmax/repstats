@@ -2,6 +2,7 @@ package org.ams.repstats.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -9,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -32,10 +36,48 @@ public class RootController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class); ///< ссылка на логер
 
+
+    //region << UI Компоненты
+    @FXML
+    private MenuBar menu;
+    @FXML
+    private MenuItem menuSettings;
+    @FXML
+    private MenuItem menuClose;
+    @FXML
+    private MenuItem menuStatsTeam;
+    @FXML
+    private MenuItem menuStatsDeveloper;
+    @FXML
+    private MenuItem menuStatsProject;
+    @FXML
+    private MenuItem menuStatsRep;
+    @FXML
+    private MenuItem menuAdminTeam;
+    @FXML
+    private MenuItem menuAdminDevelop;
+    @FXML
+    private MenuItem menuAdminProject;
+    @FXML
+    private MenuItem menuAdminRep;
+    @FXML
+    private Menu menuHelp;
+    //endregion
+
     private Stage primaryStage;                             ///< Главный каркас
     public static BorderPane rootLayout;                    ///< Layout
     public String username = new String();                  ///< Логин админа
     public String password = new String();                  ///< Пароль админа
+
+
+    @FXML
+    public void initialize() {
+        menuSettings.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        ImageView imageViewIcon = new ImageView(new Image(this.getClass().getClassLoader().getResource("icons/settings.png").toString()));
+        imageViewIcon.setFitHeight(20);
+        imageViewIcon.setFitWidth(20);
+        menuSettings.setGraphic(imageViewIcon);
+    }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -181,7 +223,8 @@ public class RootController {
      * @param event - событие
      */
     public void exitButtonAction(ActionEvent event) {
-        System.exit(0);
+        Stage stage = (Stage) menu.getScene().getWindow();
+        stage.close();
     }
 
     /**
@@ -199,10 +242,16 @@ public class RootController {
             // Set the icon (must be included in the project).
             dialog.setGraphic(new ImageView(this.getClass().getClassLoader().getResource("icons/login.png").toString()));
 
+            // Get the Stage.
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            // Add a custom icon.
+            stage.getIcons().add(new Image(Utils.class.getClassLoader().getResource("icons/lock.png").toString()));
+
+
             // Set the button types.
             ButtonType loginButtonType = new ButtonType("Вход", ButtonBar.ButtonData.OK_DONE);
             ButtonType cancelButtonType = new ButtonType("Отмена", ButtonBar.ButtonData.CANCEL_CLOSE);
-            dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+            dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, cancelButtonType);
 
             // Create the username and password labels and fields.
             GridPane grid = new GridPane();
@@ -215,9 +264,9 @@ public class RootController {
             PasswordField password = new PasswordField();
             password.setPromptText("Password");
 
-            grid.add(new Label("Username:"), 0, 0);
+            grid.add(new Label("Логин:"), 0, 0);
             grid.add(username, 1, 0);
-            grid.add(new Label("Password:"), 0, 1);
+            grid.add(new Label("Пароль:"), 0, 1);
             grid.add(password, 1, 1);
 
             // Enable/Disable login button depending on whether a username was entered.

@@ -121,8 +121,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     @FXML
     private ComboBox comboGraph;
     @FXML
-    private LineChart commitsChart;
-    @FXML
     private TableView developersTable;
     @FXML
     private TableColumn developerFamClmn;
@@ -167,6 +165,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             }
         });
 
+        // Крепим свой placeholder
+        Utils.setEmptyTableMessage(projectTable);
+        Utils.setEmptyTableMessage(repositoryTable);
+
         // добавили listener`a
         developersTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -176,6 +178,27 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 }
             }
         });
+
+        // добавили listener`a
+        projectTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsInProjectButtonAction(null);
+                }
+            }
+        });
+
+        // добавили listener`a
+        repositoryTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsInRepositorytButtonAction(null);
+                }
+            }
+        });
+
         configureProjectsTable();
         configureRepositoryTable();
 
@@ -375,7 +398,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                                     (String) (authors.getValueAt(i, 5))));
 
                             //автор совпал
-                            if (Objects.equals(data.get(i).getEmail(), cur.getGitemail()) /*&& Objects.equals(data.get(i).getName(), cur.getGitname()*/) {
+                            if (Objects.equals(data.get(i).getEmail(), cur.getGitemail())/*&& Objects.equals(data.get(i).getName(), cur.getGitname()*/) {
                                 newRepositoryTable.addCommitCount(data.get(i).getCommitCount());
                                 newRepositoryTable.addLinesAdd(data.get(i).getLinesAdded());
                                 newRepositoryTable.addLinesDelete(data.get(i).getLinesRemoved());
@@ -432,19 +455,8 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                 }
 
-                //выводим данные о репозитории в поток javafx
-                Platform.runLater(() -> {
-                    projectTable.setItems(projectsData);
-                    repositoryTable.setItems(repositoryData);
-                    showMainInf();
-                    showAvtors();
-                    showAllFiles();
-                    buildCommitsCountGraph(null);
-                    buildCommitsbyTimeGraph(null);
-                    //showCommitsChart();
-                    closeRepository();
-                });
-
+                projectTable.setItems(projectsData);
+                repositoryTable.setItems(repositoryData);
 
                 return true;
             }
@@ -455,6 +467,16 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         task.setOnSucceeded((e) -> {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
+            //выводим данные о репозитории в поток javafx
+            Platform.runLater(() -> {
+                showMainInf();
+                showAvtors();
+                showAllFiles();
+                buildCommitsCountGraph(null);
+                buildCommitsbyTimeGraph(null);
+                //showCommitsChart();
+                closeRepository();
+            });
         });
         task.setOnFailed((e) -> {
             // eventual error handling by catching exceptions from task.get()

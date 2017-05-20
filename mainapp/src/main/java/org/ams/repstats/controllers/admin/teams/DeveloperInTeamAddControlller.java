@@ -60,6 +60,8 @@ public class DeveloperInTeamAddControlller {
     public void initialize() {
         configureDevelopersTable();
         showDevelopersInTeam();
+
+        Utils.setEmptyTableMessage(developersTable);
     }
 
     /**

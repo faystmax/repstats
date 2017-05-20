@@ -68,6 +68,8 @@ public class DevelopersEditController {
         developersTable.setEditable(true);
         configureDevelopersTable();
         showDevelopersInTeam();
+
+        Utils.setEmptyTableMessage(developersTable);
     }
 
     /**

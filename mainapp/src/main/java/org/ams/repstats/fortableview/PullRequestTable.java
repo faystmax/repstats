@@ -17,7 +17,7 @@ public class PullRequestTable {
 
     private SimpleIntegerProperty number;
     private SimpleStringProperty title;
-    private SimpleStringProperty name;
+    private SimpleStringProperty author;
     private ObjectProperty<Date> createdAt = new SimpleObjectProperty<Date>();
     private SimpleStringProperty state;
     private SimpleStringProperty isMerged;
@@ -28,7 +28,7 @@ public class PullRequestTable {
     public PullRequestTable(int number, String title, String author, Date createdAt, String state) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
-        this.name = new SimpleStringProperty(author);
+        this.author = new SimpleStringProperty(author);
         this.createdAt = new SimpleObjectProperty<Date>(createdAt);
         this.state = new SimpleStringProperty(state);
     }
@@ -37,7 +37,7 @@ public class PullRequestTable {
                             int changedFiles, int additions, int deletions) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
-        this.name = new SimpleStringProperty(author);
+        this.author = new SimpleStringProperty(author);
         this.createdAt = new SimpleObjectProperty<Date>(createdAt);
         this.state = new SimpleStringProperty(state);
         this.isMerged = new SimpleStringProperty(isMerged);
@@ -72,16 +72,16 @@ public class PullRequestTable {
         this.title.set(title);
     }
 
-    public String getName() {
-        return name.get();
+    public String getAuthor() {
+        return author.get();
     }
 
-    public SimpleStringProperty nameProperty() {
-        return name;
+    public SimpleStringProperty authorProperty() {
+        return author;
     }
 
-    public void setName(String name) {
-        this.name.set(name);
+    public void setAuthor(String author) {
+        this.author.set(author);
     }
 
     public Date getCreatedAt() {

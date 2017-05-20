@@ -62,14 +62,6 @@ public class StatsTeamController extends ViewInterfaceAbstract {
     @FXML
     private TableColumn teamTechnolClmn;
     @FXML
-    private TableView tableAllFiles;
-    @FXML
-    private TableColumn clmnPath;
-    @FXML
-    private TableColumn clmnIsBinary;
-    @FXML
-    private TableColumn clmnLOC;
-    @FXML
     private TableView avtorTable;
     @FXML
     private TableColumn clmnAvtorName;
@@ -83,18 +75,6 @@ public class StatsTeamController extends ViewInterfaceAbstract {
     private TableColumn clmnLinesDelete;
     @FXML
     private TableColumn clmnNetContribution;
-    @FXML
-    private Label lbNameRep;
-    @FXML
-    private Label lbNazv;
-    @FXML
-    private Label lbBranch;
-    @FXML
-    private Label lbNazvCur;
-    @FXML
-    private Label lbBranchCur;
-    @FXML
-    private Label lbKolCommit;
     @FXML
     private Button btStart;
     @FXML
@@ -113,10 +93,6 @@ public class StatsTeamController extends ViewInterfaceAbstract {
     private Label lbTeamPokr;
     @FXML
     private Label lbMergedPullReq;
-    @FXML
-    private Label lbOtherMergedPullReq;
-    @FXML
-    private Label lbOtherNotMergedPullReq;
     @FXML
     private Label lbFixBugs;
     @FXML
@@ -166,6 +142,13 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         this.setUInterface((new UInterfaceFactory()).create(TypeUInterface.git));
         teamTable.setEditable(false);
         showAllTeams();
+
+        // Крепим свой placeholder
+        Utils.setEmptyTableMessage(avtorTable);
+        Utils.setEmptyTableMessage(repositoryTable);
+        Utils.setEmptyTableMessage(teamTable);
+        Utils.setEmptyTableMessage(projectTable);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -179,6 +162,36 @@ public class StatsTeamController extends ViewInterfaceAbstract {
             public void handle(MouseEvent event) {
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                     start();
+                }
+            }
+        });
+
+        // добавили listener`a
+        avtorTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsAvtorButtonAction(null);
+                }
+            }
+        });
+
+        // добавили listener`a
+        projectTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsInProjectButtonAction(null);
+                }
+            }
+        });
+
+        // добавили listener`a
+        repositoryTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    ShowCommitsInRepositorytButtonAction(null);
                 }
             }
         });
@@ -470,19 +483,9 @@ public class StatsTeamController extends ViewInterfaceAbstract {
                     }
                 }
 
+                projectTable.setItems(projectsData);
+                repositoryTable.setItems(repositoryData);
 
-                //выводим данные о репозитории в поток javafx
-                Platform.runLater(() -> {
-                    projectTable.setItems(projectsData);
-                    repositoryTable.setItems(repositoryData);
-                    showMainInf();
-                    showAvtors();
-                    showAllFiles();
-                    //   buildCommitsCountGraph(null);
-                    //    buildCommitsbyTimeGraph(null);
-                    //showCommitsChart();
-                    closeRepository();
-                });
                 return true;
             }
         };
@@ -491,6 +494,18 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         task.setOnSucceeded((e) -> {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
+
+            //выводим данные о репозитории в поток javafx
+            Platform.runLater(() -> {
+                showMainInf();
+                showAvtors();
+                showAllFiles();
+                //   buildCommitsCountGraph(null);
+                //    buildCommitsbyTimeGraph(null);
+                //showCommitsChart();
+                closeRepository();
+            });
+
         });
         task.setOnFailed((e) -> {
             // eventual error handling by catching exceptions from task.get()
@@ -538,7 +553,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
             stage.getIcons().add(new Image("icons/gitIcon.png"));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            DateForTeamController dateForTeamController = (DateForTeamController) loader.getController();
+            DateForTeamController dateForTeamController = loader.getController();
             dateForTeamController.setStatsTeamController(this);
             //Инициализируем и запускаем
             stage.showAndWait();
