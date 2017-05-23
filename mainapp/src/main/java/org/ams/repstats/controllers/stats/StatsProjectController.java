@@ -135,12 +135,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
         projectsTable.setEditable(false);
         configureAndShowProjectsClmn();
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                projectsTable.requestFocus();
-            }
-        });
+        Platform.runLater(() -> projectsTable.requestFocus());
 
         // Крепим свой placeholder
         Utils.setEmptyTableMessage(projectsTable);

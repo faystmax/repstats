@@ -27,8 +27,8 @@ import java.util.Map;
  */
 public class GitApi {
 
-    private static String username = "faystmax";           ///< Логин github
-    private static String password = "vfrcbvrf77777";      ///< Пароль github
+    private static String username = "";           ///< Логин github
+    private static String password = "";      ///< Пароль github
 
     private List<PullRequest> pullRequests;
     private List<Issue> issues;
