@@ -1,6 +1,7 @@
 package org.ams.repstats.fortableview;
 
 import com.selesse.gitwrapper.myobjects.Commit;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -37,6 +38,7 @@ public class DeveloperTable {
     private SimpleIntegerProperty linesAdded;
     private SimpleIntegerProperty linesRemoved;
     private SimpleIntegerProperty netContribution;
+    private SimpleDoubleProperty rating = new SimpleDoubleProperty();
 
     private SimpleStringProperty FIO;
 
@@ -137,6 +139,26 @@ public class DeveloperTable {
         this.netContribution = new SimpleIntegerProperty(netContribution);
 
         this.FIO = new SimpleStringProperty(surname + " " + name + " " + middleName);
+    }
+
+    public DeveloperTable(int id, String name, String surname, String middleName,
+                          String gitname, String gitemail,
+                          int commitCount, int linesAdded, int linesRemoved, int netContribution, double rating) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.surname = new SimpleStringProperty(surname);
+        this.middlename = new SimpleStringProperty(middleName);
+
+        this.gitname = new SimpleStringProperty(gitname);
+        this.gitemail = new SimpleStringProperty(gitemail);
+
+        this.commitCount = new SimpleIntegerProperty(commitCount);
+        this.linesAdded = new SimpleIntegerProperty(linesAdded);
+        this.linesRemoved = new SimpleIntegerProperty(linesRemoved);
+        this.netContribution = new SimpleIntegerProperty(netContribution);
+
+        this.FIO = new SimpleStringProperty(surname + " " + name + " " + middleName);
+        this.rating = new SimpleDoubleProperty(rating);
     }
 
 
@@ -409,4 +431,15 @@ public class DeveloperTable {
         this.commits.addAll(commits);
     }
 
+    public double getRating() {
+        return rating.get();
+    }
+
+    public SimpleDoubleProperty ratingProperty() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating.set(rating);
+    }
 }

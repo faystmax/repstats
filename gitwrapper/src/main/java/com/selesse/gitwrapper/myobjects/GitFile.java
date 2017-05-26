@@ -5,6 +5,7 @@ import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.lib.FileMode;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +62,10 @@ public class GitFile {
     private List<String> getContents(byte[] byteContents) {
         List<String> contents = null;
         try {
+            // Пропуск длинных файлов (скорее всего dll либо внешний jar)
+            if (byteContents.length / 1048576 > 50) {
+                contents = new ArrayList<>();
+            }
             String fileContents = new String(byteContents, "UTF-8");
             contents = Splitter.onPattern("\r?\n").splitToList(fileContents);
         } catch (UnsupportedEncodingException e) {

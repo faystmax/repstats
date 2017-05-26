@@ -44,6 +44,13 @@ public class MyProperties {
             // load git username and password
             GitApi.setUsernameAndPasswoed(prop.getProperty("gitUsername"), prop.getProperty("gitPassword"));
 
+            // load rating koef
+            DeveloperRating.setKoef(Double.valueOf(prop.getProperty("commitKoef")),
+                    Double.valueOf(prop.getProperty("linesAddKoef")),
+                    Double.valueOf(prop.getProperty("linesDelKoef")),
+                    Double.valueOf(prop.getProperty("pullReqKoef")),
+                    Double.valueOf(prop.getProperty("issuesKoef")));
+
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -76,6 +83,13 @@ public class MyProperties {
             // set git username and password
             prop.setProperty("gitUsername", GitApi.getUsername());
             prop.setProperty("gitPassword", GitApi.getPassword());
+
+            //set rating koef
+            prop.setProperty("commitKoef", String.valueOf(DeveloperRating.getCommitKoef()));
+            prop.setProperty("linesAddKoef", String.valueOf(DeveloperRating.getLinesAddKoef()));
+            prop.setProperty("linesDelKoef", String.valueOf(DeveloperRating.getLinesDelKoef()));
+            prop.setProperty("pullReqKoef", String.valueOf(DeveloperRating.getPullReqKoef()));
+            prop.setProperty("issuesKoef", String.valueOf(DeveloperRating.getIssuesKoef()));
 
             // save properties to project root folder
             prop.store(output, null);

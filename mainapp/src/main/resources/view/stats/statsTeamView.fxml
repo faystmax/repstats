@@ -267,8 +267,8 @@
                                                                      text="Строк добавлено"/>
                                                         <TableColumn fx:id="clmnLinesDelete" prefWidth="101.0"
                                                                      text="Строк удалено"/>
-                                                        <TableColumn fx:id="clmnNetContribution" prefWidth="106.0"
-                                                                     text="Чистый вклад"/>
+                                                        <TableColumn fx:id="clmnRating" prefWidth="106.0"
+                                                                     text="Рейтинг"/>
                                                     </columns>
                                                     <columnResizePolicy>
                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

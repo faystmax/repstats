@@ -27,6 +27,7 @@ import org.ams.repstats.MysqlConnector;
 import org.ams.repstats.fortableview.*;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
+import org.ams.repstats.utils.DeveloperRating;
 import org.ams.repstats.utils.RepositoryDownloader;
 import org.ams.repstats.utils.Utils;
 import org.ams.repstats.view.ViewInterfaceAbstract;
@@ -74,7 +75,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
     @FXML
     private TableColumn clmnLinesDelete;
     @FXML
-    private TableColumn clmnNetContribution;
+    private TableColumn clmnRating;
     @FXML
     private Button btStart;
     @FXML
@@ -251,7 +252,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         clmnCommitCount.setCellValueFactory(new PropertyValueFactory<>("commitCount"));
         clmnLinesAdd.setCellValueFactory(new PropertyValueFactory<>("linesAdded"));
         clmnLinesDelete.setCellValueFactory(new PropertyValueFactory<>("linesRemoved"));
-        clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
+        clmnRating.setCellValueFactory(new PropertyValueFactory<>("rating"));
     }
 
     private void setNewRepDirectory(File file) {
@@ -438,6 +439,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
                                     developerTable.addLinesDelete(data.get(i).getLinesRemoved());
                                     developerTable.addNetContributiont(developerTable.getLinesAdded() - developerTable.getLinesRemoved());
 
+
                                     Author author = getuInterface().getAuthorByName(data.get(i).getName());
                                     newRepositoryTable.setCommits(getuInterface().getLastCommits(author));
                                     projectTable.getCommits().addAll(newRepositoryTable.getCommits());
@@ -480,7 +482,18 @@ public class StatsTeamController extends ViewInterfaceAbstract {
                         // DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
                         // Author selectedAuthor = getuInterface().getAuthorByEmail(developerTable.getGitemail());
                         bugFixes += getuInterface().getBugFixesCount();
+
+
                     }
+                }
+
+                // ставим рейтинг
+                for (DeveloperTable developerTable : developers) {
+                    developerTable.setRating(DeveloperRating.calculateRating(developerTable.getCommitCount(),
+                            developerTable.getLinesAdded(),
+                            developerTable.getLinesRemoved(),
+                            0,
+                            0));
                 }
 
                 projectTable.setItems(projectsData);
