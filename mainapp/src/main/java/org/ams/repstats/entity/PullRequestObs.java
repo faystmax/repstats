@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,7 +13,7 @@ import java.util.Date;
  * Date: 14.05.2017
  * Time: 18:43
  */
-public class PullRequestTable {
+public class PullRequestObs {
 
     private SimpleIntegerProperty number;
     private SimpleStringProperty title;
@@ -25,7 +25,7 @@ public class PullRequestTable {
     private SimpleIntegerProperty additions;
     private SimpleIntegerProperty deletions;
 
-    public PullRequestTable(int number, String title, String author, Date createdAt, String state) {
+    public PullRequestObs(int number, String title, String author, Date createdAt, String state) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
         this.author = new SimpleStringProperty(author);
@@ -33,8 +33,8 @@ public class PullRequestTable {
         this.state = new SimpleStringProperty(state);
     }
 
-    public PullRequestTable(int number, String title, String author, Date createdAt, String state, String isMerged,
-                            int changedFiles, int additions, int deletions) {
+    public PullRequestObs(int number, String title, String author, Date createdAt, String state, String isMerged,
+                          int changedFiles, int additions, int deletions) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
         this.author = new SimpleStringProperty(author);

@@ -1,4 +1,4 @@
-package org.ams.repstats.utils;
+package org.ams.repstats.utils.properties;
 
 import java.util.Objects;
 

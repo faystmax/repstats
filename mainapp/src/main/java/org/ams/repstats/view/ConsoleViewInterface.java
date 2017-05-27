@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class ConsoleViewInterface extends ViewInterfaceAbstract {
 
-    Scanner in = new Scanner(System.in);
+    private Scanner in = new Scanner(System.in);
 
     public ConsoleViewInterface(UInterface uInterface) {
         super(uInterface);

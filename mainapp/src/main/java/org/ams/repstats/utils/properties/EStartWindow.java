@@ -1,4 +1,4 @@
-package org.ams.repstats.utils;
+package org.ams.repstats.utils.properties;
 
 /**
  * Created with IntelliJ IDEA

@@ -17,8 +17,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.ProjectTable;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.entity.ProjectObs;
+import org.ams.repstats.entity.RepositoryObs;
 import org.ams.repstats.utils.RepositoryTableDateEditingCell;
 import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
@@ -65,13 +65,13 @@ public class RepositoryEditController {
     private void configureRepositoryClmn() {
         repositoryTable.setEditable(true);
         // Название
-        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("name"));
+        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("name"));
         reposNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         reposNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -97,13 +97,13 @@ public class RepositoryEditController {
                 }
         );
         // Url
-        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("url"));
+        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("url"));
         reposUrlClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         reposUrlClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -130,15 +130,15 @@ public class RepositoryEditController {
         );
 
         // Date of creation
-        Callback<TableColumn<RepositoryTable, Date>, TableCell<RepositoryTable, Date>> dateOfCreationCellFactory
-                = (TableColumn<RepositoryTable, Date> param) -> new RepositoryTableDateEditingCell();
-        reposDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateOfCreation"));
+        Callback<TableColumn<RepositoryObs, Date>, TableCell<RepositoryObs, Date>> dateOfCreationCellFactory
+                = (TableColumn<RepositoryObs, Date> param) -> new RepositoryTableDateEditingCell();
+        reposDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Date>("dateOfCreation"));
         reposDateClmn.setCellFactory(dateOfCreationCellFactory);
         reposDateClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, Date>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, Date>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, Date> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, Date> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
@@ -167,7 +167,7 @@ public class RepositoryEditController {
                 });
 
         // Ответственный
-        reposResponsClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("FIO"));
+        reposResponsClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("FIO"));
 
 
     }
@@ -178,9 +178,9 @@ public class RepositoryEditController {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllRepository);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<RepositoryTable> data = FXCollections.observableArrayList();
+            ObservableList<RepositoryObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
-                data.add(new RepositoryTable(rs.getInt(1),
+                data.add(new RepositoryObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getDate(4),
@@ -202,7 +202,7 @@ public class RepositoryEditController {
      */
     public void delRepositoryButtonAction() {
         int selectedIndex = repositoryTable.getSelectionModel().getSelectedIndex();
-        int selectedId = ((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem()).getId();
+        int selectedId = ((RepositoryObs) repositoryTable.getSelectionModel().getSelectedItem()).getId();
         if (Utils.conformationDialog("Удаление репозитория ", "Вы уверены,что хотите удалить " +
                 "репозиторий?")) {
             try {
@@ -241,7 +241,7 @@ public class RepositoryEditController {
             MysqlConnector.executeUpdate();
             int newIdRepository = MysqlConnector.getInsertId();
 
-            RepositoryTable elem = new RepositoryTable(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
+            RepositoryObs elem = new RepositoryObs(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
                     FIODeveloperResponsible, description, -1);
             repositoryTable.getItems().add(elem);
         } catch (SQLException e) {
@@ -290,7 +290,7 @@ public class RepositoryEditController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите репозиторий!");
             return;
         }
-        int id_repository = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getId();
+        int id_repository = ((RepositoryObs) (repositoryTable.getSelectionModel().getSelectedItem())).getId();
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateResponsible);
             preparedStatement.setInt(1, id_developer);

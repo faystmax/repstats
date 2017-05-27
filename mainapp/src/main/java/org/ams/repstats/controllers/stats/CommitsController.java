@@ -10,10 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.ams.repstats.fortableview.CommitTable;
-import org.ams.repstats.fortableview.DeveloperTable;
-import org.ams.repstats.fortableview.ProjectTable;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.entity.CommitObs;
+import org.ams.repstats.entity.DeveloperObs;
+import org.ams.repstats.entity.ProjectObs;
+import org.ams.repstats.entity.RepositoryObs;
 import org.ams.repstats.userinterface.UInterface;
 import org.ams.repstats.utils.Utils;
 
@@ -44,7 +44,7 @@ public class CommitsController {
     @FXML
     private TableColumn clmnFilesChanged;
     @FXML
-    private TableColumn<CommitTable, String> clmnDate;
+    private TableColumn<CommitObs, String> clmnDate;
     @FXML
     private TableColumn clmnMessage;
     @FXML
@@ -55,9 +55,9 @@ public class CommitsController {
 
     private Author author;
     private UInterface uInterface;
-    private ProjectTable projectTable;
-    private RepositoryTable repositoryTable;
-    private DeveloperTable developerTable;
+    private ProjectObs projectObs;
+    private RepositoryObs repositoryObs;
+    private DeveloperObs developerObs;
 
     @FXML
     public void initialize() {
@@ -97,16 +97,16 @@ public class CommitsController {
         stage.close();
     }
 
-    public void setProjectTable(ProjectTable projectTable) {
-        this.projectTable = projectTable;
+    public void setProjectObs(ProjectObs projectObs) {
+        this.projectObs = projectObs;
     }
 
-    public void setRepositoryTable(RepositoryTable repositoryTable) {
-        this.repositoryTable = repositoryTable;
+    public void setRepositoryObs(RepositoryObs repositoryObs) {
+        this.repositoryObs = repositoryObs;
     }
 
-    public void setDeveloperTable(DeveloperTable developerTable) {
-        this.developerTable = developerTable;
+    public void setDeveloperObs(DeveloperObs developerObs) {
+        this.developerObs = developerObs;
     }
 
     /**
@@ -115,18 +115,18 @@ public class CommitsController {
     public void showCommits() {
 
         Collection<Commit> commits;
-        if (this.projectTable != null) {
-            commits = this.projectTable.getCommits();
-        } else if (this.repositoryTable != null) {
-            commits = this.repositoryTable.getCommits();
-        } else if (this.developerTable != null) {
-            commits = this.developerTable.getCommits();
+        if (this.projectObs != null) {
+            commits = this.projectObs.getCommits();
+        } else if (this.repositoryObs != null) {
+            commits = this.repositoryObs.getCommits();
+        } else if (this.developerObs != null) {
+            commits = this.developerObs.getCommits();
         } else {
             commits = uInterface.getLastCommits(author);
         }
 
         if (commits != null) {
-            ObservableList<CommitTable> data = FXCollections.observableArrayList();
+            ObservableList<CommitObs> data = FXCollections.observableArrayList();
             for (Commit commit : commits) {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 
@@ -149,8 +149,8 @@ public class CommitsController {
         }
     }
 
-    private void addCommit(ObservableList<CommitTable> data, Commit commit) {
-        data.add(new CommitTable(commit.getCommitMessage(),
+    private void addCommit(ObservableList<CommitObs> data, Commit commit) {
+        data.add(new CommitObs(commit.getCommitMessage(),
                 commit.getCommitDateTime(),
                 commit.getFilesChanged().size(),
                 commit.getLinesAdded(),

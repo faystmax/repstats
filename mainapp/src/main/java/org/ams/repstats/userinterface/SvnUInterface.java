@@ -7,7 +7,6 @@ import com.oneandone.sales.svnstats.model.Revision;
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Branch;
 import com.selesse.gitwrapper.myobjects.Commit;
-import org.ams.repstats.graph.DiffChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,11 +70,6 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
-    public DiffChart getChart() {
-        return null;
-    }
-
-    @Override
     public String getRepName() {
         return null;
     }
@@ -116,15 +110,9 @@ public class SvnUInterface implements UInterface {
     }
 
     @Override
-    public String getRemoteName() {
-        return null;
-    }
-
-    @Override
     public long getTotalNumberOfLines() {
         return 0;
     }
-
 
     @Override
     public ArrayList<Branch> getListCurBranches() {

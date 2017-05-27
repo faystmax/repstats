@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import javafx.beans.property.SimpleStringProperty;
 
@@ -8,12 +8,12 @@ import javafx.beans.property.SimpleStringProperty;
  * Date: 07.05.2017
  * Time: 16:36
  */
-public class BranchesTable {
+public class BranchesObs {
 
     private SimpleStringProperty name;
     private SimpleStringProperty id;
 
-    public BranchesTable(String name, String id) {
+    public BranchesObs(String name, String id) {
         this.name = new SimpleStringProperty(name);
         this.id = new SimpleStringProperty(id);
     }

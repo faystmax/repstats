@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import com.selesse.gitwrapper.myobjects.Commit;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,7 +14,7 @@ import java.util.Collection;
  * Date: 22.04.2017
  * Time: 16:36
  */
-public class DeveloperTable {
+public class DeveloperObs {
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
@@ -43,11 +43,11 @@ public class DeveloperTable {
     private SimpleStringProperty FIO;
 
     //доп. поля
-    private ArrayList<ProjectTable> projectTables = new ArrayList<ProjectTable>();
+    private ArrayList<ProjectObs> projectObss = new ArrayList<ProjectObs>();
     private Collection<Commit> commits = new ArrayList<Commit>();
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          int id_role, int id_team, int age, String phone, String role_name) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        int id_role, int id_team, int age, String phone, String role_name) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -59,8 +59,8 @@ public class DeveloperTable {
         this.role_name = new SimpleStringProperty(role_name);
     }
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          int id_role, int age, String role_name, int id_developer_project, String role_in_project) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        int id_role, int age, String role_name, int id_developer_project, String role_in_project) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -73,8 +73,8 @@ public class DeveloperTable {
         this.role_in_project = new SimpleStringProperty(role_in_project);
     }
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          int id_role, int id_team, int age, String phone, String role_name, String team_name) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        int id_role, int id_team, int age, String phone, String role_name, String team_name) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -87,9 +87,9 @@ public class DeveloperTable {
         this.team_name = new SimpleStringProperty(team_name);
     }
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          int id_role, int id_team, int age, String phone, String role_name,
-                          String gitname, String gitemail) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        int id_role, int id_team, int age, String phone, String role_name,
+                        String gitname, String gitemail) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -104,9 +104,9 @@ public class DeveloperTable {
         this.gitemail = new SimpleStringProperty(gitemail);
     }
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          int id_role, int id_team, int age, String phone, String role_name, String team_name,
-                          String gitname, String gitemail) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        int id_role, int id_team, int age, String phone, String role_name, String team_name,
+                        String gitname, String gitemail) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -122,9 +122,9 @@ public class DeveloperTable {
         this.gitemail = new SimpleStringProperty(gitemail);
     }
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          String gitname, String gitemail,
-                          int commitCount, int linesAdded, int linesRemoved, int netContribution) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        String gitname, String gitemail,
+                        int commitCount, int linesAdded, int linesRemoved, int netContribution) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -141,9 +141,9 @@ public class DeveloperTable {
         this.FIO = new SimpleStringProperty(surname + " " + name + " " + middleName);
     }
 
-    public DeveloperTable(int id, String name, String surname, String middleName,
-                          String gitname, String gitemail,
-                          int commitCount, int linesAdded, int linesRemoved, int netContribution, double rating) {
+    public DeveloperObs(int id, String name, String surname, String middleName,
+                        String gitname, String gitemail,
+                        int commitCount, int linesAdded, int linesRemoved, int netContribution, double rating) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -391,16 +391,16 @@ public class DeveloperTable {
         this.FIO.set(FIO);
     }
 
-    public void addProjectTable(ProjectTable projectTable) {
-        projectTables.add(projectTable);
+    public void addProjectTable(ProjectObs projectObs) {
+        projectObss.add(projectObs);
     }
 
-    public ArrayList<ProjectTable> getProjectTables() {
-        return projectTables;
+    public ArrayList<ProjectObs> getProjectObss() {
+        return projectObss;
     }
 
-    public void setProjectTables(ArrayList<ProjectTable> projectTables) {
-        this.projectTables = projectTables;
+    public void setProjectObss(ArrayList<ProjectObs> projectObss) {
+        this.projectObss = projectObss;
     }
 
     public void addCommitCount(int commitCount) {

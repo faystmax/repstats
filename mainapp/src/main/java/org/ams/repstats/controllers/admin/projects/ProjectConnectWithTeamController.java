@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.TeamTable;
+import org.ams.repstats.entity.TeamObs;
 import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,13 +59,13 @@ public class ProjectConnectWithTeamController {
     private void showAllTeams() {
 
         // Имя
-        teamNameClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("name"));
+        teamNameClmn.setCellValueFactory(new PropertyValueFactory<TeamObs, String>("name"));
         teamNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         teamNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<TeamObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<TeamObs, String> t) {
+                        TeamObs changeable = ((TeamObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -91,13 +91,13 @@ public class ProjectConnectWithTeamController {
                 }
         );
         // Технология
-        teamTechnolClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("technology"));
+        teamTechnolClmn.setCellValueFactory(new PropertyValueFactory<TeamObs, String>("technology"));
         teamTechnolClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         teamTechnolClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<TeamTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<TeamObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<TeamTable, String> t) {
-                        TeamTable changeable = ((TeamTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<TeamObs, String> t) {
+                        TeamObs changeable = ((TeamObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -124,7 +124,7 @@ public class ProjectConnectWithTeamController {
         );
 
         // Кол-во разработчиков в группе
-        teamCountClmn.setCellValueFactory(new PropertyValueFactory<TeamTable, String>("count"));
+        teamCountClmn.setCellValueFactory(new PropertyValueFactory<TeamObs, String>("count"));
 
         //endregion
 
@@ -133,9 +133,9 @@ public class ProjectConnectWithTeamController {
             MysqlConnector.prepeareStmt(MysqlConnector.selectAllTeamsWithCount);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<TeamTable> data = FXCollections.observableArrayList();
+            ObservableList<TeamObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
-                data.add(new TeamTable(rs.getInt(1),
+                data.add(new TeamObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getInt(4)));
@@ -175,7 +175,7 @@ public class ProjectConnectWithTeamController {
             Utils.showAlert("Ошибка прикрепления", "Сначала выберите команду!");
             return;
         }
-        int id_team = ((TeamTable) (teamTable.getSelectionModel().getSelectedItem())).getId();
+        int id_team = ((TeamObs) (teamTable.getSelectionModel().getSelectedItem())).getId();
         this.projectEditController.projectConnectWithTeamButtonAction(id_team);
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();

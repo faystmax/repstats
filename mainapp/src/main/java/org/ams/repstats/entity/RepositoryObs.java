@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Commit;
@@ -16,7 +16,7 @@ import java.util.Date;
  * Date: 27.04.2017
  * Time: 9:00
  */
-public class RepositoryTable {
+public class RepositoryObs {
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
@@ -36,7 +36,7 @@ public class RepositoryTable {
 
     private Collection<Commit> commits = new ArrayList<Commit>();
 
-    public RepositoryTable(int id, String name, String url, Date dateOfCreation, int idDeveloperResponsible, String FIO, String description, int id_project_repository) {
+    public RepositoryObs(int id, String name, String url, Date dateOfCreation, int idDeveloperResponsible, String FIO, String description, int id_project_repository) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.url = new SimpleStringProperty(url);
@@ -51,7 +51,7 @@ public class RepositoryTable {
         netContribution = new SimpleIntegerProperty(0);
     }
 
-    public RepositoryTable(String url, Author author) {
+    public RepositoryObs(String url, Author author) {
         this.url = new SimpleStringProperty(url);
         this.author = author;
     }

@@ -7,7 +7,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import org.ams.repstats.fortableview.ProjectTable;
+import org.ams.repstats.entity.ProjectObs;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -131,7 +131,7 @@ public class LineChartCreator {
         if (selected.equals(LineChartCreator.options.get(0))) {
 
             for (Object project : items) {
-                ProjectTable selectedProject = (ProjectTable) project;
+                ProjectObs selectedProject = (ProjectObs) project;
                 ArrayList<Integer> commitsByWeek = selectedProject.getCommitsByWeek();
                 XYChart.Series authorSeries = new XYChart.Series();
                 authorSeries.getData().add(new XYChart.Data("Пн", commitsByWeek.get(0)));
@@ -149,7 +149,7 @@ public class LineChartCreator {
         } else if (selected.equals(LineChartCreator.options.get(1))) {
 
             for (Object project : items) {
-                ProjectTable selectedProject = (ProjectTable) project;
+                ProjectObs selectedProject = (ProjectObs) project;
                 ArrayList<Integer> commitsByDaysInCurMonth = selectedProject.getCommitsByDaysInCurMonth();
                 XYChart.Series authorSeries = new XYChart.Series();
 
@@ -163,7 +163,7 @@ public class LineChartCreator {
 
         } else if (selected.equals(LineChartCreator.options.get(2))) {
             for (Object project : items) {
-                ProjectTable selectedProject = (ProjectTable) project;
+                ProjectObs selectedProject = (ProjectObs) project;
                 ArrayList<Integer> commitsByMonth = selectedProject.getCommitsByMonths();
                 XYChart.Series authorSeries = new XYChart.Series();
 
@@ -197,7 +197,7 @@ public class LineChartCreator {
         dateLineChart.setTitle("Все коммиты");
 
         for (Object project : items) {
-            ProjectTable selectedProject = (ProjectTable) project;
+            ProjectObs selectedProject = (ProjectObs) project;
             HashMap<LocalDate, Integer> commitsByCustom = selectedProject.getCommitsByCustomDate();
             XYChart.Series<Date, Number> authorSeries = new XYChart.Series<Date, Number>();
 

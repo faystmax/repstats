@@ -1,4 +1,4 @@
-package org.ams.repstats.utils;
+package org.ams.repstats.utils.properties;
 
 import com.sun.javafx.css.StyleManager;
 import javafx.application.Application;

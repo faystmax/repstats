@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Commit;
@@ -19,7 +19,7 @@ import java.util.HashMap;
  * Date: 23.04.2017
  * Time: 21:47
  */
-public class ProjectTable {
+public class ProjectObs {
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
@@ -42,7 +42,7 @@ public class ProjectTable {
     private HashMap<LocalDate, Integer> commitsByCustomDate;
     private ArrayList<Integer> commitsByTime;
 
-    public ProjectTable(int id, String name, Date dateStart, Date deadline, int prior) {
+    public ProjectObs(int id, String name, Date dateStart, Date deadline, int prior) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.dateStart = new SimpleObjectProperty<Date>(dateStart);
@@ -292,10 +292,10 @@ public class ProjectTable {
     }
 
     /**
-     * Indicates whether some other projectTable is "equal to" this one.
+     * Indicates whether some other projectObs is "equal to" this one.
      */
-    public boolean equals(ProjectTable projectTable) {
-        return this.getId() == projectTable.getId();
+    public boolean equals(ProjectObs projectObs) {
+        return this.getId() == projectObs.getId();
     }
 }
 

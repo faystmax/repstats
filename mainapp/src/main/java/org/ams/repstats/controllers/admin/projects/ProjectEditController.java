@@ -20,9 +20,9 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.DeveloperTable;
-import org.ams.repstats.fortableview.ProjectTable;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.entity.DeveloperObs;
+import org.ams.repstats.entity.ProjectObs;
+import org.ams.repstats.entity.RepositoryObs;
 import org.ams.repstats.utils.ProjectTableDateEditingCell;
 import org.ams.repstats.utils.RepositoryTableDateEditingCell;
 import org.ams.repstats.utils.Utils;
@@ -100,7 +100,7 @@ public class ProjectEditController {
         // добавили listener`a
         projectsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                int id_proj = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+                int id_proj = ((ProjectObs) (projectsTable.getSelectionModel().getSelectedItem())).getId();
                 showRepositoryInTable(id_proj);
                 showDeveloperswithProject(id_proj);
             }
@@ -109,16 +109,16 @@ public class ProjectEditController {
 
     private void configureAndShowProjectsClmn() {
 
-        ObservableList<ProjectTable> data = FXCollections.observableArrayList();
+        ObservableList<ProjectObs> data = FXCollections.observableArrayList();
 
         // Название
-        projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, String>("name"));
+        projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, String>("name"));
         projectNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         projectNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<ProjectTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<ProjectObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<ProjectTable, String> t) {
-                        ProjectTable changeable = ((ProjectTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<ProjectObs, String> t) {
+                        ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -145,15 +145,15 @@ public class ProjectEditController {
         );
 
         // Date start
-        Callback<TableColumn<ProjectTable, Date>, TableCell<ProjectTable, Date>> dateStartCellFactory
-                = (TableColumn<ProjectTable, Date> param) -> new ProjectTableDateEditingCell();
-        projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateStart"));
+        Callback<TableColumn<ProjectObs, Date>, TableCell<ProjectObs, Date>> dateStartCellFactory
+                = (TableColumn<ProjectObs, Date> param) -> new ProjectTableDateEditingCell();
+        projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Date>("dateStart"));
         projectDateClmn.setCellFactory(dateStartCellFactory);
         projectDateClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<ProjectTable, Date>>() {
+                new EventHandler<TableColumn.CellEditEvent<ProjectObs, Date>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<ProjectTable, Date> t) {
-                        ProjectTable changeable = ((ProjectTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<ProjectObs, Date> t) {
+                        ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
@@ -183,15 +183,15 @@ public class ProjectEditController {
 
 
         // deadline
-        Callback<TableColumn<ProjectTable, Date>, TableCell<ProjectTable, Date>> dateDeadlineCellFactory
-                = (TableColumn<ProjectTable, Date> param) -> new ProjectTableDateEditingCell();
-        projectDeadlineClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("deadline"));
+        Callback<TableColumn<ProjectObs, Date>, TableCell<ProjectObs, Date>> dateDeadlineCellFactory
+                = (TableColumn<ProjectObs, Date> param) -> new ProjectTableDateEditingCell();
+        projectDeadlineClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Date>("deadline"));
         projectDeadlineClmn.setCellFactory(dateDeadlineCellFactory);
         projectDeadlineClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<ProjectTable, Date>>() {
+                new EventHandler<TableColumn.CellEditEvent<ProjectObs, Date>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<ProjectTable, Date> t) {
-                        ProjectTable changeable = ((ProjectTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<ProjectObs, Date> t) {
+                        ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
@@ -219,14 +219,14 @@ public class ProjectEditController {
                     }
                 });
         // Приоритет
-        projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Integer>("prior"));
+        projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Integer>("prior"));
         projectPriorClmn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         projectPriorClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<ProjectTable, Integer>>() {
+                new EventHandler<TableColumn.CellEditEvent<ProjectObs, Integer>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<ProjectTable, Integer> t) {
+                    public void handle(TableColumn.CellEditEvent<ProjectObs, Integer> t) {
                         //обновляем в базе
-                        ProjectTable changeable = ((ProjectTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -257,7 +257,7 @@ public class ProjectEditController {
             ResultSet rs = MysqlConnector.executeQuery();
 
             while (rs.next()) {
-                data.add(new ProjectTable(rs.getInt(1),
+                data.add(new ProjectObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getDate(3),
                         rs.getDate(4),
@@ -275,13 +275,13 @@ public class ProjectEditController {
 
     private void configureRepositoryClmn() {
         // Название
-        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("name"));
+        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("name"));
         reposNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         reposNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -307,13 +307,13 @@ public class ProjectEditController {
                 }
         );
         // Url
-        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("url"));
+        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("url"));
         reposUrlClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         reposUrlClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -340,15 +340,15 @@ public class ProjectEditController {
         );
 
         // Date of creation
-        Callback<TableColumn<RepositoryTable, Date>, TableCell<RepositoryTable, Date>> dateOfCreationCellFactory
-                = (TableColumn<RepositoryTable, Date> param) -> new RepositoryTableDateEditingCell();
-        reposDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateOfCreation"));
+        Callback<TableColumn<RepositoryObs, Date>, TableCell<RepositoryObs, Date>> dateOfCreationCellFactory
+                = (TableColumn<RepositoryObs, Date> param) -> new RepositoryTableDateEditingCell();
+        reposDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Date>("dateOfCreation"));
         reposDateClmn.setCellFactory(dateOfCreationCellFactory);
         reposDateClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, Date>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, Date>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, Date> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, Date> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
                         if (!Utils.isValidStringValue(t.getNewValue())) {
@@ -377,16 +377,16 @@ public class ProjectEditController {
                 });
 
         // Ответственный
-        reposResponsClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("FIO"));
+        reposResponsClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("FIO"));
 
         // Описание
-        reposDeskClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("description"));
+        reposDeskClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("description"));
         reposDeskClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         reposDeskClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<RepositoryTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<RepositoryObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<RepositoryTable, String> t) {
-                        RepositoryTable changeable = ((RepositoryTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
+                        RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -422,9 +422,9 @@ public class ProjectEditController {
             preparedStatement.setInt(1, id_proj);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<RepositoryTable> data = FXCollections.observableArrayList();
+            ObservableList<RepositoryObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
-                data.add(new RepositoryTable(rs.getInt(1),
+                data.add(new RepositoryObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getDate(4),
@@ -447,13 +447,13 @@ public class ProjectEditController {
     private void configureDevelopersTable() {
 
         // Имя
-        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("name"));
+        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("name"));
         developerNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -479,14 +479,14 @@ public class ProjectEditController {
                 }
         );
         // Фамилия
-        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("surname"));
+        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("surname"));
         developerFamClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerFamClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -512,14 +512,14 @@ public class ProjectEditController {
         );
 
         // Отчество
-        developerOtchClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("middlename"));
+        developerOtchClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("middlename"));
         developerOtchClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerOtchClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -545,14 +545,14 @@ public class ProjectEditController {
         );
 
         // Возраст
-        developerAgeClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, Integer>("age"));
+        developerAgeClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, Integer>("age"));
         developerAgeClmn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         developerAgeClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, Integer>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, Integer>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, Integer> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, Integer> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -578,7 +578,7 @@ public class ProjectEditController {
         );
 
         // роль
-        developerRoleClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("role_name"));
+        developerRoleClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("role_name"));
         //
         // генерим хеш ролей
         this.readAllRoles();
@@ -587,11 +587,11 @@ public class ProjectEditController {
         //
         developerRoleClmn.setCellFactory(ComboBoxTableCell.forTableColumn(rolesOL));
         developerRoleClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -624,14 +624,14 @@ public class ProjectEditController {
         );
 
         // роль в проекте
-        developerRoleINProjectClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("role_in_project"));
+        developerRoleINProjectClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("role_in_project"));
         developerRoleINProjectClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerRoleINProjectClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -688,9 +688,9 @@ public class ProjectEditController {
             preparedStatement.setInt(1, id_proj);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
+            ObservableList<DeveloperObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
-                data.add(new DeveloperTable(rs.getInt(1),
+                data.add(new DeveloperObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
@@ -725,7 +725,7 @@ public class ProjectEditController {
             MysqlConnector.executeUpdate();
 
             int newId = MysqlConnector.getInsertId();
-            ProjectTable elem = new ProjectTable(newId, newName, startDate, deadline, newPrior);
+            ProjectObs elem = new ProjectObs(newId, newName, startDate, deadline, newPrior);
             projectsTable.getItems().add(elem);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -738,7 +738,7 @@ public class ProjectEditController {
      */
     public void delProjectButtonAction() {
         int selectedIndex = projectsTable.getSelectionModel().getSelectedIndex();
-        int selectedId = ((ProjectTable) projectsTable.getSelectionModel().getSelectedItem()).getId();
+        int selectedId = ((ProjectObs) projectsTable.getSelectionModel().getSelectedItem()).getId();
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteProject);
             preparedStatement.setInt(1, selectedId);
@@ -759,7 +759,7 @@ public class ProjectEditController {
      */
     public void delRepositoryFromProjectButtonAction() {
         int selectedIndex = repositoryTable.getSelectionModel().getSelectedIndex();
-        int selectedId = ((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem()).getId_project_repository();
+        int selectedId = ((RepositoryObs) repositoryTable.getSelectionModel().getSelectedItem()).getId_project_repository();
         if (Utils.conformationDialog("Удаление репозитория из проекта", "Вы уверены,что хотите удалить " +
                 "репозиторий из выбранного проекта?")) {
             try {
@@ -791,7 +791,7 @@ public class ProjectEditController {
         java.sql.Date startdateOfCreation = new java.sql.Date(cur.getTime());
         Integer idDeveloperResponsible = -1;
         String FIODeveloperResponsible = "";
-        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        int id_project = ((ProjectObs) (projectsTable.getSelectionModel().getSelectedItem())).getId();
         String description = "...";
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewRepository);
@@ -810,7 +810,7 @@ public class ProjectEditController {
             MysqlConnector.executeUpdate();
             int newIdProjectRepository = MysqlConnector.getInsertId();
 
-            RepositoryTable elem = new RepositoryTable(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
+            RepositoryObs elem = new RepositoryObs(newIdRepository, newName, newUrl, cur, idDeveloperResponsible,
                     FIODeveloperResponsible, description, newIdProjectRepository);
             repositoryTable.getItems().add(elem);
         } catch (SQLException e) {
@@ -860,7 +860,7 @@ public class ProjectEditController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите команду!");
             return;
         }
-        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        int id_project = ((ProjectObs) (projectsTable.getSelectionModel().getSelectedItem())).getId();
         try {
             // бежим по всем разработчикам в команде и крепим к ним проект
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectDevelopersInTeam);
@@ -926,7 +926,7 @@ public class ProjectEditController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите проект!");
             return;
         }
-        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        int id_project = ((ProjectObs) (projectsTable.getSelectionModel().getSelectedItem())).getId();
         try {
             PreparedStatement preparedStatement2 = MysqlConnector.prepeareStmt(MysqlConnector.insertNewDeveloperProject);
             preparedStatement2.setInt(1, id_developer);
@@ -983,7 +983,7 @@ public class ProjectEditController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите проект!");
             return;
         }
-        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        int id_project = ((ProjectObs) (projectsTable.getSelectionModel().getSelectedItem())).getId();
         try {
             //добавляем связь в промежуточную таблицу
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmtRetKey(MysqlConnector.insertNewProjectRepository);
@@ -1009,8 +1009,8 @@ public class ProjectEditController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите разработчика!");
             return;
         }
-        int id_developer_project = ((DeveloperTable) (developersTable.getSelectionModel().getSelectedItem())).getId_developer_project();
-        int id_project = ((ProjectTable) (projectsTable.getSelectionModel().getSelectedItem())).getId();
+        int id_developer_project = ((DeveloperObs) (developersTable.getSelectionModel().getSelectedItem())).getId_developer_project();
+        int id_project = ((ProjectObs) (projectsTable.getSelectionModel().getSelectedItem())).getId();
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteDeveloperProject);
             preparedStatement.setInt(1, id_developer_project);

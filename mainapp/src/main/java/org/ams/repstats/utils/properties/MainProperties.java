@@ -1,6 +1,7 @@
-package org.ams.repstats.utils;
+package org.ams.repstats.utils.properties;
 
 import org.ams.gitapiwrapper.GitApi;
+import org.ams.repstats.utils.RepositoryDownloader;
 
 import java.io.*;
 import java.util.Properties;
@@ -11,7 +12,7 @@ import java.util.Properties;
  * Date: 06.05.2017
  * Time: 14:25
  */
-public class MyProperties {
+public class MainProperties {
 
     public static Properties prop = new Properties();
 

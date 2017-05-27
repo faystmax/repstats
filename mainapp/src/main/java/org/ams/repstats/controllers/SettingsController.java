@@ -9,9 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.ams.gitapiwrapper.GitApi;
-import org.ams.repstats.utils.CssSetter;
-import org.ams.repstats.utils.EStartWindow;
-import org.ams.repstats.utils.StartWindowSetter;
+import org.ams.repstats.utils.properties.CssSetter;
+import org.ams.repstats.utils.properties.EStartWindow;
+import org.ams.repstats.utils.properties.StartWindowSetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -154,5 +154,4 @@ public class SettingsController {
             imCheck.setImage(errorIcon);
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
  * Date: 05.01.2017
  * Time: 20:22
  */
-public class AuthorTable {
+public class AuthorObs {
 
     private SimpleStringProperty name;
     private SimpleStringProperty email;
@@ -21,7 +21,7 @@ public class AuthorTable {
     private SimpleStringProperty FIO;
 
 
-    public AuthorTable(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution) {
+    public AuthorObs(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution) {
         this.name = new SimpleStringProperty(name);
         this.commitCount = new SimpleIntegerProperty(commitCount);
         this.linesAdded = new SimpleIntegerProperty(linesAdded);
@@ -29,7 +29,7 @@ public class AuthorTable {
         this.netContribution = new SimpleIntegerProperty(netContribution);
     }
 
-    public AuthorTable(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution, String email) {
+    public AuthorObs(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution, String email) {
         this.name = new SimpleStringProperty(name);
         this.commitCount = new SimpleIntegerProperty(commitCount);
         this.linesAdded = new SimpleIntegerProperty(linesAdded);
@@ -39,7 +39,7 @@ public class AuthorTable {
 
     }
 
-    public AuthorTable(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution, String email, String FIO) {
+    public AuthorObs(String name, int commitCount, int linesAdded, int linesRemoved, int netContribution, String email, String FIO) {
         this.name = new SimpleStringProperty(name);
         this.commitCount = new SimpleIntegerProperty(commitCount);
         this.linesAdded = new SimpleIntegerProperty(linesAdded);

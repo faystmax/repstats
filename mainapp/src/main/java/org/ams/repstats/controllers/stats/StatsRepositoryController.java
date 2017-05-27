@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.ams.gitapiwrapper.GitApi;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.*;
+import org.ams.repstats.entity.*;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.utils.LineChartCreator;
@@ -237,10 +237,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private void configureRepositoryClmn() {
         repositoryTable.setEditable(true);
         // Название
-        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("name"));
+        reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("name"));
 
         // Url
-        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryTable, String>("url"));
+        reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("url"));
     }
 
     private void showRepository() {
@@ -249,9 +249,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllRepository);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<RepositoryTable> data = FXCollections.observableArrayList();
+            ObservableList<RepositoryObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
-                data.add(new RepositoryTable(rs.getInt(1),
+                data.add(new RepositoryObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getDate(4),
@@ -386,7 +386,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
 
         // берём url
-        url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
+        url = ((RepositoryObs) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
 
 
         // here runs the JavaFX thread
@@ -505,9 +505,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnPullAvtor.setCellValueFactory(new PropertyValueFactory<>("author"));
 
         clmnPullDateCreated.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<PullRequestTable, String>, ObservableValue<String>>() {
+                new Callback<TableColumn.CellDataFeatures<PullRequestObs, String>, ObservableValue<String>>() {
                     @Override
-                    public ObservableValue<String> call(TableColumn.CellDataFeatures<PullRequestTable, String> film) {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<PullRequestObs, String> film) {
                         SimpleStringProperty property = new SimpleStringProperty();
                         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                         property.setValue(dateFormat.format(film.getValue().getCreatedAt()));
@@ -518,7 +518,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnPullIsMerged.setCellValueFactory(new PropertyValueFactory<>("isMerged"));
 
         List<PullRequest> pullRequests = gitApi.getPullRequests();
-        ObservableList<PullRequestTable> data = FXCollections.observableArrayList();
+        ObservableList<PullRequestObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < pullRequests.size(); i++) {
             String author = null;
             if (pullRequests.get(i).getHead().getUser() == null) {
@@ -527,7 +527,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 author = pullRequests.get(i).getHead().getUser().getLogin();
             }
 
-            data.add(new PullRequestTable(pullRequests.get(i).getNumber(),
+            data.add(new PullRequestObs(pullRequests.get(i).getNumber(),
                     pullRequests.get(i).getTitle(),
                     author, pullRequests.get(i).getCreatedAt(),
                     pullRequests.get(i).getState(),
@@ -551,9 +551,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnIssuesState.setCellValueFactory(new PropertyValueFactory<>("state"));
 
         clmnIssuesDateCreated.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<IssuesTable, String>, ObservableValue<String>>() {
+                new Callback<TableColumn.CellDataFeatures<IssuesObs, String>, ObservableValue<String>>() {
                     @Override
-                    public ObservableValue<String> call(TableColumn.CellDataFeatures<IssuesTable, String> film) {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<IssuesObs, String> film) {
                         SimpleStringProperty property = new SimpleStringProperty();
                         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                         property.setValue(dateFormat.format(film.getValue().getCreatedAt()));
@@ -563,9 +563,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
 
         List<Issue> issues = gitApi.getIssues();
-        ObservableList<IssuesTable> data = FXCollections.observableArrayList();
+        ObservableList<IssuesObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < issues.size(); i++) {
-            data.add(new IssuesTable(issues.get(i).getNumber(), issues.get(i).getTitle(),
+            data.add(new IssuesObs(issues.get(i).getNumber(), issues.get(i).getTitle(),
                     issues.get(i).getUser().getLogin(), issues.get(i).getCreatedAt(), issues.get(i).getState()));
         }
 
@@ -585,9 +585,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
 
         TableModel allFiles = getuInterface().getAllFiles();
-        ObservableList<FilesTable> data = FXCollections.observableArrayList();
+        ObservableList<FilesObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < allFiles.getRowCount(); i++) {
-            data.add(new FilesTable((String) (allFiles.getValueAt(i, 0)),
+            data.add(new FilesObs((String) (allFiles.getValueAt(i, 0)),
                     (String) allFiles.getValueAt(i, 1),
                     (String) allFiles.getValueAt(i, 2)));
         }
@@ -608,12 +608,12 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
 
         TableModel authors = getuInterface().getAuthors();
-        ObservableList<AuthorTable> data = FXCollections.observableArrayList();
+        ObservableList<AuthorObs> data = FXCollections.observableArrayList();
 
         for (int i = 0; i < authors.getRowCount(); i++) {
             String gitUsername = (String) (authors.getValueAt(i, 0));
             String gitEmail = (String) (authors.getValueAt(i, 5));
-            data.add(new AuthorTable(gitUsername, (int) authors.getValueAt(i, 1),
+            data.add(new AuthorObs(gitUsername, (int) authors.getValueAt(i, 1),
                     (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
                     gitEmail, getFIO(gitUsername, gitEmail)));
         }
@@ -652,7 +652,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
         String repName = null;
         if (repositoryTable.getSelectionModel().getSelectedItem() != null) {
-            String url = ((RepositoryTable) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
+            String url = ((RepositoryObs) (repositoryTable.getSelectionModel().getSelectedItem())).getUrl();
             String[] parts = url.split("/");
             repName = parts[parts.length - 1];
             lbNameRep.setText(repName);
@@ -668,10 +668,10 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         clmnTecId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         ArrayList<Branch> branches = getuInterface().getListCurBranches();
-        ObservableList<BranchesTable> data = FXCollections.observableArrayList();
+        ObservableList<BranchesObs> data = FXCollections.observableArrayList();
 
         for (int i = 0; i < branches.size(); i++) {
-            data.add(new BranchesTable(branches.get(i).getName(), branches.get(i).getId()));
+            data.add(new BranchesObs(branches.get(i).getName(), branches.get(i).getId()));
         }
 
         tableTecBranches.setItems(data);
@@ -684,7 +684,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         data = FXCollections.observableArrayList();
 
         for (int i = 0; i < branches.size(); i++) {
-            data.add(new BranchesTable(branches.get(i).getName(), branches.get(i).getId()));
+            data.add(new BranchesObs(branches.get(i).getName(), branches.get(i).getId()));
         }
 
         tableMergedBranches.setItems(data);
@@ -730,7 +730,7 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
      */
     public void ShowCommitsButtonAction(ActionEvent event) {
         if (isStart()) {
-            AuthorTable tableAuthor = (AuthorTable) avtorTable.getSelectionModel().getSelectedItem();
+            AuthorObs tableAuthor = (AuthorObs) avtorTable.getSelectionModel().getSelectedItem();
             Author selectedAuthor = getuInterface().getAuthorByName(tableAuthor.getName());
             if (selectedAuthor == null) {
                 Utils.showAlert("Внимание", "Вы не выбрали автора!");

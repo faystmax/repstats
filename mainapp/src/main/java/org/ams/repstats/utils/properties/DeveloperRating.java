@@ -1,4 +1,6 @@
-package org.ams.repstats.utils;
+package org.ams.repstats.utils.properties;
+
+import org.ams.repstats.utils.Utils;
 
 /**
  * Created with IntelliJ IDEA

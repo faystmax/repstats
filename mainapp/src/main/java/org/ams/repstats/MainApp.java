@@ -11,9 +11,9 @@ import org.ams.repstats.controllers.stats.StatsRepositoryController;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.userinterface.UInterface;
-import org.ams.repstats.utils.EStartWindow;
-import org.ams.repstats.utils.MyProperties;
-import org.ams.repstats.utils.StartWindowSetter;
+import org.ams.repstats.utils.properties.EStartWindow;
+import org.ams.repstats.utils.properties.MainProperties;
+import org.ams.repstats.utils.properties.StartWindowSetter;
 import org.ams.repstats.view.ConsoleViewInterface;
 import org.ams.repstats.view.ViewInterface;
 
@@ -48,13 +48,13 @@ public class MainApp extends Application {
         initRootLayout(primaryStage);
 
         // Загрузка свойств
-        MyProperties.loadProperties();
+        MainProperties.loadProperties();
 
         // Конектимся к базе
         MysqlConnector.getConnection();
 
         // Загрузка локальный путей до репозиториев
-        MyProperties.loadRepositories();
+        MainProperties.loadRepositories();
 
         // В зависимости от информации в конфиге запускаем то или иное окно
         showStartWindow();
@@ -65,7 +65,7 @@ public class MainApp extends Application {
      */
     @Override
     public void stop() {
-        MyProperties.writeProperties();
+        MainProperties.writeProperties();
     }
 
     /**
@@ -132,6 +132,4 @@ public class MainApp extends Application {
             launch(args);
         }
     }
-
-
 }

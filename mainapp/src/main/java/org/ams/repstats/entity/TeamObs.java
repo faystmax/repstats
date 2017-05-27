@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,27 +9,27 @@ import javafx.beans.property.SimpleStringProperty;
  * Date: 22.04.2017
  * Time: 11:29
  */
-public class TeamTable {
+public class TeamObs {
 
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
     private SimpleStringProperty technology;
     private SimpleIntegerProperty count;
 
-    public TeamTable() {
+    public TeamObs() {
         this.id = new SimpleIntegerProperty();
         this.name = new SimpleStringProperty();
         this.technology = new SimpleStringProperty();
         this.count = new SimpleIntegerProperty();
     }
 
-    public TeamTable(int id, String name, String technology) {
+    public TeamObs(int id, String name, String technology) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.technology = new SimpleStringProperty(technology);
     }
 
-    public TeamTable(int id, String name, String technology, int count) {
+    public TeamObs(int id, String name, String technology, int count) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.technology = new SimpleStringProperty(technology);

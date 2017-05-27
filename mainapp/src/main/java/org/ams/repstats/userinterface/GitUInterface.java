@@ -1,11 +1,9 @@
 package org.ams.repstats.userinterface;
 
-import com.google.common.collect.Multimap;
 import com.google.common.io.Files;
 import com.selesse.gitwrapper.analyzer.BranchAnalyzer;
 import com.selesse.gitwrapper.analyzer.BranchDetails;
 import com.selesse.gitwrapper.myobjects.*;
-import org.ams.repstats.graph.DiffChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,19 +95,6 @@ public class GitUInterface implements UInterface {
             tablemodel.addRow(new Object[]{path, isBinary, numberOfLines});
         }
         return tablemodel;
-    }
-
-    public DiffChart getChart() {
-        if (branchDetails != null) {
-            Multimap<Author, CommitDiff> authorToCommitDiffMap = branchDetails.getAuthorToCommitDiffsMap();
-            ArrayList<CommitDiff> commitDiffList = null;
-            for (Author author : authorToCommitDiffMap.keySet()) {
-                commitDiffList = new ArrayList<CommitDiff>(authorToCommitDiffMap.get(author));
-            }
-            DiffChart DiffChart = new DiffChart(commitDiffList);
-            return DiffChart;
-        }
-        return null;
     }
 
     @Override
@@ -219,16 +204,9 @@ public class GitUInterface implements UInterface {
     }
 
     @Override
-    public String getRemoteName() {
-        branchDetails.getRepository().getRepository().getRemoteNames();
-        return "";
-    }
-
-    @Override
     public long getTotalNumberOfLines() {
         return branchDetails.getTotalNumberOfLines();
     }
-
 
     @Override
     public ArrayList<Branch> getListCurBranches() {

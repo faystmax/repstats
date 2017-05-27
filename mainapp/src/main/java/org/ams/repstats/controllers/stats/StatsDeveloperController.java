@@ -22,10 +22,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.gitapiwrapper.GitApi;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.AuthorTable;
-import org.ams.repstats.fortableview.DeveloperTable;
-import org.ams.repstats.fortableview.ProjectTable;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.entity.AuthorObs;
+import org.ams.repstats.entity.DeveloperObs;
+import org.ams.repstats.entity.ProjectObs;
+import org.ams.repstats.entity.RepositoryObs;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.utils.LineChartCreator;
@@ -213,16 +213,16 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
      */
     private void configureDevelopersTable() {
         // Имя
-        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("name"));
+        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("name"));
 
         // Фамилия
-        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("surname"));
+        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("surname"));
 
         // gitname
-        //developerGitName.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("gitname"));
+        //developerGitName.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("gitname"));
 
         // gitemail
-        developerGitEmail.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("gitemail"));
+        developerGitEmail.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("gitemail"));
     }
 
     private void configureProjectsTable() {
@@ -251,10 +251,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithTeamName);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
+            ObservableList<DeveloperObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
                 String team_name = rs.getString(10) == null ? "" : rs.getString(10);
-                data.add(new DeveloperTable(rs.getInt(1),
+                data.add(new DeveloperObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
@@ -282,13 +282,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     public LocalDate start;
     public LocalDate end;
-    public ArrayList<ProjectTable> projects;
+    public ArrayList<ProjectObs> projects;
     public int allCommits = 0;
     public int linesAdd = 0;
     public int linesDel = 0;
 
     public long totalLines = 0;
-    DeveloperTable selectedDeveloper;
+    DeveloperObs selectedDeveloper;
     Author selectedAuthor;
 
     /**
@@ -302,7 +302,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
 
         // Инициализация
-        selectedDeveloper = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
+        selectedDeveloper = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
         start = end = null;
         projects = null;
         allCommits = 0;
@@ -336,13 +336,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                 //извлекаем url всех репозиториев проекта и кладём их в projects
                 try {
-                    for (ProjectTable projectTable : projects) {
+                    for (ProjectObs projectObs : projects) {
                         PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllUrlFromProject);
-                        preparedStatement.setString(1, Integer.toString(projectTable.getId()));
+                        preparedStatement.setString(1, Integer.toString(projectObs.getId()));
                         ResultSet rs = MysqlConnector.executeQuery();
 
                         while (rs.next()) {
-                            projectTable.getUrls().add(rs.getString(2));
+                            projectObs.getUrls().add(rs.getString(2));
                         }
                         MysqlConnector.closeStmt();
                     }
@@ -351,17 +351,17 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 }
 
 
-                ObservableList<ProjectTable> projectsData = FXCollections.observableArrayList();
-                ObservableList<RepositoryTable> repositoryData = FXCollections.observableArrayList();
+                ObservableList<ProjectObs> projectsData = FXCollections.observableArrayList();
+                ObservableList<RepositoryObs> repositoryData = FXCollections.observableArrayList();
                 projectsData.addAll(projects);
 
 
                 //основной цикл по проектам и репозиториям
-                for (ProjectTable projectTable : projects) {
+                for (ProjectObs projectObs : projects) {
 
-                    RepositoryTable newRepositoryTable = null;
+                    RepositoryObs newRepositoryObs = null;
 
-                    for (String url : projectTable.getUrls()) {
+                    for (String url : projectObs.getUrls()) {
                         try {
                             closeRepository();
                             File destinationFile = RepositoryDownloader.downloadRepoContent(url, "master");
@@ -386,51 +386,51 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         }
 
                         selectedAuthor = getuInterface().getAuthorByEmail(selectedDeveloper.getGitemail());
-                        newRepositoryTable = new RepositoryTable(url, selectedAuthor);
+                        newRepositoryObs = new RepositoryObs(url, selectedAuthor);
 
                         //сохраняем данные о репозитории
-                        DeveloperTable cur = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem());
+                        DeveloperObs cur = ((DeveloperObs) developersTable.getSelectionModel().getSelectedItem());
                         TableModel authors = getuInterface().getAuthors();
-                        ObservableList<AuthorTable> data = FXCollections.observableArrayList();
+                        ObservableList<AuthorObs> data = FXCollections.observableArrayList();
                         for (int i = 0; i < authors.getRowCount(); i++) {
-                            data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
+                            data.add(new AuthorObs((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
                                     (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
                                     (String) (authors.getValueAt(i, 5))));
 
                             //автор совпал
                             if (Objects.equals(data.get(i).getEmail(), cur.getGitemail())/*&& Objects.equals(data.get(i).getName(), cur.getGitname()*/) {
-                                newRepositoryTable.addCommitCount(data.get(i).getCommitCount());
-                                newRepositoryTable.addLinesAdd(data.get(i).getLinesAdded());
-                                newRepositoryTable.addLinesDelete(data.get(i).getLinesRemoved());
+                                newRepositoryObs.addCommitCount(data.get(i).getCommitCount());
+                                newRepositoryObs.addLinesAdd(data.get(i).getLinesAdded());
+                                newRepositoryObs.addLinesDelete(data.get(i).getLinesRemoved());
 
 
-                                if (newRepositoryTable.getAuthor() != null) {
+                                if (newRepositoryObs.getAuthor() != null) {
                                     Author author = getuInterface().getAuthorByName(cur.getGitname());
                                     if (author == null) {
                                         author = getuInterface().getAuthorByEmail(cur.getGitemail());
                                     }
-                                    newRepositoryTable.setCommits(getuInterface().getLastCommits(author));
-                                    projectTable.getCommits().addAll(newRepositoryTable.getCommits());
+                                    newRepositoryObs.setCommits(getuInterface().getLastCommits(author));
+                                    projectObs.getCommits().addAll(newRepositoryObs.getCommits());
                                 }
                             }
                         }
 
                         //подсчитывае покрытие
-                        authorLinesAffected += newRepositoryTable.getLinesAdd() + newRepositoryTable.getLinesDelete();
+                        authorLinesAffected += newRepositoryObs.getLinesAdd() + newRepositoryObs.getLinesDelete();
                         totalLinesAffected += getuInterface().getTotalLinesAddedAll() + getuInterface().getTotalLinesRemovedAll();
 
-                        newRepositoryTable.addNetContributiont(newRepositoryTable.getLinesAdd() - newRepositoryTable.getLinesDelete());
+                        newRepositoryObs.addNetContributiont(newRepositoryObs.getLinesAdd() - newRepositoryObs.getLinesDelete());
 
 
-                        int finalAllCommitsInProject = newRepositoryTable.getCommitCount();
-                        int finalLinesAddInProject = newRepositoryTable.getLinesAdd();
-                        int finalLinesDelInProject = newRepositoryTable.getLinesDelete();
+                        int finalAllCommitsInProject = newRepositoryObs.getCommitCount();
+                        int finalLinesAddInProject = newRepositoryObs.getLinesAdd();
+                        int finalLinesDelInProject = newRepositoryObs.getLinesDelete();
                         Platform.runLater(() -> {
                             //сохраняем данные о проекте
-                            projectTable.addCommitCount(finalAllCommitsInProject);
-                            projectTable.addLinesAdd(finalLinesAddInProject);
-                            projectTable.addLinesDelete(finalLinesDelInProject);
-                            projectTable.addNetContributiont(finalLinesAddInProject - finalLinesDelInProject);
+                            projectObs.addCommitCount(finalAllCommitsInProject);
+                            projectObs.addLinesAdd(finalLinesAddInProject);
+                            projectObs.addLinesDelete(finalLinesDelInProject);
+                            projectObs.addNetContributiont(finalLinesAddInProject - finalLinesDelInProject);
 
                             allCommits += finalAllCommitsInProject;
                             linesAdd += finalLinesAddInProject;
@@ -438,16 +438,16 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                         });
 
                         totalLines += getuInterface().getTotalNumberOfLines();
-                        repositoryData.add(newRepositoryTable);
+                        repositoryData.add(newRepositoryObs);
 
                         // запоминаем  графики
-                        rememberGraphics(projectTable, newRepositoryTable);
+                        rememberGraphics(projectObs, newRepositoryObs);
 
                         //запоминаем кол-во merged pull`ов данным разработчиком
                         calcMergeCount(url, cur.getGitname());
 
-                        DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
-                        Author selectedAuthor = getuInterface().getAuthorByEmail(developerTable.getGitemail());
+                        DeveloperObs developerObs = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
+                        Author selectedAuthor = getuInterface().getAuthorByEmail(developerObs.getGitemail());
                         bugFixes += getuInterface().getBugFixesCount(selectedAuthor);
                     }
                     //
@@ -507,7 +507,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
             ProjectForDeveloperController controller = loader.getController();
             controller.setStatsDeveloperController(this);
-            controller.setId_developer(((DeveloperTable) developersTable.getSelectionModel().getSelectedItem()).getId());
+            controller.setId_developer(((DeveloperObs) developersTable.getSelectionModel().getSelectedItem()).getId());
             controller.configureAndShowProjectsClmn();
             //Инициализируем и запускаем
             stage.showAndWait();
@@ -517,10 +517,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     }
 
 
-    private void rememberGraphics(ProjectTable projectTable, RepositoryTable newRepositoryTable) {
+    private void rememberGraphics(ProjectObs projectObs, RepositoryObs newRepositoryObs) {
         // Извлекаем выбранного пользователя
-        DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
-        Author selectedAuthor = this.getuInterface().getAuthorByEmail(developerTable.getGitemail());
+        DeveloperObs developerObs = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
+        Author selectedAuthor = this.getuInterface().getAuthorByEmail(developerObs.getGitemail());
         ArrayList<Author> allAvtors = new ArrayList<Author>();
         allAvtors.addAll(this.getuInterface().getAllAuthors());
         if (selectedAuthor != null) {
@@ -544,11 +544,11 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
             // Запомнили
             for (Author author : allAvtorsEnd) {
-                projectTable.addCommitsByWeek(authorCommitsByWeek.get(author));
-                projectTable.addCommitsByDaysInCurMonth(authorByDaysInCurMonth.get(author));
-                projectTable.addCommitsByMonths(commitsByMonths.get(author));
-                projectTable.addCommitsByCustomDate(commitsByCustomDate.get(author));
-                projectTable.addCommitsByTime(authorCommitsByTime.get(author));
+                projectObs.addCommitsByWeek(authorCommitsByWeek.get(author));
+                projectObs.addCommitsByDaysInCurMonth(authorByDaysInCurMonth.get(author));
+                projectObs.addCommitsByMonths(commitsByMonths.get(author));
+                projectObs.addCommitsByCustomDate(commitsByCustomDate.get(author));
+                projectObs.addCommitsByTime(authorCommitsByTime.get(author));
             }
         }
 
@@ -572,7 +572,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
         lbMainInfTitle.setText("Анализ разработчика с " + formattedStartDateTime + " по " + formattedEndDateTime);
 
-        DeveloperTable cur = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem());
+        DeveloperObs cur = ((DeveloperObs) developersTable.getSelectionModel().getSelectedItem());
         lbFIO.setText(cur.getSurname() + " " + cur.getName() + " " + cur.getMiddlename());
         lbGitNameEmail.setText(cur.getGitname() + "<" + cur.getGitemail() + ">");
 
@@ -621,9 +621,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
 
         TableModel allFiles = getuInterface().getAllFiles();
-        ObservableList<FilesTable> data = FXCollections.observableArrayList();
+        ObservableList<FilesObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < allFiles.getRowCount(); i++) {
-            data.add(new FilesTable((String) (allFiles.getValueAt(i, 0)),
+            data.add(new FilesObs((String) (allFiles.getValueAt(i, 0)),
                     (String) allFiles.getValueAt(i, 1),
                     (String) allFiles.getValueAt(i, 2)));
         }
@@ -640,9 +640,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
         clmnAvtorEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         TableModel authors = getuInterface().getAuthors();
-        ObservableList<AuthorTable> data = FXCollections.observableArrayList();
+        ObservableList<AuthorObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < authors.getRowCount(); i++) {
-            data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
+            data.add(new AuthorObs((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
                     (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
                     (String) (authors.getValueAt(i, 5))));
         }
@@ -672,7 +672,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 //Инициализируем
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
-                controller.setProjectTable((ProjectTable) projectTable.getSelectionModel().getSelectedItem());
+                controller.setProjectObs((ProjectObs) projectTable.getSelectionModel().getSelectedItem());
                 controller.setLbName(selectedDeveloper.getGitname());
                 controller.showCommits();
                 stage.showAndWait();
@@ -703,7 +703,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 //Инициализируем
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
-                controller.setRepositoryTable((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem());
+                controller.setRepositoryObs((RepositoryObs) repositoryTable.getSelectionModel().getSelectedItem());
                 controller.setLbName(selectedDeveloper.getGitname());
                 controller.showCommits();
                 stage.showAndWait();
@@ -805,7 +805,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             commitsByTimeChart.setTitle("Коммиты по времени");
 
             for (Object project : projectTable.getItems()) {
-                ProjectTable selectedProject = (ProjectTable) project;
+                ProjectObs selectedProject = (ProjectObs) project;
                 ArrayList<Integer> commitsByTime = selectedProject.getCommitsByTime();
                 XYChart.Series authorSeries = new XYChart.Series();
 

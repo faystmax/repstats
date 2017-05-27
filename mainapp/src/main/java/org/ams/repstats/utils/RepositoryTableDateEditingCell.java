@@ -2,7 +2,7 @@ package org.ams.repstats.utils;
 
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.entity.RepositoryObs;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -16,7 +16,7 @@ import java.util.Date;
  * Date: 27.04.2017
  * Time: 9:57
  */
-public class RepositoryTableDateEditingCell extends TableCell<RepositoryTable, Date> {
+public class RepositoryTableDateEditingCell extends TableCell<RepositoryObs, Date> {
     private DatePicker datePicker;
 
     public RepositoryTableDateEditingCell() {

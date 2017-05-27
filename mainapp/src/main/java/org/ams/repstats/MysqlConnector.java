@@ -1,7 +1,7 @@
 package org.ams.repstats;
 
-import org.ams.repstats.utils.MyProperties;
 import org.ams.repstats.utils.Utils;
+import org.ams.repstats.utils.properties.MainProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,9 +140,9 @@ public class MysqlConnector {
                 Class.forName(driverName);
 
                 // Get a connection to database
-                myConn = DriverManager.getConnection(MyProperties.givePropValue("database"),
-                        MyProperties.givePropValue("dbuser"),
-                        MyProperties.givePropValue("dbpassword"));
+                myConn = DriverManager.getConnection(MainProperties.givePropValue("database"),
+                        MainProperties.givePropValue("dbuser"),
+                        MainProperties.givePropValue("dbpassword"));
 
             } catch (ClassNotFoundException ex) {
                 LOGGER.error("Driver not found.");

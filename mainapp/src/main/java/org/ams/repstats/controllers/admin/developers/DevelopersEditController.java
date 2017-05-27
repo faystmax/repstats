@@ -17,7 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.DeveloperTable;
+import org.ams.repstats.entity.DeveloperObs;
 import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,16 +76,15 @@ public class DevelopersEditController {
      * Настраиваем колонки таблицы DevelopersTable
      */
     private void configureDevelopersTable() {
-
         // region << Инициализируем колонки таблицы
         // Имя
-        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("name"));
+        developerNameClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("name"));
         developerNameClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerNameClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -111,14 +110,14 @@ public class DevelopersEditController {
                 }
         );
         // Фамилия
-        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("surname"));
+        developerFamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("surname"));
         developerFamClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerFamClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -144,14 +143,14 @@ public class DevelopersEditController {
         );
 
         // Отчество
-        developerOtchClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("middlename"));
+        developerOtchClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("middlename"));
         developerOtchClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerOtchClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -177,14 +176,14 @@ public class DevelopersEditController {
         );
 
         // Возраст
-        developerAgeClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, Integer>("age"));
+        developerAgeClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, Integer>("age"));
         developerAgeClmn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         developerAgeClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, Integer>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, Integer>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, Integer> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, Integer> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -210,14 +209,14 @@ public class DevelopersEditController {
         );
 
         // Телефон
-        developerPhoneClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("phone"));
+        developerPhoneClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("phone"));
         developerPhoneClmn.setCellFactory(TextFieldTableCell.forTableColumn());
         developerPhoneClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -243,7 +242,7 @@ public class DevelopersEditController {
         );
 
         // роль
-        developerRoleClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("role_name"));
+        developerRoleClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("role_name"));
         //
         // генерим хеш ролей
         this.readAllRoles();
@@ -252,11 +251,11 @@ public class DevelopersEditController {
         //
         developerRoleClmn.setCellFactory(ComboBoxTableCell.forTableColumn(rolesOL));
         developerRoleClmn.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         //обновляем в базе
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -289,16 +288,16 @@ public class DevelopersEditController {
         );
         //Команда
 
-        developerTeamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("team_name"));
+        developerTeamClmn.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("team_name"));
 
         // gitname
-        developerGitName.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("gitname"));
+        developerGitName.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("gitname"));
         developerGitName.setCellFactory(TextFieldTableCell.forTableColumn());
         developerGitName.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -325,13 +324,13 @@ public class DevelopersEditController {
         );
 
         // gitemail
-        developerGitEmail.setCellValueFactory(new PropertyValueFactory<DeveloperTable, String>("gitemail"));
+        developerGitEmail.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("gitemail"));
         developerGitEmail.setCellFactory(TextFieldTableCell.forTableColumn());
         developerGitEmail.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<DeveloperTable, String>>() {
+                new EventHandler<TableColumn.CellEditEvent<DeveloperObs, String>>() {
                     @Override
-                    public void handle(TableColumn.CellEditEvent<DeveloperTable, String> t) {
-                        DeveloperTable changeable = ((DeveloperTable) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
+                        DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         if (!Utils.isValidStringValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
@@ -359,7 +358,6 @@ public class DevelopersEditController {
 
 
         //endregion
-
     }
 
     /**
@@ -372,10 +370,10 @@ public class DevelopersEditController {
             MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersWithTeamName);
             ResultSet rs = MysqlConnector.executeQuery();
 
-            ObservableList<DeveloperTable> data = FXCollections.observableArrayList();
+            ObservableList<DeveloperObs> data = FXCollections.observableArrayList();
             while (rs.next()) {
                 String team_name = rs.getString(10) == null ? "" : rs.getString(10);
-                data.add(new DeveloperTable(rs.getInt(1),
+                data.add(new DeveloperObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
@@ -446,7 +444,7 @@ public class DevelopersEditController {
             MysqlConnector.executeUpdate();
             int newId = MysqlConnector.getInsertId();
 
-            DeveloperTable elem = new DeveloperTable(newId, newName, newFam, newOtch, id_role,
+            DeveloperObs elem = new DeveloperObs(newId, newName, newFam, newOtch, id_role,
                     id_team, newAge, newPhone, newRoleName, newTeamName, newGitname, newGitemail);
             developersTable.getItems().add(elem);
         } catch (SQLException e) {
@@ -465,7 +463,7 @@ public class DevelopersEditController {
             return;
         }
         int selectedIndex = developersTable.getSelectionModel().getSelectedIndex();
-        int selectedId = ((DeveloperTable) developersTable.getSelectionModel().getSelectedItem()).getId();
+        int selectedId = ((DeveloperObs) developersTable.getSelectionModel().getSelectedItem()).getId();
         if (Utils.conformationDialog("Удаление разработчика ", "Удалить всю информацию о выбранном разработчике?")) {
             try {
                 PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.deleteDeveloper);
@@ -522,7 +520,7 @@ public class DevelopersEditController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите разработчика!");
             return;
         }
-        int id_developer = ((DeveloperTable) (developersTable.getSelectionModel().getSelectedItem())).getId();
+        int id_developer = ((DeveloperObs) (developersTable.getSelectionModel().getSelectedItem())).getId();
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.updateDeveloperTeam);
             preparedStatement.setInt(1, id);
@@ -535,6 +533,4 @@ public class DevelopersEditController {
             LOGGER.error(e.getMessage());
         }
     }
-
-
 }

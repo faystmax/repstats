@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.ProjectTable;
+import org.ams.repstats.entity.ProjectObs;
 import org.ams.repstats.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,18 +66,18 @@ public class ProjectForDeveloperController {
 
 
         // Название
-        projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, String>("name"));
+        projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, String>("name"));
 
         // Date start
-        projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("dateStart"));
+        projectDateClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Date>("dateStart"));
 
         // deadline
-        projectDeadlineClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Date>("deadline"));
+        projectDeadlineClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Date>("deadline"));
 
         // Приоритет
-        projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Integer>("prior"));
+        projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Integer>("prior"));
 
-        ObservableList<ProjectTable> data = FXCollections.observableArrayList();
+        ObservableList<ProjectObs> data = FXCollections.observableArrayList();
         // Извлекаем данные из базы
         try {
             PreparedStatement preparedStatement = MysqlConnector.prepeareStmt(MysqlConnector.selectAllDevelopersProjects);
@@ -85,7 +85,7 @@ public class ProjectForDeveloperController {
             ResultSet rs = MysqlConnector.executeQuery();
 
             while (rs.next()) {
-                data.add(new ProjectTable(rs.getInt(1),
+                data.add(new ProjectObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getDate(3),
                         rs.getDate(4),
@@ -114,15 +114,15 @@ public class ProjectForDeveloperController {
             return;
         }
 
-        ObservableList<ProjectTable> selectedItems = projectsTable.getSelectionModel().getSelectedItems();
+        ObservableList<ProjectObs> selectedItems = projectsTable.getSelectionModel().getSelectedItems();
 
         //
-        ArrayList<ProjectTable> selectedProjectTables = new ArrayList<ProjectTable>();
-        for (ProjectTable row : selectedItems) {
-            selectedProjectTables.add(row);
+        ArrayList<ProjectObs> selectedProjectObss = new ArrayList<ProjectObs>();
+        for (ProjectObs row : selectedItems) {
+            selectedProjectObss.add(row);
         }
 
-        statsDeveloperController.projects = selectedProjectTables;
+        statsDeveloperController.projects = selectedProjectObss;
         statsDeveloperController.start = datePickerStart.getValue();
         statsDeveloperController.end = datePickerEnd.getValue();
         exitButtonAction(null);

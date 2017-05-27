@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import javafx.beans.property.SimpleStringProperty;
 
@@ -8,13 +8,13 @@ import javafx.beans.property.SimpleStringProperty;
  * Date: 06.01.2017
  * Time: 12:20
  */
-public class FilesTable {
+public class FilesObs {
     SimpleStringProperty path;
     SimpleStringProperty isBinary;
     SimpleStringProperty numberOfLines;
 
 
-    public FilesTable(String path, String isBinary, String numberOfLines) {
+    public FilesObs(String path, String isBinary, String numberOfLines) {
         this.path = new SimpleStringProperty(path);
         this.isBinary = new SimpleStringProperty(isBinary);
         this.numberOfLines = new SimpleStringProperty(numberOfLines);

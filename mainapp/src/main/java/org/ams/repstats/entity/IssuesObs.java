@@ -1,4 +1,4 @@
-package org.ams.repstats.fortableview;
+package org.ams.repstats.entity;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,14 +13,14 @@ import java.util.Date;
  * Date: 14.05.2017
  * Time: 23:00
  */
-public class IssuesTable {
+public class IssuesObs {
     private SimpleIntegerProperty number;
     private SimpleStringProperty title;
     private SimpleStringProperty name;
     private ObjectProperty<Date> createdAt = new SimpleObjectProperty<Date>();
     private SimpleStringProperty state;
 
-    public IssuesTable(int number, String title, String name, Date createdAt, String state) {
+    public IssuesObs(int number, String title, String name, Date createdAt, String state) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
         this.name = new SimpleStringProperty(name);

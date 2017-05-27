@@ -24,10 +24,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.ams.gitapiwrapper.GitApi;
 import org.ams.repstats.MysqlConnector;
-import org.ams.repstats.fortableview.AuthorTable;
-import org.ams.repstats.fortableview.DeveloperTable;
-import org.ams.repstats.fortableview.ProjectTable;
-import org.ams.repstats.fortableview.RepositoryTable;
+import org.ams.repstats.entity.AuthorObs;
+import org.ams.repstats.entity.DeveloperObs;
+import org.ams.repstats.entity.ProjectObs;
+import org.ams.repstats.entity.RepositoryObs;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
 import org.ams.repstats.utils.RepositoryDownloader;
@@ -178,12 +178,12 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
     private void configureAndShowProjectsClmn() {
 
-        ObservableList<ProjectTable> data = FXCollections.observableArrayList();
+        ObservableList<ProjectObs> data = FXCollections.observableArrayList();
         // Название
-        projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, String>("name"));
+        projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, String>("name"));
 
         // Приоритет
-        projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectTable, Integer>("prior"));
+        projectPriorClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, Integer>("prior"));
 
         // Извлекаем данные из базы
         try {
@@ -191,7 +191,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
             ResultSet rs = MysqlConnector.executeQuery();
 
             while (rs.next()) {
-                data.add(new ProjectTable(rs.getInt(1),
+                data.add(new ProjectObs(rs.getInt(1),
                         rs.getString(2),
                         rs.getDate(3),
                         rs.getDate(4),
@@ -231,13 +231,13 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
     public LocalDate start;
     public LocalDate end;
-    public ObservableList<DeveloperTable> developers;
+    public ObservableList<DeveloperObs> developers;
     public int allCommits = 0;
     public int linesAdd = 0;
     public int linesDel = 0;
 
     public long totalLines = 0;
-    ProjectTable selectedProject;
+    ProjectObs selectedProject;
     Author selectedAuthor;
 
     /**
@@ -251,7 +251,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         }
 
         // Инициализация
-        selectedProject = (ProjectTable) projectsTable.getSelectionModel().getSelectedItem();
+        selectedProject = (ProjectObs) projectsTable.getSelectionModel().getSelectedItem();
 
         start = end = null;
         allCommits = 0;
@@ -314,7 +314,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
                     developers = FXCollections.observableArrayList();
                     while (rs.next()) {
-                        developers.add(new DeveloperTable(rs.getInt(1),
+                        developers.add(new DeveloperObs(rs.getInt(1),
                                 rs.getString(2),
                                 rs.getString(3),
                                 rs.getString(4),
@@ -337,8 +337,8 @@ public class StatsProjectController extends ViewInterfaceAbstract {
                 }
 
 
-                ObservableList<RepositoryTable> repositoryData = FXCollections.observableArrayList();
-                RepositoryTable newRepositoryTable = null;
+                ObservableList<RepositoryObs> repositoryData = FXCollections.observableArrayList();
+                RepositoryObs newRepositoryObs = null;
 
                 for (String url : selectedProject.getUrls()) {
                     try {
@@ -365,55 +365,55 @@ public class StatsProjectController extends ViewInterfaceAbstract {
                     }
 
 
-                    newRepositoryTable = new RepositoryTable(url, null);
+                    newRepositoryObs = new RepositoryObs(url, null);
 
                     //сохраняем данные о репозитории
                     TableModel authors = getuInterface().getAuthors();
-                    ObservableList<AuthorTable> data = FXCollections.observableArrayList();
+                    ObservableList<AuthorObs> data = FXCollections.observableArrayList();
                     for (int i = 0; i < authors.getRowCount(); i++) {
-                        data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
+                        data.add(new AuthorObs((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
                                 (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
                                 (String) (authors.getValueAt(i, 5))));
 
-                        for (DeveloperTable developerTable : developers) {
+                        for (DeveloperObs developerObs : developers) {
                             // автор совпал
-                            if (data.get(i).getEmail().equals(developerTable.getGitemail())) {
-                                newRepositoryTable.addCommitCount(data.get(i).getCommitCount());
-                                newRepositoryTable.addLinesAdd(data.get(i).getLinesAdded());
-                                newRepositoryTable.addLinesDelete(data.get(i).getLinesRemoved());
+                            if (data.get(i).getEmail().equals(developerObs.getGitemail())) {
+                                newRepositoryObs.addCommitCount(data.get(i).getCommitCount());
+                                newRepositoryObs.addLinesAdd(data.get(i).getLinesAdded());
+                                newRepositoryObs.addLinesDelete(data.get(i).getLinesRemoved());
 
-                                developerTable.addCommitCount(data.get(i).getCommitCount());
-                                developerTable.addLinesAdd(data.get(i).getLinesAdded());
-                                developerTable.addLinesDelete(data.get(i).getLinesRemoved());
-                                developerTable.addNetContributiont(developerTable.getLinesAdded() - developerTable.getLinesRemoved());
+                                developerObs.addCommitCount(data.get(i).getCommitCount());
+                                developerObs.addLinesAdd(data.get(i).getLinesAdded());
+                                developerObs.addLinesDelete(data.get(i).getLinesRemoved());
+                                developerObs.addNetContributiont(developerObs.getLinesAdded() - developerObs.getLinesRemoved());
 
                                 Author author = getuInterface().getAuthorByName(data.get(i).getName());
-                                newRepositoryTable.setCommits(getuInterface().getLastCommits(author));
-                                developerTable.getCommits().addAll(newRepositoryTable.getCommits());
+                                newRepositoryObs.setCommits(getuInterface().getLastCommits(author));
+                                developerObs.getCommits().addAll(newRepositoryObs.getCommits());
                             }
                         }
                     }
 
                     // подсчитывае покрытие
-                    authorLinesAffected += newRepositoryTable.getLinesAdd() + newRepositoryTable.getLinesDelete();
+                    authorLinesAffected += newRepositoryObs.getLinesAdd() + newRepositoryObs.getLinesDelete();
                     totalLinesAffected += getuInterface().getTotalLinesAddedAll() + getuInterface().getTotalLinesRemovedAll();
 
-                    newRepositoryTable.addNetContributiont(newRepositoryTable.getLinesAdd() - newRepositoryTable.getLinesDelete());
+                    newRepositoryObs.addNetContributiont(newRepositoryObs.getLinesAdd() - newRepositoryObs.getLinesDelete());
 
-                    allCommits += newRepositoryTable.getCommitCount();
-                    linesAdd += newRepositoryTable.getLinesAdd();
-                    linesDel += newRepositoryTable.getLinesDelete();
+                    allCommits += newRepositoryObs.getCommitCount();
+                    linesAdd += newRepositoryObs.getLinesAdd();
+                    linesDel += newRepositoryObs.getLinesDelete();
 
                     totalLines += getuInterface().getTotalNumberOfLines();
-                    repositoryData.add(newRepositoryTable);
+                    repositoryData.add(newRepositoryObs);
 
                     // запоминаем  графики
-                    //rememberGraphics(projectTable, newRepositoryTable);
+                    //rememberGraphics(projectTable, newRepositoryObs);
 
                     //запоминаем кол-во merged pull`ов
                     calcMergeCount(url);
 
-                    // DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
+                    // DeveloperObs developerTable = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
                     // Author selectedAuthor = getuInterface().getAuthorByEmail(developerTable.getGitemail());
                     bugFixes += getuInterface().getBugFixesCount();
                 }
@@ -480,9 +480,9 @@ public class StatsProjectController extends ViewInterfaceAbstract {
     }
 
     /*
-        private void rememberGraphics(ProjectTable projectTable, RepositoryTable newRepositoryTable) {
+        private void rememberGraphics(ProjectObs projectTable, RepositoryObs newRepositoryTable) {
             // Извлекаем выбранного пользователя
-            DeveloperTable developerTable = (DeveloperTable) developersTable.getSelectionModel().getSelectedItem();
+            DeveloperObs developerTable = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
             Author selectedAuthor = this.getuInterface().getAuthorByEmail(developerTable.getGitemail());
             ArrayList<Author> allAvtors = new ArrayList<Author>();
             allAvtors.addAll(this.getuInterface().getAllAuthors());
@@ -584,9 +584,9 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
 
         TableModel allFiles = getuInterface().getAllFiles();
-        ObservableList<FilesTable> data = FXCollections.observableArrayList();
+        ObservableList<FilesObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < allFiles.getRowCount(); i++) {
-            data.add(new FilesTable((String) (allFiles.getValueAt(i, 0)),
+            data.add(new FilesObs((String) (allFiles.getValueAt(i, 0)),
                     (String) allFiles.getValueAt(i, 1),
                     (String) allFiles.getValueAt(i, 2)));
         }
@@ -599,9 +599,9 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
 
     /*    TableModel authors = getuInterface().getAuthors();
-        ObservableList<AuthorTable> data = FXCollections.observableArrayList();
+        ObservableList<AuthorObs> data = FXCollections.observableArrayList();
         for (int i = 0; i < authors.getRowCount(); i++) {
-            data.add(new AuthorTable((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
+            data.add(new AuthorObs((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
                     (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
                     (String) (authors.getValueAt(i, 5))));
         }
@@ -631,7 +631,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
                 //Инициализируем
                 CommitsController controller = loader.getController();
                 controller.setAuthor(selectedAuthor);
-                controller.setRepositoryTable((RepositoryTable) repositoryTable.getSelectionModel().getSelectedItem());
+                controller.setRepositoryObs((RepositoryObs) repositoryTable.getSelectionModel().getSelectedItem());
                 //controller.setLbName(selectedDeveloper.getGitname());
                 controller.showCommits();
                 stage.showAndWait();
@@ -643,8 +643,8 @@ public class StatsProjectController extends ViewInterfaceAbstract {
 
     public void ShowCommitsAvtorButtonAction(ActionEvent event) {
         if (isStart()) {
-            DeveloperTable developerTable = (DeveloperTable) avtorTable.getSelectionModel().getSelectedItem();
-            if (developerTable == null) {
+            DeveloperObs developerObs = (DeveloperObs) avtorTable.getSelectionModel().getSelectedItem();
+            if (developerObs == null) {
                 Utils.showAlert("Внимание", "Вы не выбрали автора!");
                 return;
             }
@@ -667,7 +667,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
                 controller.setAuthor(selectedAuthor);
                 controller.setUInterface(this.getuInterface());
                 //controller.setLbName(selectedAuthor.getAuthor());
-                controller.setDeveloperTable(developerTable);
+                controller.setDeveloperObs(developerObs);
                 controller.showCommits();
                 stage.showAndWait();
             } catch (IOException e) {
@@ -769,7 +769,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
             commitsByTimeChart.setTitle("Коммиты по времени");
 
             for (Object project : projectTable.getItems()) {
-                ProjectTable selectedProject = (ProjectTable) project;
+                ProjectObs selectedProject = (ProjectObs) project;
                 ArrayList<Integer> commitsByTime = selectedProject.getCommitsByTime();
                 XYChart.Series authorSeries = new XYChart.Series();
 

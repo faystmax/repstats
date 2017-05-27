@@ -3,7 +3,6 @@ package org.ams.repstats.userinterface;
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Branch;
 import com.selesse.gitwrapper.myobjects.Commit;
-import org.ams.repstats.graph.DiffChart;
 
 import javax.swing.table.TableModel;
 import java.time.LocalDate;
@@ -28,8 +27,6 @@ public interface UInterface {
 
     void closeRepository();
 
-    DiffChart getChart();
-
     String getRepName();
 
     String getBranchName();
@@ -37,7 +34,6 @@ public interface UInterface {
     int getNumberOfCommits();
 
     TableModel getAuthors();
-
 
     TableModel getAllFiles();
 
@@ -47,10 +43,7 @@ public interface UInterface {
 
     Collection<Commit> getLastCommits(Author author);
 
-    String getRemoteName();
-
     long getTotalNumberOfLines();
-
 
     ArrayList<Branch> getListCurBranches();
 
