@@ -2,6 +2,7 @@ package com.selesse.gitwrapper.analyzer;
 
 import com.google.common.collect.*;
 import com.selesse.gitwrapper.myobjects.*;
+import org.ams.gitapiwrapper.KeyWords;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;

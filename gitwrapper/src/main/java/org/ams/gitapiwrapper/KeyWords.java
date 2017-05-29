@@ -1,4 +1,4 @@
-package com.selesse.gitwrapper.myobjects;
+package org.ams.gitapiwrapper;
 
 /**
  * Created with IntelliJ IDEA
@@ -10,5 +10,5 @@ public class KeyWords {
     /**
      * Ключевые слова для fix bugs
      */
-    public static final String[] fixKeyWords = {"fix ", "correct ", "исправл"};
+    public static final String[] fixKeyWords = {"fix ", "correct ", "исправл","fixes","fix,","fix;","fixed"};
 }
