@@ -1,6 +1,6 @@
 package org.ams.repstats.utils;
 
-import com.sun.istack.internal.NotNull;
+
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -202,7 +202,7 @@ public class Utils {
      * @return
      * @throws Exception
      */
-    public static boolean downloadRepoContent(@NotNull String githubRemoteUrl, @NotNull String branchName, @NotNull String destinationDir) throws Exception {
+    public static boolean downloadRepoContent(String githubRemoteUrl, String branchName, String destinationDir) throws Exception {
 
 
         File destinationFile = new File(destinationDir);

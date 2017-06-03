@@ -1,7 +1,6 @@
 package org.ams.repstats.utils;
 
 import com.selesse.gitwrapper.myobjects.GitRepositoryReader;
-import com.sun.istack.internal.NotNull;
 import org.ams.repstats.MysqlConnector;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
@@ -68,7 +67,7 @@ public class RepositoryDownloader {
      * @return
      * @throws Exception
      */
-    public static File downloadRepoContent(@NotNull String githubRemoteUrl, @NotNull String branchName) throws Exception {
+    public static File downloadRepoContent(String githubRemoteUrl, String branchName) throws Exception {
         File destinationFile = new File(getPath(githubRemoteUrl));
 
         if (!updateRep(destinationFile)) {

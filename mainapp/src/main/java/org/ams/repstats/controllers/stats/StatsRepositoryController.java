@@ -338,7 +338,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                     showAllFiles();
                     showAllBranches();
                     buildGraph(null);
-                    showChartOnImageView();
                     closeRepository();
                 });
                 return true;

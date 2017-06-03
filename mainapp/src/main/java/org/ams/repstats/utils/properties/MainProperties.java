@@ -26,7 +26,7 @@ public class MainProperties {
      */
     public static void loadProperties() {
         try {
-            input = new FileInputStream("config.properties");
+            input = new FileInputStream(MainProperties.class.getClassLoader().getResource("config.properties").getPath());
 
             if (input == null) {
                 System.out.println("Unable to find property file: " + filePropertyName);
@@ -70,7 +70,7 @@ public class MainProperties {
      */
     public static void writeProperties() {
         try {
-            output = new FileOutputStream(filePropertyName);
+            output = new FileOutputStream(MainProperties.class.getClassLoader().getResource("config.properties").getPath());
 
             // set database properties value
             prop.setProperty("database", "jdbc:mysql://localhost:3306/gitstats?characterEncoding=UTF-8");
