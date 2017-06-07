@@ -479,44 +479,6 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         }
     }
 
-    /*
-        private void rememberGraphics(ProjectObs projectTable, RepositoryObs newRepositoryTable) {
-            // Извлекаем выбранного пользователя
-            DeveloperObs developerTable = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
-            Author selectedAuthor = this.getuInterface().getAuthorByEmail(developerTable.getGitemail());
-            ArrayList<Author> allAvtors = new ArrayList<Author>();
-            allAvtors.addAll(this.getuInterface().getAllAuthors());
-            if (selectedAuthor != null) {
-
-                ArrayList<Author> allAvtorsEnd = new ArrayList<Author>();
-
-                // Записываем нужных авторов
-                for (Author author : allAvtors) {
-                    if (author.getEmailAddress().equals(selectedAuthor.getEmailAddress())) {
-                        allAvtorsEnd.add(author);
-                    }
-                }
-
-                // Извлекаем коммиты
-                HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtorsEnd);
-                HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtorsEnd);
-                HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtorsEnd);
-                HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate = this.getuInterface().getCommitsByCustomDate(allAvtorsEnd);
-
-                HashMap<Author, ArrayList<Integer>> authorCommitsByTime = this.getuInterface().getCommitsByTime(allAvtorsEnd);
-
-                // Запомнили
-                for (Author author : allAvtorsEnd) {
-                    projectTable.addCommitsByWeek(authorCommitsByWeek.get(author));
-                    projectTable.addCommitsByDaysInCurMonth(authorByDaysInCurMonth.get(author));
-                    projectTable.addCommitsByMonths(commitsByMonths.get(author));
-                    projectTable.addCommitsByCustomDate(commitsByCustomDate.get(author));
-                    projectTable.addCommitsByTime(authorCommitsByTime.get(author));
-                }
-            }
-
-        }
-    */
     @Override
     public void closeRepository() {
         this.getuInterface().closeRepository();
@@ -548,13 +510,8 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         if (vklad > 100) {
             vklad = 100;
         }
-    /*   if (vklad == 0) {
-            vklad = Math.abs(Math.ceil((((double) linesAdd) / totalLines) * 100));
-        }*/
         lbTeamPokr.setText(String.valueOf(vklad) + "%");
         lbMergedPullReq.setText(String.valueOf(this.mergeCount));
-        //  lbOtherMergedPullReq.setText(String.valueOf(this.mergedOtherPullRequests));
-        //  lbOtherNotMergedPullReq.setText(String.valueOf(this.notMergedOtherPullRequests));
         lbFixBugs.setText(String.valueOf(this.bugFixes));
     }
 
@@ -577,37 +534,7 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         return 0;
     }
 
-    @Override
-    public void showAllFiles() {
-      /*  clmnPath.setCellValueFactory(new PropertyValueFactory<>("path"));
-        clmnIsBinary.setCellValueFactory(new PropertyValueFactory<>("isBinary"));
-        clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
 
-        TableModel allFiles = getuInterface().getAllFiles();
-        ObservableList<FilesObs> data = FXCollections.observableArrayList();
-        for (int i = 0; i < allFiles.getRowCount(); i++) {
-            data.add(new FilesObs((String) (allFiles.getValueAt(i, 0)),
-                    (String) allFiles.getValueAt(i, 1),
-                    (String) allFiles.getValueAt(i, 2)));
-        }
-
-        tableAllFiles.setItems(data);*/
-    }
-
-    @Override
-    public void showAvtors() {
-
-
-    /*    TableModel authors = getuInterface().getAuthors();
-        ObservableList<AuthorObs> data = FXCollections.observableArrayList();
-        for (int i = 0; i < authors.getRowCount(); i++) {
-            data.add(new AuthorObs((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
-                    (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
-                    (String) (authors.getValueAt(i, 5))));
-        }
-
-        avtorTable.setItems(data);*/
-    }
 
 
     /**
@@ -676,114 +603,6 @@ public class StatsProjectController extends ViewInterfaceAbstract {
         }
     }
 
-
-    /**
-     * Строит график коммитов
-     *
-     * @param event - событие
-     */
-  /*  public void buildCommitsCountGraph(ActionEvent event) {
-        if (isStart()) {
-            ArrayList<Author> allAvtors = new ArrayList<Author>();
-            allAvtors.addAll(getuInterface().getAllAuthors());
-
-            // Лочим датапикеры
-            graphDatePickerStart.setDisable(true);
-            graphDatePickerEnd.setDisable(true);
-
-            // Освобождаем имеющиеся графики
-            if (numberLineChart != null) {
-                numberLineChart.setVisible(false);
-                GraphAnchor.getChildren().remove(numberLineChart);
-                numberLineChart = null;
-            }
-            if (dateLineChart != null) {
-                dateLineChart.setVisible(false);
-                GraphAnchor.getChildren().remove(dateLineChart);
-                dateLineChart = null;
-            }
-
-            String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
-
-            if (selected.equals(LineChartCreator.options.get(0))) {
-
-                numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
-
-                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
-                AnchorPane.setTopAnchor(numberLineChart, 0.0);
-                AnchorPane.setRightAnchor(numberLineChart, 0.0);
-                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
-                GraphAnchor.getChildren().add(numberLineChart);
-
-            } else if (selected.equals(LineChartCreator.options.get(1))) {
-                numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
-
-                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
-                AnchorPane.setTopAnchor(numberLineChart, 0.0);
-                AnchorPane.setRightAnchor(numberLineChart, 0.0);
-                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
-                GraphAnchor.getChildren().add(numberLineChart);
-
-            } else if (selected.equals(LineChartCreator.options.get(2))) {
-                numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
-
-                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
-                AnchorPane.setTopAnchor(numberLineChart, 0.0);
-                AnchorPane.setRightAnchor(numberLineChart, 0.0);
-                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
-                GraphAnchor.getChildren().add(numberLineChart);
-
-            } else if (selected.equals(LineChartCreator.options.get(3))) {
-                graphDatePickerStart.setDisable(false);
-                graphDatePickerEnd.setDisable(false);
-
-                if (graphDatePickerStart.getValue() == null || graphDatePickerEnd.getValue() == null) {
-                    return;
-                }
-                if (graphDatePickerStart.getValue().isAfter(graphDatePickerEnd.getValue())) {
-                    Utils.showAlert("Ошибка ввода дат", "Начальная дата должна быть раньше конечной!");
-                    return;
-                }
-
-
-                dateLineChart = LineChartCreator.createDateLineChart(selected, projectTable.getItems(),
-                        graphDatePickerStart.getValue(), graphDatePickerEnd.getValue());
-                AnchorPane.setLeftAnchor(dateLineChart, 0.0);
-                AnchorPane.setTopAnchor(dateLineChart, 0.0);
-                AnchorPane.setRightAnchor(dateLineChart, 0.0);
-                AnchorPane.setBottomAnchor(dateLineChart, 53.0);
-                GraphAnchor.getChildren().add(dateLineChart);
-
-            }
-        }
-    }
-*/
-    /**
-     * Строит график времени коммитов
-     *
-     * @param event - событие
-     */
- /*   public void buildCommitsbyTimeGraph(ActionEvent event) {
-        if (isStart()) {
-            commitsByTimeChart.getData().clear();
-            commitsByTimeChart.setTitle("Коммиты по времени");
-
-            for (Object project : projectTable.getItems()) {
-                ProjectObs selectedProject = (ProjectObs) project;
-                ArrayList<Integer> commitsByTime = selectedProject.getCommitsByTime();
-                XYChart.Series authorSeries = new XYChart.Series();
-
-                for (int i = 0; i < commitsByTime.size(); i++) {
-                    authorSeries.getData().add(new XYChart.Data(String.format("%02d", i) + ":00", commitsByTime.get(i)));
-                }
-
-                authorSeries.setName(selectedProject.getName());
-                commitsByTimeChart.getData().add(authorSeries);
-            }
-
-
-        }
-    }*/
 }
 
 

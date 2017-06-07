@@ -26,19 +26,19 @@ import java.util.*;
  */
 public class BranchDetails {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BranchDetails.class);  ///< логгер
+    private static final Logger LOGGER = LoggerFactory.getLogger(BranchDetails.class);  ///< ссылка на логгер
 
-    private GitRepository repository;                               ///< Ссылка на репозиторий
-    private final Branch branch;                                    ///< Ссылка на ветку
-    private final List<Commit> commits;                             ///< Список коммитов
-    private final List<Commit> allCommits;                          ///< Список всех коммитов
-    private final List<GitFile> gitFileList;                        ///< Список файлов репозитория
-    private long totalLinesAddedWithDate;                           ///< Всего строк добавлено с учётом дат
-    private long totalLinesRemovedWithDate;                         ///< Всего строк удалено с учёом дат
-    private long totalLinesAddedAll;                                ///< Всего строк добавлено
-    private long totalLinesRemovedAll;                              ///< Всего строк удалено
-    private Multimap<Author, Commit> authorToCommitMap;             ///< Список: Авторов - их коммитов
-    private Multimap<Author, CommitDiff> authorToCommitDiffMap;     ///< Список: Автор - их изменённый файл
+    private GitRepository repository;                               ///< ссылка на репозиторий
+    private final Branch branch;                                    ///< ссылка на ветку
+    private final List<Commit> commits;                             ///< список коммитов
+    private final List<Commit> allCommits;                          ///< список всех коммитов
+    private final List<GitFile> gitFileList;                        ///< список файлов репозитория
+    private long totalLinesAddedWithDate;                           ///< всего строк добавлено с учётом дат
+    private long totalLinesRemovedWithDate;                         ///< всего строк удалено с учёом дат
+    private long totalLinesAddedAll;                                ///< всего строк добавлено
+    private long totalLinesRemovedAll;                              ///< всего строк удалено
+    private Multimap<Author, Commit> authorToCommitMap;             ///< список: Авторов - их коммитов
+    private Multimap<Author, CommitDiff> authorToCommitDiffMap;     ///< список: Автор - их изменённый файл
 
     /**
      * Инициализируем BranchDetails
@@ -68,6 +68,7 @@ public class BranchDetails {
 
     /**
      * Инициализируем BranchDetails
+     * с учётом коммитов с ограничением по дате и всех коммитов
      *
      * @param repository  ссылка на репозиторий
      * @param branch      ссылка на ветку
@@ -121,6 +122,11 @@ public class BranchDetails {
         }
     }
 
+    /**
+     * Аналогично верхнему, но для всех коммитов
+     *
+     * @param allCommits
+     */
     private void computeMembersAll(List<Commit> allCommits) {
         for (Commit commit : allCommits) {
             try {
@@ -128,8 +134,6 @@ public class BranchDetails {
 
                 List<CommitDiff> diffs = repository.getCommitDiffs(commit);
                 for (CommitDiff diff : diffs) {
-                    // commit.setLinesAdded(commit.getLinesAdded() + diff.getLinesAdded());
-                    // commit.setLinesRemoved(commit.getLinesRemoved() + diff.getLinesRemoved());
 
                     totalLinesAddedAll += diff.getLinesAdded();
                     totalLinesRemovedAll += diff.getLinesRemoved();
@@ -152,7 +156,7 @@ public class BranchDetails {
 
     /**
      * Получить список всех коммитов,
-     * если мы считали ветку с учётом промежутка времени
+     * если мы анализировали ветку с учётом промежутка времени
      *
      * @return список всех коммитов
      */

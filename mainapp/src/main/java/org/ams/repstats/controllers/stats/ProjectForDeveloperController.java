@@ -49,8 +49,8 @@ public class ProjectForDeveloperController {
     private Button btExit;
     //endregion
 
-    private StatsDeveloperController statsDeveloperController;
-    private int id_developer;
+    private StatsDeveloperController statsDeveloperController;      ///< ссылка на родительские контроллеры
+    private int id_developer;                                       ///< id разработчика
 
     @FXML
     public void initialize() {
@@ -63,7 +63,6 @@ public class ProjectForDeveloperController {
         projectsTable.getSelectionModel().setSelectionMode(
                 SelectionMode.MULTIPLE
         );
-
 
         // Название
         projectNameClmn.setCellValueFactory(new PropertyValueFactory<ProjectObs, String>("name"));
@@ -99,10 +98,20 @@ public class ProjectForDeveloperController {
         }
     }
 
+    /**
+     * Установка id
+     *
+     * @param id_developer
+     */
     public void setId_developer(int id_developer) {
         this.id_developer = id_developer;
     }
 
+    /**
+     * Начало анализа
+     *
+     * @param event
+     */
     public void startButtonAction(ActionEvent event) {
         if (projectsTable.getSelectionModel().getSelectedItem() == null || datePickerStart.getValue() == null || datePickerEnd.getValue() == null) {
             Utils.showAlert("Ошибка", "Выберите проект(ы) и выберите промежуток времени!");
@@ -136,7 +145,11 @@ public class ProjectForDeveloperController {
         stage.close();
     }
 
-
+    /**
+     * Установка ссылки на родителя
+     *
+     * @param statsDeveloperController
+     */
     public void setStatsDeveloperController(StatsDeveloperController statsDeveloperController) {
         this.statsDeveloperController = statsDeveloperController;
     }

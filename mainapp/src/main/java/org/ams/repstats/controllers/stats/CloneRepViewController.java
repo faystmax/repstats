@@ -66,7 +66,7 @@ public class CloneRepViewController {
     }
 
     /**
-     * закрытие окна
+     * Закрытие окна
      *
      * @param event - событие
      */
@@ -76,6 +76,8 @@ public class CloneRepViewController {
     }
 
     /**
+     * Загрузка репозитория
+     *
      * @param event - событие
      */
     public void chooseButtonAction(ActionEvent event) {
@@ -126,18 +128,6 @@ public class CloneRepViewController {
                         " либо у вас отсутствует подключение к интернету");
             });
             new Thread(task).start();
-
         }
-    }
-
-    /**
-     * ошибка подкачки репозитория
-     */
-
-    public void downloadError() {
-        Utils.showAlert("Ошибка", "Введённый вами репозиторий не существует," +
-                " либо у вас отсутствует подключение к интернету");
-        isStart = false;
-        Platform.runLater(() -> btExit.requestFocus());
     }
 }

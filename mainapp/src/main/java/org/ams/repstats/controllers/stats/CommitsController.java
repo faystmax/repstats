@@ -14,7 +14,7 @@ import org.ams.repstats.entity.CommitObs;
 import org.ams.repstats.entity.DeveloperObs;
 import org.ams.repstats.entity.ProjectObs;
 import org.ams.repstats.entity.RepositoryObs;
-import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.uinterface.UInterface;
 import org.ams.repstats.utils.Utils;
 
 import java.text.DateFormat;
@@ -30,7 +30,6 @@ import java.util.Date;
  * Time: 20:12
  */
 public class CommitsController {
-
 
     //region << UI Компоненты
     @FXML
@@ -80,6 +79,16 @@ public class CommitsController {
         clmnChangeLine.setCellValueFactory(new PropertyValueFactory<>("changeLines"));
     }
 
+    /**
+     * Закрытие окна
+     *
+     * @param event
+     */
+    public void exitButtonAction(ActionEvent event) {
+        Stage stage = (Stage) btExit.getScene().getWindow();
+        stage.close();
+    }
+
     public void setAuthor(Author author) {
         this.author = author;
     }
@@ -90,11 +99,6 @@ public class CommitsController {
 
     public void setLbName(String name) {
         lbName.setText("Коммиты " + name);
-    }
-
-    public void exitButtonAction(ActionEvent event) {
-        Stage stage = (Stage) btExit.getScene().getWindow();
-        stage.close();
     }
 
     public void setProjectObs(ProjectObs projectObs) {
@@ -149,6 +153,12 @@ public class CommitsController {
         }
     }
 
+    /**
+     * Добавляем коммит в таблицу
+     *
+     * @param data
+     * @param commit
+     */
     private void addCommit(ObservableList<CommitObs> data, Commit commit) {
         data.add(new CommitObs(commit.getCommitMessage(),
                 commit.getCommitDateTime(),
@@ -156,6 +166,4 @@ public class CommitsController {
                 commit.getLinesAdded(),
                 commit.getLinesRemoved()));
     }
-
-
 }

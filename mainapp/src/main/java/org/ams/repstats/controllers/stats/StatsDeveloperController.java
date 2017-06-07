@@ -60,7 +60,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsDeveloperController.class); ///< ссылка на логер
 
 
-
     //region << UI Компоненты
     @FXML
     private Label lbFixBugs;
@@ -358,9 +357,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
                 //основной цикл по проектам и репозиториям
                 for (ProjectObs projectObs : projects) {
-
                     RepositoryObs newRepositoryObs = null;
-
                     for (String url : projectObs.getUrls()) {
                         try {
                             closeRepository();
@@ -467,7 +464,7 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         task.setOnSucceeded((e) -> {
             Utils.closeLoadingWindow();
             // process return value again in JavaFX thread
-            //выводим данные о репозитории в поток javafx
+            // выводим данные о репозитории в поток javafx
             Platform.runLater(() -> {
                 showMainInf();
                 showAvtors();
@@ -516,7 +513,12 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
     }
 
-
+    /**
+     * Запоминаем графики
+     *
+     * @param projectObs
+     * @param newRepositoryObs
+     */
     private void rememberGraphics(ProjectObs projectObs, RepositoryObs newRepositoryObs) {
         // Извлекаем выбранного пользователя
         DeveloperObs developerObs = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
@@ -554,16 +556,10 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
 
     }
 
-    @Override
-    public void closeRepository() {
-        this.getuInterface().closeRepository();
-    }
 
-    @Override
-    public void chooseProjectAction() {
-
-    }
-
+    /**
+     * Вывод основной информации
+     */
     @Override
     public void showMainInf() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -584,9 +580,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         if (vklad > 100) {
             vklad = 100;
         }
-    /*   if (vklad == 0) {
-            vklad = Math.abs(Math.ceil((((double) linesAdd) / totalLines) * 100));
-        }*/
         lbPokr.setText(String.valueOf(vklad) + "%");
 
         lbMergedPullReq.setText(String.valueOf(this.mergeCount));
@@ -595,7 +588,13 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         lbFixBugs.setText(String.valueOf(this.bugFixes));
     }
 
-
+    /**
+     * Считаем merge
+     *
+     * @param url
+     * @param gitname
+     * @return
+     */
     private int calcMergeCount(String url, String gitname) {
         this.gitApi = new GitApi();
         String[] tmp = url.split("/");
@@ -612,42 +611,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             });
         }
         return 0;
-    }
-
-    @Override
-    public void showAllFiles() {
-      /*  clmnPath.setCellValueFactory(new PropertyValueFactory<>("path"));
-        clmnIsBinary.setCellValueFactory(new PropertyValueFactory<>("isBinary"));
-        clmnLOC.setCellValueFactory(new PropertyValueFactory<>("numberOfLines"));
-
-        TableModel allFiles = getuInterface().getAllFiles();
-        ObservableList<FilesObs> data = FXCollections.observableArrayList();
-        for (int i = 0; i < allFiles.getRowCount(); i++) {
-            data.add(new FilesObs((String) (allFiles.getValueAt(i, 0)),
-                    (String) allFiles.getValueAt(i, 1),
-                    (String) allFiles.getValueAt(i, 2)));
-        }
-
-        tableAllFiles.setItems(data);*/
-    }
-
-    @Override
-    public void showAvtors() {
-     /*   clmnAvtorName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        clmnCommitCount.setCellValueFactory(new PropertyValueFactory<>("commitCount"));
-        clmnLinesAdd.setCellValueFactory(new PropertyValueFactory<>("linesAdded"));
-        clmnLinesDelete.setCellValueFactory(new PropertyValueFactory<>("linesRemoved"));
-        clmnNetContribution.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
-        clmnAvtorEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        TableModel authors = getuInterface().getAuthors();
-        ObservableList<AuthorObs> data = FXCollections.observableArrayList();
-        for (int i = 0; i < authors.getRowCount(); i++) {
-            data.add(new AuthorObs((String) (authors.getValueAt(i, 0)), (int) authors.getValueAt(i, 1),
-                    (int) authors.getValueAt(i, 2), (int) authors.getValueAt(i, 3), (int) authors.getValueAt(i, 4),
-                    (String) (authors.getValueAt(i, 5))));
-        }
-
-        avtorTable.setItems(data);*/
     }
 
 
@@ -742,33 +705,11 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
             String selected = (String) comboGraph.getSelectionModel().getSelectedItem();
 
             if (selected.equals(LineChartCreator.options.get(0))) {
-
                 numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
-
-                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
-                AnchorPane.setTopAnchor(numberLineChart, 0.0);
-                AnchorPane.setRightAnchor(numberLineChart, 0.0);
-                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
-                GraphAnchor.getChildren().add(numberLineChart);
-
             } else if (selected.equals(LineChartCreator.options.get(1))) {
                 numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
-
-                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
-                AnchorPane.setTopAnchor(numberLineChart, 0.0);
-                AnchorPane.setRightAnchor(numberLineChart, 0.0);
-                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
-                GraphAnchor.getChildren().add(numberLineChart);
-
             } else if (selected.equals(LineChartCreator.options.get(2))) {
                 numberLineChart = LineChartCreator.createNumberLineChart(selected, projectTable.getItems());
-
-                AnchorPane.setLeftAnchor(numberLineChart, 0.0);
-                AnchorPane.setTopAnchor(numberLineChart, 0.0);
-                AnchorPane.setRightAnchor(numberLineChart, 0.0);
-                AnchorPane.setBottomAnchor(numberLineChart, 53.0);
-                GraphAnchor.getChildren().add(numberLineChart);
-
             } else if (selected.equals(LineChartCreator.options.get(3))) {
                 graphDatePickerStart.setDisable(false);
                 graphDatePickerEnd.setDisable(false);
@@ -780,17 +721,15 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                     Utils.showAlert("Ошибка ввода дат", "Начальная дата должна быть раньше конечной!");
                     return;
                 }
-
-
                 dateLineChart = LineChartCreator.createDateLineChart(selected, projectTable.getItems(),
                         graphDatePickerStart.getValue(), graphDatePickerEnd.getValue());
-                AnchorPane.setLeftAnchor(dateLineChart, 0.0);
-                AnchorPane.setTopAnchor(dateLineChart, 0.0);
-                AnchorPane.setRightAnchor(dateLineChart, 0.0);
-                AnchorPane.setBottomAnchor(dateLineChart, 53.0);
-                GraphAnchor.getChildren().add(dateLineChart);
 
             }
+            AnchorPane.setLeftAnchor(dateLineChart, 0.0);
+            AnchorPane.setTopAnchor(dateLineChart, 0.0);
+            AnchorPane.setRightAnchor(dateLineChart, 0.0);
+            AnchorPane.setBottomAnchor(dateLineChart, 53.0);
+            GraphAnchor.getChildren().add(dateLineChart);
         }
     }
 
@@ -816,8 +755,6 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 authorSeries.setName(selectedProject.getName());
                 commitsByTimeChart.getData().add(authorSeries);
             }
-
-
         }
     }
 }

@@ -1,8 +1,8 @@
 package org.ams.repstats.uifactory;
 
-import org.ams.repstats.userinterface.GitUInterface;
-import org.ams.repstats.userinterface.SvnUInterface;
-import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.uinterface.GitUInterface;
+import org.ams.repstats.uinterface.SvnUInterface;
+import org.ams.repstats.uinterface.UInterface;
 
 /**
  * Created with IntelliJ IDEA
@@ -12,6 +12,12 @@ import org.ams.repstats.userinterface.UInterface;
  */
 public class UInterfaceFactory {
 
+    /**
+     * Выдаёт фасад git или svn
+     *
+     * @param type
+     * @return
+     */
     public UInterface create(TypeUInterface type) {
         if (type == TypeUInterface.git) {
             return new GitUInterface();
@@ -19,7 +25,5 @@ public class UInterfaceFactory {
             return new SvnUInterface();
         } else
             return null;
-
     }
-
 }

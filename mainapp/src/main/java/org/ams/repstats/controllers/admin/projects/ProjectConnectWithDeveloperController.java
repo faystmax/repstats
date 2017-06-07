@@ -82,7 +82,7 @@ public class ProjectConnectWithDeveloperController {
                     public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку
@@ -115,7 +115,7 @@ public class ProjectConnectWithDeveloperController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setSurname(t.getOldValue());
                             // обновляем колонку
@@ -148,7 +148,7 @@ public class ProjectConnectWithDeveloperController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setMiddlename(t.getOldValue());
                             // обновляем колонку
@@ -181,7 +181,7 @@ public class ProjectConnectWithDeveloperController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setAge(t.getOldValue());
                             // обновляем колонку
@@ -214,7 +214,7 @@ public class ProjectConnectWithDeveloperController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setPhone(t.getOldValue());
                             // обновляем колонку
@@ -253,7 +253,7 @@ public class ProjectConnectWithDeveloperController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             Integer id_role = (Integer) Utils.getKeyFromValue(roles, t.getOldValue());
                             changeable.setId_role(id_role);
@@ -362,7 +362,7 @@ public class ProjectConnectWithDeveloperController {
             Utils.showAlert("Ошибка добавления", "Сначала выберите разработчика!");
             return;
         }
-        if (!Utils.isValidStringValue(roleTextField.getText())) {
+        if (!Utils.isValidValue(roleTextField.getText())) {
             Utils.showAlert("Ошибка добавления", "Введённая вами роль не корректна!");
             return;
         }

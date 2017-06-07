@@ -1,6 +1,6 @@
 package org.ams.repstats.view;
 
-import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.uinterface.UInterface;
 
 import javax.swing.table.TableModel;
 import java.util.Scanner;
@@ -13,16 +13,16 @@ import java.util.Scanner;
  */
 public class ConsoleViewInterface extends ViewInterfaceAbstract {
 
-    private Scanner in = new Scanner(System.in);
+    private Scanner in = new Scanner(System.in);        ///< сканер для чтения с консоли
 
     public ConsoleViewInterface(UInterface uInterface) {
         super(uInterface);
     }
 
-    public ConsoleViewInterface(boolean isStart, UInterface uInterface) {
-        super(isStart, uInterface);
-    }
 
+    /**
+     * Выбор директории
+     */
     @Override
     public void chooseProjectAction() {
         System.out.println("Введите путь к репозиторию:");
@@ -39,6 +39,9 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Выбод всех файлов репозитория
+     */
     @Override
     public void showAllFiles() {
         if (checkStart()) {
@@ -54,6 +57,9 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Выбод всех авторов репозитория
+     */
     @Override
     public void showAvtors() {
         if (checkStart()) {
@@ -72,6 +78,9 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Выбод основной информации о репозитории
+     */
     @Override
     public void showMainInf() {
         if (checkStart()) {
@@ -86,6 +95,11 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Проверка на начало анализа
+     *
+     * @return
+     */
     public boolean checkStart() {
         if (this.isStart()) {
             return true;
@@ -95,9 +109,11 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Начало анализа
+     */
     @Override
     public void start() {
-
         boolean flag = true;
         while (flag) {
             writeMenu();
@@ -118,12 +134,12 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
                     break;
                 case "5":
                     flag = false;
+                    System.out.println("Завершение работы");
                     break;
                 default:
                     System.out.println("Не верный ввод!");
             }
         }
-
     }
 
     @Override
@@ -131,6 +147,9 @@ public class ConsoleViewInterface extends ViewInterfaceAbstract {
         // TODO
     }
 
+    /**
+     * Вывод меню в консоль
+     */
     public void writeMenu() {
         System.out.println("Меню:");
         System.out.println("1.Выбор репозитория.");

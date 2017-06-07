@@ -1,6 +1,6 @@
 package org.ams.repstats.view;
 
-import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.uinterface.UInterface;
 
 /**
  * Created with IntelliJ IDEA
@@ -10,11 +10,10 @@ import org.ams.repstats.userinterface.UInterface;
  */
 public abstract class ViewInterfaceAbstract implements ViewInterface {
 
-    private boolean isStart;
-    private UInterface uInterface;
+    private boolean isStart;        ///< флаг начала анализа
+    private UInterface uInterface;  ///< фасад
 
     public ViewInterfaceAbstract() {
-
     }
 
     public ViewInterfaceAbstract(boolean isStart, UInterface uInterface) {
@@ -27,21 +26,69 @@ public abstract class ViewInterfaceAbstract implements ViewInterface {
         this.uInterface = uInterface;
     }
 
+    /**
+     * Установка фасада
+     *
+     * @param uInterface - фасад git/svn ...
+     */
     public void setUInterface(UInterface uInterface) {
         this.uInterface = uInterface;
 
     }
 
+    /**
+     * Закрытие репозитопия
+     */
+    @Override
+    public void closeRepository() {
+        this.getuInterface().closeRepository();
+    }
+
+    /**
+     * @return флаг начала анализа
+     */
     public boolean isStart() {
         return isStart;
     }
 
+    /**
+     * @return фасад
+     */
     public UInterface getuInterface() {
         return uInterface;
     }
 
+    /**
+     * Установка флага начала анализа
+     *
+     * @param start флаг начала анализа
+     */
     public void setStart(boolean start) {
         isStart = start;
+    }
+
+    /**
+     * Заглушка
+     * Переопределите этот метод в наследнике для выбора репозитория
+     */
+    @Override
+    public void chooseProjectAction() {
+    }
+
+    /**
+     * Заглушка
+     * Переопределите этот метод в наследнике для показа авторов репозитория
+     */
+    @Override
+    public void showAvtors() {
+    }
+
+    /**
+     * Заглушка
+     * Переопределите этот метод в наследнике для показа всех авторов репозитория
+     */
+    @Override
+    public void showAllFiles() {
     }
 
 }

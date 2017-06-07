@@ -73,7 +73,7 @@ public class RepositoryEditController {
                     public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку
@@ -105,7 +105,7 @@ public class RepositoryEditController {
                     public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setUrl(t.getOldValue());
                             // обновляем колонку
@@ -141,7 +141,7 @@ public class RepositoryEditController {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setAuthor(t.getOldValue());
                             // обновляем колонку

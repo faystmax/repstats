@@ -1,4 +1,4 @@
-package org.ams.repstats.userinterface;
+package org.ams.repstats.uinterface;
 
 import com.oneandone.sales.svnstats.FileStats;
 import com.oneandone.sales.svnstats.connectors.Repository;

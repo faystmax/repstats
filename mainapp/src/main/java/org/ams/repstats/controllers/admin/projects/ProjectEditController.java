@@ -120,7 +120,7 @@ public class ProjectEditController {
                     public void handle(TableColumn.CellEditEvent<ProjectObs, String> t) {
                         ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку
@@ -156,7 +156,7 @@ public class ProjectEditController {
                         ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
@@ -194,7 +194,7 @@ public class ProjectEditController {
                         ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
@@ -228,7 +228,7 @@ public class ProjectEditController {
                         //обновляем в базе
                         ProjectObs changeable = ((ProjectObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setPrior(t.getOldValue());
                             // обновляем колонку
@@ -283,7 +283,7 @@ public class ProjectEditController {
                     public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку
@@ -315,7 +315,7 @@ public class ProjectEditController {
                     public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setUrl(t.getOldValue());
                             // обновляем колонку
@@ -351,7 +351,7 @@ public class ProjectEditController {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
                         /*
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setAuthor(t.getOldValue());
                             // обновляем колонку
@@ -388,7 +388,7 @@ public class ProjectEditController {
                     public void handle(TableColumn.CellEditEvent<RepositoryObs, String> t) {
                         RepositoryObs changeable = ((RepositoryObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setDescription(t.getOldValue());
                             // обновляем колонку
@@ -455,7 +455,7 @@ public class ProjectEditController {
                     public void handle(TableColumn.CellEditEvent<DeveloperObs, String> t) {
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку
@@ -488,7 +488,7 @@ public class ProjectEditController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setSurname(t.getOldValue());
                             // обновляем колонку
@@ -521,7 +521,7 @@ public class ProjectEditController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setMiddlename(t.getOldValue());
                             // обновляем колонку
@@ -554,7 +554,7 @@ public class ProjectEditController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setAge(t.getOldValue());
                             // обновляем колонку
@@ -593,7 +593,7 @@ public class ProjectEditController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             Integer id_role = (Integer) Utils.getKeyFromValue(roles, t.getOldValue());
                             changeable.setId_role(id_role);
@@ -633,7 +633,7 @@ public class ProjectEditController {
                         //обновляем в базе
                         DeveloperObs changeable = ((DeveloperObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setRole_in_project(t.getOldValue());
                             // обновляем колонку

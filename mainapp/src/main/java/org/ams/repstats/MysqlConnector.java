@@ -19,12 +19,12 @@ public class MysqlConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnector.class); ///< ссылка на логер
 
     // JDBC Driver
-    private static final String driverName = "com.mysql.jdbc.Driver";
+    private static final String driverName = "com.mysql.jdbc.Driver";   // имя драйвера для работы с базой
 
     // JDBC variables for opening and managing connection
-    private static Connection myConn = null;
-    private static PreparedStatement myStmt = null;
-    private static ResultSet myRs = null;
+    private static Connection myConn = null;                            // connection для соединения с базой
+    private static PreparedStatement myStmt = null;                     // Statement для подготовки запроса
+    private static ResultSet myRs = null;                               // ResultSet для сохранения результата запроса
 
     //region <<< Подготовленные запросы
     public static final String selectAllTeams = "select id,name,technology from team";
@@ -52,6 +52,7 @@ public class MysqlConnector {
             " inner JOIN role on role.id=developer.id_role " +
             " inner JOIN developer_project on developer_project.id_developer=developer.id && developer_project.id_project=?";
 
+    // developer
     public static final String insertNewDeveloper = "insert into developer (name,surname,middlename,id_role,id_team,age,phone,gitname,gitemail) " +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String deleteDeveloper = "delete from developer WHERE id = ?";
@@ -111,16 +112,11 @@ public class MysqlConnector {
             "values (?, ?, ?)";
     public static final String insertNewRepository = "insert into repository (name, url, id_developer_responsible, date_of_creation) " +
             "values (?, ?, ?, ?)";
-
     public static final String delRepositoryFromProject = "delete from project_repository where id = ?";
     public static final String delRepository = "delete from repository where id = ?";
-
-    // TODO role_in_the_project
     public static final String insertNewDeveloperProject = "insert into developer_project (id_developer,id_project,role_in_the_project)" +
             "values (?, ?, ?)";
-
     public static final String deleteDeveloperProject = "delete from developer_project WHERE id = ?";
-
     public static final String selectDeveloperFIO = "select concat(surname,\" \",name,\" \",middlename) from developer WHERE  gitemail = ?";
 
     //endregion
@@ -155,7 +151,7 @@ public class MysqlConnector {
     }
 
     /**
-     * Prepare statement
+     * Подготавливаем statement
      *
      * @param query - строка запроса
      * @return PreparedStatement для заполнения параметров
@@ -167,7 +163,7 @@ public class MysqlConnector {
     }
 
     /**
-     * Prepare statement with ret key
+     * Подготавливаем statement с возвращение первичного ключа
      *
      * @param query - строка запроса
      * @return PreparedStatement для заполнения параметров
@@ -179,7 +175,7 @@ public class MysqlConnector {
     }
 
     /**
-     * Execute SQL query
+     * Запускаем SQL query
      *
      * @return ResultSet
      * @throws SQLException - ошибка запроса
@@ -190,7 +186,7 @@ public class MysqlConnector {
     }
 
     /**
-     * Execute SQL update
+     * Запускаем SQL update
      *
      * @return кол-во обновлённых строк или сгенерированный id
      * @throws SQLException - ошибка запроса
@@ -216,9 +212,9 @@ public class MysqlConnector {
     }
 
     /**
-     * Execute SQL
+     * Запускаем SQL
      *
-     * @return Фдаг о выполнении
+     * @return Флаг о выполнении
      * @throws SQLException - ошибка запроса
      */
     public static boolean execute() throws SQLException {

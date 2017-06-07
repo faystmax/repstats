@@ -1,4 +1,4 @@
-package org.ams.repstats.userinterface;
+package org.ams.repstats.uinterface;
 
 import com.selesse.gitwrapper.myobjects.Author;
 import com.selesse.gitwrapper.myobjects.Branch;

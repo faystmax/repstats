@@ -28,7 +28,9 @@ public class DateForTeamController {
     @FXML
     private Button btExit;
     //endregion
-
+    /**
+     * ссылки на родительские контроллеры
+     */
     private StatsTeamController statsTeamController;
     private StatsProjectController statsProjectController;
     private StatsRepositoryController statsRepositoryController;
@@ -39,6 +41,11 @@ public class DateForTeamController {
         datePickerEnd.setValue(LocalDate.now());
     }
 
+    /**
+     * Начало анализа
+     *
+     * @param event
+     */
     public void startButtonAction(ActionEvent event) {
         if (datePickerStart.getValue() == null || datePickerEnd.getValue() == null) {
             Utils.showAlert("Ошибка", "Выберите промежуток времени!");

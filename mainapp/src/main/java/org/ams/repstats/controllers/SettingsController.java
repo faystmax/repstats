@@ -62,6 +62,7 @@ public class SettingsController {
         // Группа выбора стиля
         ToggleGroup groupStyle = new ToggleGroup();
 
+        // кидаем radiobutton-ы в эту группу
         whiteButton.setToggleGroup(groupStyle);
         greenButton.setToggleGroup(groupStyle);
         blackButton.setToggleGroup(groupStyle);
@@ -81,7 +82,7 @@ public class SettingsController {
             pinkButton.setSelected(true);
         }
 
-
+        // ставим лстенеры на смену стиля
         groupStyle.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
@@ -102,6 +103,7 @@ public class SettingsController {
         // Группа начального окна
         ToggleGroup groupStartWindow = new ToggleGroup();
 
+        // кидаем radiobutton-ы в эту группу
         repButton.setToggleGroup(groupStartWindow);
         projectButton.setToggleGroup(groupStartWindow);
         developerButton.setToggleGroup(groupStartWindow);
@@ -119,6 +121,7 @@ public class SettingsController {
             teamButton.setSelected(true);
         }
 
+        // ставим листенеры на смену начального окна
         groupStartWindow.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
@@ -139,11 +142,20 @@ public class SettingsController {
         tbPassword.setText(GitApi.getPassword());
     }
 
+    /**
+     * Закрытие окна настроек
+     *
+     * @param event
+     */
     public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Проверка и запоминание логина и пароля git
+     * @param event
+     */
     public void CheckAndRememberUsernameAndPass(ActionEvent event) {
         if (GitApi.checkUsernameAndPass(tbUsername.getText(), tbPassword.getText())) {
             GitApi.setUsernameAndPasswoed(tbUsername.getText(), tbPassword.getText());

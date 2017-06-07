@@ -16,6 +16,11 @@ public class AboutController {
     @FXML
     private Button btExit;
 
+    /**
+     * Закрытие окна
+     *
+     * @param event
+     */
     public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();

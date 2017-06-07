@@ -10,7 +10,7 @@ import org.ams.repstats.controllers.RootController;
 import org.ams.repstats.controllers.stats.StatsRepositoryController;
 import org.ams.repstats.uifactory.TypeUInterface;
 import org.ams.repstats.uifactory.UInterfaceFactory;
-import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.uinterface.UInterface;
 import org.ams.repstats.utils.properties.EStartWindow;
 import org.ams.repstats.utils.properties.MainProperties;
 import org.ams.repstats.utils.properties.StartWindowSetter;
@@ -27,13 +27,13 @@ import java.io.IOException;
  */
 public class MainApp extends Application {
 
-    private static UInterfaceFactory factory = new UInterfaceFactory();         ///< Фабрика для UInterface
-    private static ViewInterface viewInterface;                                 ///< Bнтерфейс - консоль,gui
-    private static UInterface uInterface;                                       ///< Мост для Фасада
+    private static UInterfaceFactory factory = new UInterfaceFactory();         ///< фабрика для UInterface
+    private static ViewInterface viewInterface;                                 ///< интерфейс - консоль/gui
+    private static UInterface uInterface;                                       ///< мост для Фасада
 
-    private Stage primaryStage;                                                 ///< Главный каркас
-    private BorderPane rootLayout;                                              ///< Родительский Layout
-    private FXMLLoader loader;                                                  ///< Загрузчик xml
+    private Stage primaryStage;                                                 ///< главный каркас
+    private BorderPane rootLayout;                                              ///< родительский Layout
+    private FXMLLoader loader;                                                  ///< загрузчик xml
 
     /**
      * Переопределяем метод старта приложения
@@ -94,7 +94,7 @@ public class MainApp extends Application {
     }
 
     /**
-     * Показвапем насальное окно
+     * Показваем начальное окно
      */
     public void showStartWindow() {
         RootController controller = loader.getController();

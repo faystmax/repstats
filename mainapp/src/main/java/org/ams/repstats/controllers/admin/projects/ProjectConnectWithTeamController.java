@@ -67,7 +67,7 @@ public class ProjectConnectWithTeamController {
                     public void handle(TableColumn.CellEditEvent<TeamObs, String> t) {
                         TeamObs changeable = ((TeamObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку
@@ -99,7 +99,7 @@ public class ProjectConnectWithTeamController {
                     public void handle(TableColumn.CellEditEvent<TeamObs, String> t) {
                         TeamObs changeable = ((TeamObs) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                         //провверка ввода
-                        if (!Utils.isValidStringValue(t.getNewValue())) {
+                        if (!Utils.isValidValue(t.getNewValue())) {
                             Utils.showAlert("Ошибка ввода!", "Неверное значение поля");
                             changeable.setName(t.getOldValue());
                             // обновляем колонку

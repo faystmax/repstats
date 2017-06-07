@@ -143,20 +143,33 @@ public class Utils {
      * @param check
      * @return
      */
-    public static boolean isValidStringValue(String check) {
+    public static boolean isValidValue(String check) {
         if (check.isEmpty() || check.length() > 300) {
             return false;
         }
         return true;
     }
 
-    public static boolean isValidStringValue(Integer check) {
+    /**
+     * Проверка числа на корректность ввода
+     *
+     * @param check
+     * @return
+     */
+    public static boolean isValidValue(Integer check) {
         if (check == null || check < 0) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Берём ключ из значения в map-е
+     *
+     * @param hm
+     * @param value
+     * @return
+     */
     public static Object getKeyFromValue(Map hm, Object value) {
         for (Object o : hm.keySet()) {
             if (hm.get(o).equals(value)) {
@@ -262,6 +275,13 @@ public class Utils {
         tableView.setPlaceholder(new Label("Данные отсутствуют"));
     }
 
+    /**
+     * Округление
+     *
+     * @param value число для округления
+     * @param places на сколько округлить
+     * @return
+     */
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 

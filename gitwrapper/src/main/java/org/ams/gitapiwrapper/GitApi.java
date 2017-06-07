@@ -27,15 +27,19 @@ import java.util.Map;
  */
 public class GitApi {
 
-    private static String username = "";           ///< Логин github
-    private static String password = "";      ///< Пароль github
+    private static String username;            ///< логин github
+    private static String password;            ///< пароль github
 
-    private List<PullRequest> pullRequests;
-    private List<Issue> issues;
+    private List<PullRequest> pullRequests;         ///< список pull request-ов
+    private List<Issue> issues;                     ///< список issues-ов
 
+    /**
+     * Конструктор по умолчаниию
+     */
     public GitApi() {
+        username = "";
+        password = "";
     }
-
     /**
      * Конструктор с параметрами
      *

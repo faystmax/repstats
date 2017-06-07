@@ -1,4 +1,4 @@
-package org.ams.repstats.userinterface;
+package org.ams.repstats.uinterface;
 
 import com.google.common.io.Files;
 import com.selesse.gitwrapper.analyzer.BranchAnalyzer;

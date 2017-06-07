@@ -21,11 +21,25 @@ import java.util.List;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+/**
+ * \brief Тесты на GitRepositoryReader.
+ * \version 0.5
+ * \date 19 февраля 2017 года
+ * <p>
+ * Модульные тесты на GitRepositoryReader и связанные с ним классы.
+ */
 public class GitRepositoryReaderTest {
-    private File temporaryDirectory;
-    private File gitRoot;
-    private File fileInGitRoot;
 
+    private File temporaryDirectory;            ///< временная директория - репозиторий
+    private File gitRoot;                       ///< ссылка на .git в репозитории
+    private File fileInGitRoot;                 ///< файл в репозитории
+
+    /**
+     * Предварительная настройка
+     * Создаём временную директорию в ней папку .git и 2 файла
+     *
+     * @throws IOException
+     */
     @Before
     public void setup() throws IOException {
         temporaryDirectory = Files.createTempDir();
@@ -43,11 +57,21 @@ public class GitRepositoryReaderTest {
         assertThat(anotherFileInGitRootNewFile).isTrue();
     }
 
+    /**
+     * После отработки всех тестов удаляем временную папку
+     *
+     * @throws IOException
+     */
     @After
     public void tearDown() throws IOException {
         FileUtils.deleteDirectory(temporaryDirectory);
     }
 
+    /**
+     * Проверка метода IsValidGitRoot
+     *
+     * @throws IOException
+     */
     @Test
     public void testIsValidGitRoot() throws IOException {
         assertThat(GitRepositoryReader.isValidGitRoot("")).isFalse();
@@ -56,6 +80,13 @@ public class GitRepositoryReaderTest {
         assertThat(GitRepositoryReader.isValidGitRoot(gitRoot.getAbsolutePath())).isFalse();
     }
 
+    /**
+     * Проверка метода LoadRepositoryLastCommit
+     * Вместе с проверкой методов класса Commit
+     *
+     * @throws IOException
+     * @throws GitAPIException
+     */
     @Test
     public void testLoadRepositoryLastCommit() throws IOException, GitAPIException {
         GitRepository repository = SimpleGitFixture.getRepository();
@@ -77,6 +108,12 @@ public class GitRepositoryReaderTest {
         verifyExecutableBinaryFile(gitFiles.get(3), "some/binary/file/hello.o");
     }
 
+    /**
+     * Проверка метода loadRepository
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Test
     public void testLoadRepository() throws IOException, InterruptedException {
         GitRepositoryBuilder repositoryBuilder = GitRepositoryBuilder.create().runCommand("git init").build();
@@ -85,6 +122,12 @@ public class GitRepositoryReaderTest {
         assertThat(repository).isNotNull();
     }
 
+    /**
+     * Проверка метода LoadRepository на Exception
+     * Подсовываем ему не корректную  директорию
+     *
+     * @throws IOException
+     */
     @Test
     public void testLoadRepository_throwsException() throws IOException {
         boolean exceptionWasThrown = false;
@@ -99,12 +142,25 @@ public class GitRepositoryReaderTest {
         assertThat(exceptionWasThrown).isTrue();
     }
 
+    /**
+     * Проверка на ExecutableBinaryFile
+     *
+     * @param gitFile файл
+     * @param path    полный поть до него
+     */
     private void verifyExecutableBinaryFile(GitFile gitFile, String path) {
         assertThat(gitFile.getPath()).isEqualTo(path);
         assertThat(gitFile.getFileMode()).isEqualTo(FileMode.EXECUTABLE_FILE);
         assertThat(gitFile.isBinary()).isTrue();
     }
 
+    /**
+     * Проверка на TextFile
+     *
+     * @param gitFile  файл
+     * @param path     полный путь до него
+     * @param contents содержание
+     */
     private void verifyTextFile(GitFile gitFile, String path, String contents) {
         assertThat(gitFile.getPath()).isEqualTo(path);
         assertThat(gitFile.getFileMode()).isEqualTo(FileMode.REGULAR_FILE);
@@ -113,6 +169,5 @@ public class GitRepositoryReaderTest {
         List<String> contentList = Splitter.on("\n").splitToList(contents);
 
         assertThat(gitFile.getNumberOfLines()).isEqualTo(contentList.size());
-        //assertThat(gitFile.getContents()).isEqualTo(contentList);
     }
 }

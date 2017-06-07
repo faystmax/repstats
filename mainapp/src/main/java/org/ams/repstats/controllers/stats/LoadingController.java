@@ -24,17 +24,22 @@ public class LoadingController {
     private Task<Boolean> task;
     //endregion
 
-    @FXML
-    public void initialize() {
-    }
-
-
+    /**
+     * Отмена загрузки
+     *
+     * @param event
+     */
     public void cancelAction(ActionEvent event) {
         task.cancel(true);
         Stage stage = (Stage) progressBar.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Установка task для возможности отмены
+     *
+     * @param task
+     */
     public void setTask(Task<Boolean> task) {
         this.task = task;
     }

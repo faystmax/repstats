@@ -31,7 +31,7 @@ public class CommitDiff {
     private DiffEntry.ChangeType changeType;    ///< Тип изминения
 
     /**
-     * Инициализируетт CommitDiff из DiffEntry(org.eclipse.jgit.diff.DiffEntry)
+     * Инициализирует CommitDiff из DiffEntry(org.eclipse.jgit.diff.DiffEntry)
      *
      * @param repository ссылка на репозиторий
      * @param diffEntry  сущность изминённого файла
@@ -127,7 +127,7 @@ public class CommitDiff {
     }
 
     /**
-     * Возвращает тип изминения файла
+     * Возвращает тип изменения файла
      *
      * @return тип изминения файла
      */

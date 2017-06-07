@@ -2,7 +2,10 @@ package com.selesse.gitwrapper;
 
 import com.selesse.gitwrapper.fixtures.GitRepositoryBuilder;
 import com.selesse.gitwrapper.fixtures.SimpleGitFixture;
-import com.selesse.gitwrapper.myobjects.*;
+import com.selesse.gitwrapper.myobjects.Branch;
+import com.selesse.gitwrapper.myobjects.Commit;
+import com.selesse.gitwrapper.myobjects.GitRepository;
+import com.selesse.gitwrapper.myobjects.GitRepositoryReader;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,20 +13,31 @@ import java.util.List;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+/**
+ * \brief Тесты на Branch.
+ * \version 0.5
+ * \date 19 февраля 2017 года
+ * <p>
+ * Модульные тесты на Branch и связанные с ним классы.
+ */
 public class BranchTest {
-
+    /**
+     * Проверка GetCommits на существующем репозитории
+     *
+     * @throws Exception
+     */
     @Test
     public void testGetCommits() throws Exception {
         Branch branch = SimpleGitFixture.getBranch();
         List<Commit> commits = branch.getCommits();
-
-        assertThat(commits).hasSize(4);
-
-        commits = branch.getCommits();
-
         assertThat(commits).hasSize(4);
     }
 
+    /**
+     * Проверка GetCommits на временном репозитории
+     *
+     * @throws Exception
+     */
     @Test
     public void testGetCommits_dynamic() throws Exception {
         GitRepositoryBuilder repositoryBuilder = GitRepositoryBuilder.create().
@@ -31,11 +45,11 @@ public class BranchTest {
                 createFile("README.md", "This is a README").
                 runCommand("git add README.md").
                 runCommand("git commit -m Commit").
-                createFile("new_file/nested", "This is a new nested file").
-                runCommand("git add new_file/nested").
+                createFile("new_file/first", "This is a new first file").
+                runCommand("git add new_file/first").
                 runCommand("git commit -m Commit2").
-                createFile("another_file", "This is another file").
-                runCommand("git add another_file").
+                createFile("second_file", "This is second file").
+                runCommand("git add second_file").
                 runCommand("git commit -m Commit3").
                 build();
 
@@ -49,6 +63,11 @@ public class BranchTest {
         assertThat(commits).hasSize(3);
     }
 
+    /**
+     * Проверка GetCommits на другой ветке
+     *
+     * @throws Exception
+     */
     @Test
     public void testGetCommits_onOtherBranch() throws Exception {
         GitRepositoryBuilder repositoryBuilder = GitRepositoryBuilder.create().
@@ -57,11 +76,11 @@ public class BranchTest {
                 runCommand("git add README.md").
                 runCommand("git", "commit", "-m", "Initial Commit").
                 runCommand("git checkout -b newBranch").
-                createFile("new_file/nested", "This is a new nested file").
-                runCommand("git add new_file/nested").
+                createFile("new_file/first", "This is a new first file").
+                runCommand("git add new_file/first").
                 runCommand("git commit -m Commit2").
-                createFile("another_file", "This is another file").
-                runCommand("git add another_file").
+                createFile("second_file", "This is second file").
+                runCommand("git add second_file").
                 runCommand("git commit -m Commit3").
                 build();
 

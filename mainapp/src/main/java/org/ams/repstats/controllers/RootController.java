@@ -64,12 +64,14 @@ public class RootController {
     private Menu menuHelp;
     //endregion
 
-    private Stage primaryStage;                             ///< Главный каркас
-    public static BorderPane rootLayout;                    ///< Layout
-    public String username = new String();                  ///< Логин админа
-    public String password = new String();                  ///< Пароль админа
+    private Stage primaryStage;                             ///< главный каркас
+    public static BorderPane rootLayout;                    ///< главный Layout
+    public String username = new String();                  ///< логин админа
+    public String password = new String();                  ///< пароль админа
 
-
+    /**
+     * Инициализация
+     */
     @FXML
     public void initialize() {
         menuSettings.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
@@ -79,10 +81,20 @@ public class RootController {
         menuSettings.setGraphic(imageViewIcon);
     }
 
+    /**
+     * Установка главного каркаса
+     *
+     * @param primaryStage
+     */
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * Установка главного Layout-та
+     *
+     * @param rootLayout
+     */
     public void setRootLayout(BorderPane rootLayout) {
         this.rootLayout = rootLayout;
     }
@@ -134,7 +146,7 @@ public class RootController {
     }
 
     /**
-     * Администрирование -> Репозитории
+     * Администрирование -> Репозитория
      */
     public void showAdminRepository() {
         if (checkAdminPermission()) {
@@ -191,7 +203,6 @@ public class RootController {
             LOGGER.error(e.getMessage());
         }
     }
-
 
     /**
      * Файл -> Настройки
@@ -307,5 +318,4 @@ public class RootController {
         }
         return true;
     }
-
 }

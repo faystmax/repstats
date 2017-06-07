@@ -1,6 +1,6 @@
 package org.ams.repstats.view;
 
-import org.ams.repstats.userinterface.UInterface;
+import org.ams.repstats.uinterface.UInterface;
 
 /**
  * Created with IntelliJ IDEA
@@ -10,17 +10,40 @@ import org.ams.repstats.userinterface.UInterface;
  */
 public interface ViewInterface {
 
+    /**
+     * Выбор папки с проектом
+     */
     void chooseProjectAction();
 
+    /**
+     * Отображение всех файлов
+     */
     void showAllFiles();
 
+    /**
+     * Отображение всех авторов
+     */
     void showAvtors();
 
+    /**
+     * Отображение основной информации
+     */
     void showMainInf();
 
+    /**
+     * Начало анализа
+     */
     void start();
 
+    /**
+     * Закрытие репозитория
+     */
     void closeRepository();
 
+    /**
+     * Установка фасада
+     *
+     * @param uInterface - фасад git/svn ...
+     */
     void setUInterface(UInterface uInterface);
 }
