@@ -26,25 +26,37 @@ public class GitUInterface implements UInterface {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GitUInterface.class);
 
-    private String gitPath = null;
-    private BranchAnalyzer branchAnalyzer = null;
-    private BranchDetails branchDetails = null;
+    private String gitPath = null;                  ///< путь до репозитория
+    private BranchAnalyzer branchAnalyzer = null;   ///< ссылка на анализатор
+    private BranchDetails branchDetails = null;     ///< ссылка на подробности анализа ветки
 
+    /**
+     * @return имя репозитория
+     */
     @Override
     public String getRepName() {
         return branchAnalyzer.getGitRoot().getName();
     }
 
+    /**
+     * @return имя ветки
+     */
     @Override
     public String getBranchName() {
         return branchDetails.getBranch().getName();
     }
 
+    /**
+     * @return кол-во коммитов
+     */
     @Override
     public int getNumberOfCommits() {
         return branchDetails.getCommits().size();
     }
 
+    /**
+     * @return таблицу с авторами
+     */
     @Override
     public TableModel getAuthors() {
         DefaultTableModel tablemodel = new DefaultTableModel();
@@ -78,6 +90,9 @@ public class GitUInterface implements UInterface {
         return tablemodel;
     }
 
+    /**
+     * @return таблицу с файлами репозитория
+     */
     @Override
     public TableModel getAllFiles() {
         DefaultTableModel tablemodel = new DefaultTableModel();
@@ -97,6 +112,12 @@ public class GitUInterface implements UInterface {
         return tablemodel;
     }
 
+    /**
+     * Проверка на наличие репозитория
+     *
+     * @param gitPath директория с репозиторием
+     * @return
+     */
     @Override
     public boolean сhooseProjectDirectory(String gitPath) {
         this.gitPath = sanitizePath(gitPath);
@@ -109,12 +130,21 @@ public class GitUInterface implements UInterface {
         return true;
     }
 
+    /**
+     * @param gitPath путь до репозитория
+     * @return полный путь
+     */
     private static String sanitizePath(String gitPath) {
         String absolutePath = new File(gitPath).getAbsolutePath();
         absolutePath = Files.simplifyPath(absolutePath);
         return absolutePath;
     }
 
+    /**
+     * Начинаем анализ репозитория
+     *
+     * @return
+     */
     @Override
     public boolean startProjectAnalyze() {
         String branchName = "master";
@@ -133,6 +163,13 @@ public class GitUInterface implements UInterface {
         return true;
     }
 
+    /**
+     * Начинаем анализ репозитория с промежутком времени
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     @Override
     public boolean startProjectAnalyze(LocalDate start, LocalDate end) {
         String branchName = "master";
@@ -170,7 +207,12 @@ public class GitUInterface implements UInterface {
         }
     }
 
-
+    /**
+     * Получаем автора по имени
+     *
+     * @param name
+     * @return
+     */
     @Override
     public Author getAuthorByName(String name) {
         for (Author author : branchDetails.getAuthorToCommitMap().keySet()) {
@@ -181,6 +223,12 @@ public class GitUInterface implements UInterface {
         return null;
     }
 
+    /**
+     * Получаем автора по email
+     *
+     * @param email
+     * @return
+     */
     @Override
     public Author getAuthorByEmail(String email) {
         for (Author author : branchDetails.getAuthorToCommitMap().keySet()) {
@@ -191,6 +239,12 @@ public class GitUInterface implements UInterface {
         return null;
     }
 
+    /**
+     * Полуаем последний коммит автора
+     *
+     * @param author
+     * @return
+     */
     @Override
     public Collection<Commit> getLastCommits(Author author) {
         Collection<Commit> commits;
@@ -203,81 +257,147 @@ public class GitUInterface implements UInterface {
         return null;
     }
 
+    /**
+     * @return общее кол-во строк
+     */
     @Override
     public long getTotalNumberOfLines() {
         return branchDetails.getTotalNumberOfLines();
     }
 
+    /**
+     * @return список текущей ветки
+     */
     @Override
     public ArrayList<Branch> getListCurBranches() {
         return branchDetails.getListCurBranches();
     }
 
+    /**
+     * @return список слитых веток
+     */
     @Override
     public ArrayList<Branch> getListMergedBranches() {
         return branchDetails.getListMergedBranches();
     }
 
+    /**
+     * Получаем коммиты по месяцам
+     *
+     * @param allAvtors
+     * @return
+     */
     @Override
     public HashMap<Author, ArrayList<Integer>> getCommitsByMonths(ArrayList<Author> allAvtors) {
         return branchDetails.getCommitsByMonths(allAvtors);
     }
 
+    /**
+     * Получаем коммиты по дням в месяце
+     *
+     * @param allAvtors
+     * @return
+     */
     @Override
     public HashMap<Author, ArrayList<Integer>> getCommitsByDaysInCurMonth(ArrayList<Author> allAvtors) {
         return branchDetails.getCommitsByDaysInCurMonth(allAvtors);
     }
 
+    /**
+     * Получаем коммиты за неделю
+     *
+     * @param allAvtors
+     * @return
+     */
     @Override
     public HashMap<Author, ArrayList<Integer>> getCommitsByWeek(ArrayList<Author> allAvtors) {
         return branchDetails.getCommitsByWeek(allAvtors);
     }
 
+    /**
+     * @return всех аавторов
+     */
     @Override
     public Set<Author> getAllAuthors() {
         return branchDetails.getAuthorToCommitMap().keySet();
     }
 
+    /**
+     * Все коммита с датами
+     *
+     * @param allAvtors
+     * @return
+     */
     @Override
     public HashMap<Author, HashMap<LocalDate, Integer>> getCommitsByCustomDate(ArrayList<Author> allAvtors) {
         return branchDetails.getCommitsByCustomDate(allAvtors);
     }
 
+    /**
+     * @return url
+     */
     @Override
     public String getUrl() {
         return branchDetails.getUrl();
     }
 
+    /**
+     * Возвращает коммиты по времени
+     *
+     * @param allAvtors
+     * @return
+     */
     @Override
     public HashMap<Author, ArrayList<Integer>> getCommitsByTime(ArrayList<Author> allAvtors) {
         return branchDetails.getCommitsByTime(allAvtors);
     }
 
+    /**
+     * @param selectedAuthor
+     * @return кол-во исправленных багов автором
+     */
     @Override
     public int getBugFixesCount(Author selectedAuthor) {
         return branchDetails.getBugFixesCount(selectedAuthor);
     }
 
+    /**
+     * кол-во исправленных багов
+     *
+     * @return
+     */
     @Override
     public int getBugFixesCount() {
         return branchDetails.getBugFixesCount();
     }
 
+    /**
+     * @return кол-во добавленных строк за промежуток времени
+     */
     @Override
     public long getTotalLinesAddedWithDate() {
         return branchDetails.getTotalLinesAddedWithDate();
     }
 
+    /**
+     * @return кол-во удалённых строкза промежуток времени
+     */
     @Override
     public long getTotalLinesRemovedWithDate() {
         return branchDetails.getTotalLinesRemovedWithDate();
     }
 
+    /**
+     * @return всего кол-во добавленных строк
+     */
     @Override
     public long getTotalLinesAddedAll() {
         return branchDetails.getTotalLinesAddedAll();
     }
 
+    /**
+     * @return всего удалённых добавленных строк
+     */
     @Override
     public long getTotalLinesRemovedAll() {
         return branchDetails.getTotalLinesRemovedAll();

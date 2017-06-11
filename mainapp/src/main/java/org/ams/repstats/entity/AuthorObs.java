@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
+ * Сущность для отображения в таблице
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 05.01.2017

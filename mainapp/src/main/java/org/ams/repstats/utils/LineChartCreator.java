@@ -23,10 +23,12 @@ import java.util.HashMap;
  */
 public class LineChartCreator {
 
+    // оси
     private static NumberAxis yAxis;
     private static DateAxis dateAxis;
     private static CategoryAxis xAxis;
 
+    //графики
     private static LineChart<Date, Number> dateLineChart;
     private static LineChart<String, Number> numberLineChart;
     public static ObservableList<String> options =
@@ -37,7 +39,14 @@ public class LineChartCreator {
                     "Свой вариант"
             );
 
-
+    /**
+     * Создаёт произвольный график коммитов
+     *
+     * @param commitsByCustomDate
+     * @param start               - начальная  дата
+     * @param end                 - конечная  дата
+     * @return
+     */
     public static LineChart<Date, Number> createDateLineChart(HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate,
                                                               LocalDate start, LocalDate end) {
         yAxis = new NumberAxis();
@@ -65,6 +74,12 @@ public class LineChartCreator {
         return dateLineChart;
     }
 
+    /**
+     * Создаёт произвольный график коммитов за неделю/месяц/год
+     * @param selected - выбранный вариант графика
+     * @param authorCommits
+     * @return
+     */
     public static LineChart<String, Number> createNumberLineChart(String selected, HashMap<Author, ArrayList<Integer>> authorCommits) {
         yAxis = new NumberAxis();
         xAxis = new CategoryAxis();
@@ -122,7 +137,12 @@ public class LineChartCreator {
         return numberLineChart;
     }
 
-
+    /**
+     * Создаёт произвольный график коммитов по проектам
+     * @param selected  - выбранный вариант графика
+     * @param items проекты
+     * @return
+     */
     public static LineChart<String, Number> createNumberLineChart(String selected, ObservableList items) {
         yAxis = new NumberAxis();
         xAxis = new CategoryAxis();
@@ -187,6 +207,15 @@ public class LineChartCreator {
         return numberLineChart;
     }
 
+    /**
+     * Создаёт произвольный график коммитов за неделю/месяц/год по проектам
+     *
+     * @param selected  - выбранный вариант графика
+     * @param items проекты
+     * @param start - начальная  дата
+     * @param end - конечная  дата
+     * @return
+     */
     public static LineChart<Date, Number> createDateLineChart(String selected, ObservableList items, LocalDate start, LocalDate end) {
         yAxis = new NumberAxis();
         Date dateStart = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());

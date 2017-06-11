@@ -27,8 +27,8 @@ import java.util.Map;
  */
 public class GitApi {
 
-    private static String username;            ///< логин github
-    private static String password;            ///< пароль github
+    private static String username = "";            ///< логин github
+    private static String password = "";            ///< пароль github
 
     private List<PullRequest> pullRequests;         ///< список pull request-ов
     private List<Issue> issues;                     ///< список issues-ов
@@ -37,8 +37,6 @@ public class GitApi {
      * Конструктор по умолчаниию
      */
     public GitApi() {
-        username = "";
-        password = "";
     }
     /**
      * Конструктор с параметрами

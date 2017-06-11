@@ -21,6 +21,9 @@ public class CssSetter {
     public static String greenStyleSheet = "green.css";
     public static String pinkStyleSheet = "pink.css";
 
+    /**
+     * Обновляем стиль
+     */
     public static void refreshStyleSheet() {
         Application.setUserAgentStylesheet(null);
         StyleManager.getInstance().addUserAgentStylesheet("styles/" + CssSetter.currentStyleSheet);
@@ -52,10 +55,18 @@ public class CssSetter {
         refreshStyleSheet();
     }
 
+    /**
+     * @return текущий стиль
+     */
     public static String getCurrentStyleSheet() {
         return currentStyleSheet;
     }
 
+    /**
+     * Установка стиля
+     *
+     * @param currentStyleSheet стиль
+     */
     public static void setCurrentStyleSheet(String currentStyleSheet) {
         CssSetter.currentStyleSheet = currentStyleSheet;
         refreshStyleSheet();

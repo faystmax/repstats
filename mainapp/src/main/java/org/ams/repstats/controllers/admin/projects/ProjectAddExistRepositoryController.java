@@ -61,6 +61,9 @@ public class ProjectAddExistRepositoryController {
         Utils.setEmptyTableMessage(repositoryTable);
     }
 
+    /**
+     * настраиваем колонки таблицы
+     */
     private void configureRepositoryClmn() {
         repositoryTable.setEditable(true);
         // Название
@@ -171,6 +174,9 @@ public class ProjectAddExistRepositoryController {
 
     }
 
+    /**
+     * Отображаем репозитории
+     */
     private void showRepository() {
         // Извлекаем данные из базы
         try {

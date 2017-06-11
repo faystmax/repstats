@@ -14,10 +14,10 @@ import java.util.Properties;
  */
 public class MainProperties {
 
-    public static Properties prop = new Properties();
+    public static Properties prop = new Properties();               ///< свойства для сохранения настрроек
+    private static String filePropertyName = "config.properties";   ///< имя файла с настройками
 
-    private static String filePropertyName = "config.properties";
-
+    // потоки для чтения и записи
     private static OutputStream output = null;
     private static InputStream input = null;
 
@@ -26,7 +26,7 @@ public class MainProperties {
      */
     public static void loadProperties() {
         try {
-            input = new FileInputStream(MainProperties.class.getClassLoader().getResource("config.properties").getPath());
+            input = new FileInputStream(MainProperties.class.getClassLoader().getResource(filePropertyName).getPath());
 
             if (input == null) {
                 System.out.println("Unable to find property file: " + filePropertyName);
@@ -70,7 +70,7 @@ public class MainProperties {
      */
     public static void writeProperties() {
         try {
-            output = new FileOutputStream(MainProperties.class.getClassLoader().getResource("config.properties").getPath());
+            output = new FileOutputStream(MainProperties.class.getClassLoader().getResource(filePropertyName).getPath());
 
             // set database properties value
             prop.setProperty("database", "jdbc:mysql://localhost:3306/gitstats?characterEncoding=UTF-8");
@@ -94,9 +94,6 @@ public class MainProperties {
 
             // save properties to project root folder
             prop.store(output, null);
-
-            // save local rep path
-            //RepositoryDownloader.loadToProperty(prop);
 
         } catch (IOException io) {
             io.printStackTrace();

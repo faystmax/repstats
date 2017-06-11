@@ -7,5 +7,5 @@ package org.ams.repstats.uifactory;
  * Time: 11:18
  */
 public enum TypeUInterface {
-    git, svn
+    git, svn        // все сисстемы контроля версий
 }

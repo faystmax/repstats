@@ -52,6 +52,7 @@ public class CommitsController {
     private TableView tableForCommits;
     //endregion
 
+    // сущности для просмотра статистики
     private Author author;
     private UInterface uInterface;
     private ProjectObs projectObs;
@@ -66,6 +67,9 @@ public class CommitsController {
         Utils.setEmptyTableMessage(tableForCommits);
     }
 
+    /**
+     * Конфигурируем таблицу
+     */
     private void configureTableColumn() {
         clmnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
         clmnDate.setCellValueFactory(
@@ -89,6 +93,9 @@ public class CommitsController {
         stage.close();
     }
 
+    /**
+     * сеттеры
+     **/
     public void setAuthor(Author author) {
         this.author = author;
     }

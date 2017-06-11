@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+
 /**
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
@@ -28,15 +29,22 @@ public class RepositoryDownloader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryDownloader.class); ///< ссылка на логер
 
-    public static final String pathToSave = "./savedRepositories/";
-    private static Properties prop = null;
+    public static final String pathToSave = "./savedRepositories/"; ///<путь хранения  лок-ых  репозиториев
+    private static Properties prop = null;                          ///< свойства для хранения  лок-ых путей до репозиториев
 
-
+    /**
+     * Загрузка репозиториев из свойств
+     *
+     * @param prop
+     */
     public static void loadRepositoriesFromProperties(Properties prop) {
         RepositoryDownloader.prop = prop;
         refreshAllRepositoryUrlFromDatabase();
     }
 
+    /**
+     * Обновление всех путей лок-ых репозиториев
+     */
     private static void refreshAllRepositoryUrlFromDatabase() {
         // Извлекаем данные из базы
         try {
@@ -93,6 +101,12 @@ public class RepositoryDownloader {
         return destinationFile;
     }
 
+    /**
+     * Возвращает локальный путь до репозиториия
+     *
+     * @param url
+     * @return
+     */
     private static String getPath(String url) {
         if (prop.containsKey(url)) {
             return (String) prop.get(url);
@@ -104,6 +118,13 @@ public class RepositoryDownloader {
         return (String) prop.get(url);
     }
 
+    /**
+     * Обновляем репозиторий
+     * Делаем pull requset
+     *
+     * @param destinationFile - папка с репозиториес
+     * @return
+     */
     private static boolean updateRep(File destinationFile) {
         Git git = null;
         try {

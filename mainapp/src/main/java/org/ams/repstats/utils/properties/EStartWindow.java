@@ -7,5 +7,5 @@ package org.ams.repstats.utils.properties;
  * Time: 16:20
  */
 public enum EStartWindow {
-    REP, PROJECT, TEAM, DEVELOPER
+    REP, PROJECT, TEAM, DEVELOPER   // список имён начальных окон
 }

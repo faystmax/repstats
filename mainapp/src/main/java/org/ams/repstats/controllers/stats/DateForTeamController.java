@@ -77,6 +77,9 @@ public class DateForTeamController {
         stage.close();
     }
 
+    /**
+     * сеттеры
+     **/
     public void setStatsTeamController(StatsTeamController statsTeamController) {
         this.statsTeamController = statsTeamController;
     }

@@ -611,5 +611,4 @@ public class TeamEditController {
             LOGGER.error(e.getMessage());
         }
     }
-
 }

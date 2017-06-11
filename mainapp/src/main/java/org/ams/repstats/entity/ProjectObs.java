@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
+ * Сущность для отображения в таблице
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 23.04.2017

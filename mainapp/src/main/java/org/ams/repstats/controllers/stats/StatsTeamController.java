@@ -255,10 +255,18 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         clmnRating.setCellValueFactory(new PropertyValueFactory<>("rating"));
     }
 
+    /**
+     * Установка новой директории
+     *
+     * @param file
+     */
     private void setNewRepDirectory(File file) {
         projectDir = file;
     }
 
+    /**
+     * данные для анализа
+     **/
     public LocalDate start;
     public LocalDate end;
     public ObservableList<DeveloperObs> developers;
@@ -532,6 +540,12 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         new Thread(task).start();
     }
 
+    /**
+     * Добавляем проекты разработчика
+     *
+     * @param projectsData
+     * @param developers
+     */
     private void addAllProjectsFromDevelopers(ObservableList<ProjectObs> projectsData, ObservableList<DeveloperObs> developers) {
         for (DeveloperObs developer : developers) {
             for (ProjectObs project : developer.getProjectObss()) {
@@ -542,6 +556,13 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Проверка на наличие
+     *
+     * @param projectsData
+     * @param project
+     * @return
+     */
     private boolean checkIfExist(ObservableList<ProjectObs> projectsData, ProjectObs project) {
         for (ProjectObs projectObs : projectsData) {
             if (projectObs.equals(project)) {
@@ -575,44 +596,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         }
     }
 
-    /*
-        private void rememberGraphics(ProjectObs projectTable, RepositoryObs newRepositoryTable) {
-            // Извлекаем выбранного пользователя
-            DeveloperObs developerTable = (DeveloperObs) developersTable.getSelectionModel().getSelectedItem();
-            Author selectedAuthor = this.getuInterface().getAuthorByEmail(developerTable.getGitemail());
-            ArrayList<Author> allAvtors = new ArrayList<Author>();
-            allAvtors.addAll(this.getuInterface().getAllAuthors());
-            if (selectedAuthor != null) {
 
-                ArrayList<Author> allAvtorsEnd = new ArrayList<Author>();
-
-                // Записываем нужных авторов
-                for (Author author : allAvtors) {
-                    if (author.getEmailAddress().equals(selectedAuthor.getEmailAddress())) {
-                        allAvtorsEnd.add(author);
-                    }
-                }
-
-                // Извлекаем коммиты
-                HashMap<Author, ArrayList<Integer>> authorCommitsByWeek = this.getuInterface().getCommitsByWeek(allAvtorsEnd);
-                HashMap<Author, ArrayList<Integer>> authorByDaysInCurMonth = this.getuInterface().getCommitsByDaysInCurMonth(allAvtorsEnd);
-                HashMap<Author, ArrayList<Integer>> commitsByMonths = this.getuInterface().getCommitsByMonths(allAvtorsEnd);
-                HashMap<Author, HashMap<LocalDate, Integer>> commitsByCustomDate = this.getuInterface().getCommitsByCustomDate(allAvtorsEnd);
-
-                HashMap<Author, ArrayList<Integer>> authorCommitsByTime = this.getuInterface().getCommitsByTime(allAvtorsEnd);
-
-                // Запомнили
-                for (Author author : allAvtorsEnd) {
-                    projectTable.addCommitsByWeek(authorCommitsByWeek.get(author));
-                    projectTable.addCommitsByDaysInCurMonth(authorByDaysInCurMonth.get(author));
-                    projectTable.addCommitsByMonths(commitsByMonths.get(author));
-                    projectTable.addCommitsByCustomDate(commitsByCustomDate.get(author));
-                    projectTable.addCommitsByTime(authorCommitsByTime.get(author));
-                }
-            }
-
-        }
-    */
     @Override
     public void closeRepository() {
         this.getuInterface().closeRepository();
@@ -630,11 +614,7 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         String formattedEndDateTime = end.format(formatter);
 
         lbMainInfTitle.setText("Анализ команды с " + formattedStartDateTime + " по " + formattedEndDateTime);
-
         lbTeamName.setText(selectedTeam.getName());
-        //lbGitNameEmail.setText(cur.getGitname() + "<" + cur.getGitemail() + ">");
-
-        //
         lbDevelopersCount.setText(Integer.toString(developers.size()));
         lbTeamProjectsCount.setText(Integer.toString(projectTable.getItems().size()));
         lbCommitCount.setText(Integer.toString(allCommits));
@@ -644,17 +624,18 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         if (vklad > 100) {
             vklad = 100;
         }
-    /*   if (vklad == 0) {
-            vklad = Math.abs(Math.ceil((((double) linesAdd) / totalLines) * 100));
-        }*/
         lbTeamPokr.setText(String.valueOf(vklad) + "%");
         lbMergedPullReq.setText(String.valueOf(this.mergeCount));
-        //  lbOtherMergedPullReq.setText(String.valueOf(this.mergedOtherPullRequests));
-        //  lbOtherNotMergedPullReq.setText(String.valueOf(this.notMergedOtherPullRequests));
+
         lbFixBugs.setText(String.valueOf(this.bugFixes));
     }
 
-
+    /**
+     * Считаем Merge
+     *
+     * @param url
+     * @return
+     */
     private int calcMergeCount(String url) {
         this.gitApi = new GitApi();
         String[] tmp = url.split("/");
@@ -662,8 +643,6 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         String owner = tmp[tmp.length - 2];
         try {
             this.mergeCount += gitApi.countUserMergePullRequests(repos, owner);
-            //  this.mergedOtherPullRequests = gitApi.countMergedOtherPullRequests(repos, owner, gitname);
-            //  this.notMergedOtherPullRequests = gitApi.countNotMergedOtherPullRequests(repos, owner, gitname);
         } catch (Exception e) {
             e.printStackTrace();
             Platform.runLater(() -> {
@@ -734,6 +713,11 @@ public class StatsTeamController extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Отобразить коммиты
+     *
+     * @param event
+     */
     public void ShowCommitsAvtorButtonAction(ActionEvent event) {
         if (isStart()) {
             DeveloperObs developerObs = (DeveloperObs) avtorTable.getSelectionModel().getSelectedItem();

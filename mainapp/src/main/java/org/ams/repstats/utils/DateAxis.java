@@ -17,7 +17,6 @@ import java.util.*;
 
 /**
  * Created with IntelliJ IDEA
- * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 12.05.2017
  * Time: 23:34
  */

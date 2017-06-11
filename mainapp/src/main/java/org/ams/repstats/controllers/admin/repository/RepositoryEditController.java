@@ -62,6 +62,9 @@ public class RepositoryEditController {
         Utils.setEmptyTableMessage(repositoryTable);
     }
 
+    /**
+     * Настраиваем колонки репозиториев
+     */
     private void configureRepositoryClmn() {
         repositoryTable.setEditable(true);
         // Название
@@ -172,6 +175,9 @@ public class RepositoryEditController {
 
     }
 
+    /**
+     * Отображаем репозитории
+     */
     private void showRepository() {
         // Извлекаем данные из базы
         try {
@@ -271,7 +277,7 @@ public class RepositoryEditController {
 
             //Инициализируем
             RepositoryResponsibleSelectController controller = loader.getController();
-            controller.setRepositoryResponsibleSelectController(this);
+            controller.setRepositoryEditController(this);
 
             //Инициализируем и запускаем
             stage.showAndWait();

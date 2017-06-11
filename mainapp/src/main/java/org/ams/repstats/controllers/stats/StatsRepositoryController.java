@@ -171,16 +171,20 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
     private TableColumn clmnMergedId;
     //endregion
 
-    private DirectoryChooser directoryChooser;
-    private File projectDir;
-    private String url;
-    private Task<Boolean> task;
 
-    private LineChart<Date, Number> dateLineChart;
-    private LineChart<String, Number> numberLineChart;
-    private List<PullRequest> pullRequests;
-    private List<Issue> issues;
-    private GitApi gitApi;
+    private DirectoryChooser directoryChooser;          ///< ссылка на средство выбора директории
+    private File projectDir;                            ///< директория с репозиторием
+    private Task<Boolean> task;                         ///< ссылка на таск для анализа
+
+    private LineChart<Date, Number> dateLineChart;      ///< график по датам
+    private LineChart<String, Number> numberLineChart;  ///< график по числам
+    private GitApi gitApi = new GitApi();               ///< git api для подгрузки pull reeq и issues-ов
+    private int mergeCount;                             ///< кол-во слияний
+    private int mergedOtherPullRequests;                ///< кол-во слияний другими
+    private int notMergedOtherPullRequests;             ///< кол-во слияний не принятых
+    private int bugFixes;                               ///< кол-во исправленных багов
+    private long authorLinesAffected;                   ///< кол-во задетых строк автором
+    private long totalLinesAffected;                    ///< всего задетых строк
 
     @FXML
     public void initialize() {
@@ -243,6 +247,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         reposUrlClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("url"));
     }
 
+    /**
+     * отображаем репозитории
+     */
     private void showRepository() {
         // Извлекаем данные из базы
         try {
@@ -268,13 +275,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
     }
 
-    // TODO  в будущем
-    public void showChartOnImageView() {
-      /*  BufferedImage img = getuInterface().getChart();
-        WritableImage wimg = new WritableImage(img.getWidth(), img.getHeight());
-        SwingFXUtils.toFXImage(img, wimg);
-        imageView.setImage(wimg);*/
-    }
 
     /**
      * Кнопка выбора директории
@@ -297,6 +297,11 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
 
     }
 
+    /**
+     * Установка новой директории
+     *
+     * @param file
+     */
     public void setNewRepDirectory(File file) {
         projectDir = file;
         if (projectDir != null) {
@@ -360,9 +365,14 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         new Thread(task).start();
     }
 
-
+    /**
+     * переменные для анализа
+     **/
     public LocalDate start;
     public LocalDate end;
+    private String url;
+    private List<PullRequest> pullRequests;
+    private List<Issue> issues;
 
     /**
      * Кнопка начала анализа Репозитория
@@ -432,8 +442,6 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
                 showAllFiles();
                 showAllBranches();
                 buildGraph(null);
-
-                showChartOnImageView();
                 closeRepository();
             });
 
@@ -476,6 +484,9 @@ public class StatsRepositoryController extends ViewInterfaceAbstract {
         }
     }
 
+    /**
+     * Считаем Issues и PullRequests
+     */
     private void calcIssuesAndPullRequests() {
         this.gitApi = new GitApi();
         String[] tmp = url.split("/");

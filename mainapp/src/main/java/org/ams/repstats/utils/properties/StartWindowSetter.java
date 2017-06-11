@@ -9,21 +9,14 @@ import java.util.Objects;
  * Time: 16:13
  */
 public class StartWindowSetter {
-    // Текущий стиль
-    public static EStartWindow currentStartWindow = EStartWindow.REP;
 
-    public static EStartWindow getCurrentStartWindow() {
-        return currentStartWindow;
-    }
+    public static EStartWindow currentStartWindow = EStartWindow.REP;   ///< Текущее начальное окно
 
-    public static String getCurrentStartWindowAsString() {
-        return getEStartWindowString(currentStartWindow);
-    }
-
-    public static void setCurrentStartWindow(EStartWindow currentStartWindow) {
-        StartWindowSetter.currentStartWindow = currentStartWindow;
-    }
-
+    /**
+     * Установка начального окна
+     *
+     * @param currentStartWindow
+     */
     public static void setCurrentStartWindow(String currentStartWindow) {
         if (Objects.equals(currentStartWindow, getEStartWindowString(EStartWindow.REP))) {
             StartWindowSetter.currentStartWindow = EStartWindow.REP;
@@ -36,6 +29,10 @@ public class StartWindowSetter {
         }
     }
 
+    /**
+     * @param startWindow начальное окно
+     * @return string - начальное окно
+     */
     public static String getEStartWindowString(EStartWindow startWindow) {
         if (startWindow == EStartWindow.REP) {
             return "repository";
@@ -63,6 +60,18 @@ public class StartWindowSetter {
 
     public static void setDeveloperStartWindow() {
         currentStartWindow = EStartWindow.DEVELOPER;
+    }
+
+    public static void setCurrentStartWindow(EStartWindow currentStartWindow) {
+        StartWindowSetter.currentStartWindow = currentStartWindow;
+    }
+
+    public static EStartWindow getCurrentStartWindow() {
+        return currentStartWindow;
+    }
+
+    public static String getCurrentStartWindowAsString() {
+        return getEStartWindowString(currentStartWindow);
     }
 
 

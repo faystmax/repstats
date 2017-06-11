@@ -3,6 +3,7 @@ package org.ams.repstats.entity;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
+ * Сущность для отображения в таблице
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 07.05.2017

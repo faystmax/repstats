@@ -54,15 +54,13 @@ public class RepositoryResponsibleSelectController {
     private Button btExit;
     //endregion
 
-    private RepositoryEditController repositoryResponsibleSelectController;
-    private HashMap<Integer, String> roles;         ///< id_role - name
+    private RepositoryEditController repositoryEditController;                  ///< ссылка на родителя
+    private HashMap<Integer, String> roles;                                     ///< хеш id_role - name
 
     @FXML
     public void initialize() {
         configureDevelopersTable();
         showDevelopersInTeam();
-
-
     }
 
     /**
@@ -346,9 +344,13 @@ public class RepositoryResponsibleSelectController {
         stage.close();
     }
 
-
-    public void setRepositoryResponsibleSelectController(RepositoryEditController repositoryResponsibleSelectController) {
-        this.repositoryResponsibleSelectController = repositoryResponsibleSelectController;
+    /**
+     * Установка родителя
+     *
+     * @param repositoryEditController
+     */
+    public void setRepositoryEditController(RepositoryEditController repositoryEditController) {
+        this.repositoryEditController = repositoryEditController;
     }
 
     /**
@@ -360,7 +362,7 @@ public class RepositoryResponsibleSelectController {
             return;
         }
         int id_developer = ((DeveloperObs) (developersTable.getSelectionModel().getSelectedItem())).getId();
-        this.repositoryResponsibleSelectController.repositoryResponsible(id_developer);
+        this.repositoryEditController.repositoryResponsible(id_developer);
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }

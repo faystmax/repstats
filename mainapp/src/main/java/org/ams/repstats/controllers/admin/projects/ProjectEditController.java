@@ -107,6 +107,9 @@ public class ProjectEditController {
         });
     }
 
+    /**
+     * Настраиваем колонки таблицы
+     */
     private void configureAndShowProjectsClmn() {
 
         ObservableList<ProjectObs> data = FXCollections.observableArrayList();
@@ -273,6 +276,9 @@ public class ProjectEditController {
 
     }
 
+    /**
+     * Конфигурируем колонки
+     */
     private void configureRepositoryClmn() {
         // Название
         reposNameClmn.setCellValueFactory(new PropertyValueFactory<RepositoryObs, String>("name"));
@@ -414,7 +420,11 @@ public class ProjectEditController {
 
     }
 
-
+    /**
+     * Отображаем репозитории
+     *
+     * @param id_proj
+     */
     private void showRepositoryInTable(int id_proj) {
         // Извлекаем данные из базы
         try {

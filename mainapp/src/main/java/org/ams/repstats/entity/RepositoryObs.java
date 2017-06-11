@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
+ * Сущность для отображения в таблице
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 27.04.2017

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * Сущность для отображения в таблице
  * Created with IntelliJ IDEA
  * User: Maxim Amosov <faystmax@gmail.com>
  * Date: 22.04.2017

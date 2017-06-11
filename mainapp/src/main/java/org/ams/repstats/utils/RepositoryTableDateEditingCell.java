@@ -11,10 +11,7 @@ import java.time.format.FormatStyle;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA
- * User: Maxim Amosov <faystmax@gmail.com>
- * Date: 27.04.2017
- * Time: 9:57
+ * Необходим для редактирования даты в ячейке таблицы с репозиториями
  */
 public class RepositoryTableDateEditingCell extends TableCell<RepositoryObs, Date> {
     private DatePicker datePicker;
@@ -66,14 +63,9 @@ public class RepositoryTableDateEditingCell extends TableCell<RepositoryObs, Dat
         datePicker = new DatePicker(getDate());
         datePicker.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
         datePicker.setOnAction((e) -> {
-            //System.out.println("Committed: " + datePicker.getValue().toString());
             commitEdit(Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         });
-//            datePicker.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-//                if (!newValue) {
-//                    commitEdit(Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-//                }
-//            });
+
     }
 
     private LocalDate getDate() {

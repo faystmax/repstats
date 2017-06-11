@@ -16,6 +16,16 @@ public class DeveloperRating {
     private static double pullReqKoef = 0.5;
     private static double issuesKoef = 0.5;
 
+    /**
+     * Считаем рейтинг
+     *
+     * @param commitCount - кол-во коммитов
+     * @param linesAdd    - строк добавлено
+     * @param linesDel    - строк удалено
+     * @param pullReq     - кол-во pull request-ов
+     * @param issues-     кол-во pull issues-ов
+     * @return
+     */
     public static double calculateRating(int commitCount, int linesAdd, int linesDel, int pullReq, int issues) {
         return Utils.round(commitCount * commitKoef
                 + linesAdd * linesAddKoef
@@ -24,6 +34,15 @@ public class DeveloperRating {
                 + issues * issuesKoef, 2);
     }
 
+    /**
+     * Установка коефициентов
+     *
+     * @param commitKoef
+     * @param linesAddKoef
+     * @param linesDelKoef
+     * @param pullReqKoef
+     * @param issuesKoef
+     */
     public static void setKoef(double commitKoef, double linesAddKoef, double linesDelKoef, double pullReqKoef, double issuesKoef) {
         DeveloperRating.commitKoef = commitKoef;
         DeveloperRating.linesAddKoef = linesAddKoef;

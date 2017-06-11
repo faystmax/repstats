@@ -13,14 +13,18 @@ public abstract class ViewInterfaceAbstract implements ViewInterface {
     private boolean isStart;        ///< флаг начала анализа
     private UInterface uInterface;  ///< фасад
 
+    /**
+     * Констроуктор по умолчанию
+     */
     public ViewInterfaceAbstract() {
     }
 
-    public ViewInterfaceAbstract(boolean isStart, UInterface uInterface) {
-        this.isStart = isStart;
-        this.uInterface = uInterface;
-    }
 
+    /**
+     * Конструктор с заданным фасадом
+     *
+     * @param uInterface - фасад
+     */
     public ViewInterfaceAbstract(UInterface uInterface) {
         isStart = false;
         this.uInterface = uInterface;
@@ -45,6 +49,8 @@ public abstract class ViewInterfaceAbstract implements ViewInterface {
     }
 
     /**
+     * Возвращает флаг начала анализа
+     *
      * @return флаг начала анализа
      */
     public boolean isStart() {
@@ -52,6 +58,8 @@ public abstract class ViewInterfaceAbstract implements ViewInterface {
     }
 
     /**
+     * Возвращает фасад
+     *
      * @return фасад
      */
     public UInterface getuInterface() {

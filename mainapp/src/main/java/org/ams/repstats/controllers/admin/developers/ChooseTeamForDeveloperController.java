@@ -149,15 +149,28 @@ public class ChooseTeamForDeveloperController {
     }
 
 
+    /**
+     * Уствновка родительского контроллера
+     *
+     * @param developersEditController
+     */
     public void setDevelopersEditController(DevelopersEditController developersEditController) {
         this.developersEditController = developersEditController;
     }
 
+    /**
+     * Закрытие формы
+     *
+     * @param event
+     */
     public void exitButtonAction(ActionEvent event) {
         Stage stage = (Stage) btExit.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Выбор команды
+     */
     public void teamSelectButtonAction() {
         if (teamTable.getSelectionModel().getSelectedItem() == null) {
             Utils.showAlert("Ошибка добавления", "Сначала выберите команду!");

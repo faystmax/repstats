@@ -114,19 +114,19 @@ public class StatsProjectController extends ViewInterfaceAbstract {
     private Button btStart;
     //endregion
 
-    private DirectoryChooser directoryChooser;
-    private File projectDir;
-    private Task<Boolean> task;
+    private DirectoryChooser directoryChooser;          ///< ссылка на средство выбора директории
+    private File projectDir;                            ///< директория с репозиторием
+    private Task<Boolean> task;                         ///< ссылка на таск для анализа
 
-    private LineChart<Date, Number> dateLineChart;
-    private LineChart<String, Number> numberLineChart;
-    private GitApi gitApi = new GitApi();
-    private int mergeCount;
-    private int mergedOtherPullRequests;
-    private int notMergedOtherPullRequests;
-    private int bugFixes;
-    private long authorLinesAffected;
-    private long totalLinesAffected;
+    private LineChart<Date, Number> dateLineChart;      ///< график по датам
+    private LineChart<String, Number> numberLineChart;  ///< график по числам
+    private GitApi gitApi = new GitApi();               ///< git api для подгрузки pull reeq и issues-ов
+    private int mergeCount;                             ///< кол-во слияний
+    private int mergedOtherPullRequests;                ///< кол-во слияний другими
+    private int notMergedOtherPullRequests;             ///< кол-во слияний не принятых
+    private int bugFixes;                               ///< кол-во исправленных багов
+    private long authorLinesAffected;                   ///< кол-во задетых строк автором
+    private long totalLinesAffected;                    ///< всего задетых строк
 
 
     @FXML

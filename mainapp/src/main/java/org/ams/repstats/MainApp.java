@@ -53,7 +53,7 @@ public class MainApp extends Application {
         // Конектимся к базе
         MysqlConnector.getConnection();
 
-        // Загрузка локальный путей до репозиториев
+        // подгружаем репозитории
         MainProperties.loadRepositories();
 
         // В зависимости от информации в конфиге запускаем то или иное окно

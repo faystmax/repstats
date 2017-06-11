@@ -137,19 +137,19 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
     private Button btStart;
     //endregion
 
-    private DirectoryChooser directoryChooser;
-    private File projectDir;
-    private Task<Boolean> task;
+    private DirectoryChooser directoryChooser;          ///< ссылка на средство выбора директории
+    private File projectDir;                            ///< директория с репозиторием
+    private Task<Boolean> task;                         ///< ссылка на таск для анализа
 
-    private LineChart<Date, Number> dateLineChart;
-    private LineChart<String, Number> numberLineChart;
-    private GitApi gitApi = new GitApi();
-    private int mergeCount;
-    private int mergedOtherPullRequests;
-    private int notMergedOtherPullRequests;
-    private int bugFixes;
-    private long authorLinesAffected;
-    private long totalLinesAffected;
+    private LineChart<Date, Number> dateLineChart;      ///< график по датам
+    private LineChart<String, Number> numberLineChart;  ///< график по числам
+    private GitApi gitApi = new GitApi();               ///< git api для подгрузки pull reeq и issues-ов
+    private int mergeCount;                             ///< кол-во слияний
+    private int mergedOtherPullRequests;                ///< кол-во слияний другими
+    private int notMergedOtherPullRequests;             ///< кол-во слияний не принятых
+    private int bugFixes;                               ///< кол-во исправленных багов
+    private long authorLinesAffected;                   ///< кол-во задетых строк автором
+    private long totalLinesAffected;                    ///< всего задетых строк
 
     @FXML
     public void initialize() {
@@ -224,6 +224,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         developerGitEmail.setCellValueFactory(new PropertyValueFactory<DeveloperObs, String>("gitemail"));
     }
 
+    /**
+     * Настраиваем колонки
+     */
     private void configureProjectsTable() {
         clmnProject.setCellValueFactory(new PropertyValueFactory<>("name"));
         clmnCommitCountProj.setCellValueFactory(new PropertyValueFactory<>("commitCount"));
@@ -232,6 +235,9 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         clmnNetContributionProj.setCellValueFactory(new PropertyValueFactory<>("netContribution"));
     }
 
+    /**
+     * Настраиваем колонки
+     */
     private void configureRepositoryTable() {
         clmnUrlRep.setCellValueFactory(new PropertyValueFactory<>("url"));
         clmnCommitCountRep.setCellValueFactory(new PropertyValueFactory<>("commitCount"));
@@ -274,18 +280,24 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
         }
     }
 
-
+    /**
+     * Установка новой директории
+     *
+     * @param file
+     */
     private void setNewRepDirectory(File file) {
         projectDir = file;
     }
 
+    /**
+     * локальные переменные для подсчёта статистики
+     **/
     public LocalDate start;
     public LocalDate end;
     public ArrayList<ProjectObs> projects;
     public int allCommits = 0;
     public int linesAdd = 0;
     public int linesDel = 0;
-
     public long totalLines = 0;
     DeveloperObs selectedDeveloper;
     Author selectedAuthor;
@@ -724,12 +736,17 @@ public class StatsDeveloperController extends ViewInterfaceAbstract {
                 dateLineChart = LineChartCreator.createDateLineChart(selected, projectTable.getItems(),
                         graphDatePickerStart.getValue(), graphDatePickerEnd.getValue());
 
+                AnchorPane.setLeftAnchor(dateLineChart, 0.0);
+                AnchorPane.setTopAnchor(dateLineChart, 0.0);
+                AnchorPane.setRightAnchor(dateLineChart, 0.0);
+                AnchorPane.setBottomAnchor(dateLineChart, 53.0);
+                GraphAnchor.getChildren().add(dateLineChart);
             }
-            AnchorPane.setLeftAnchor(dateLineChart, 0.0);
-            AnchorPane.setTopAnchor(dateLineChart, 0.0);
-            AnchorPane.setRightAnchor(dateLineChart, 0.0);
-            AnchorPane.setBottomAnchor(dateLineChart, 53.0);
-            GraphAnchor.getChildren().add(dateLineChart);
+            AnchorPane.setLeftAnchor(numberLineChart, 0.0);
+            AnchorPane.setTopAnchor(numberLineChart, 0.0);
+            AnchorPane.setRightAnchor(numberLineChart, 0.0);
+            AnchorPane.setBottomAnchor(numberLineChart, 53.0);
+            GraphAnchor.getChildren().add(numberLineChart);
         }
     }
 

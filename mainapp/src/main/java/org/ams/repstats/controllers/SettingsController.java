@@ -25,7 +25,6 @@ public class SettingsController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class); ///< ссылка на логер
 
-
     //region <<<  элементы UI
     @FXML
     private ImageView imCheck;
@@ -54,7 +53,6 @@ public class SettingsController {
     @FXML
     private Button btExit;
     //endregion
-
 
     @FXML
     public void initialize() {
