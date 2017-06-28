@@ -116,12 +116,12 @@ public class MainApp extends Application {
      * @param args - аргументы из командной строки
      */
     public static void main(String[] args) {
-        if (args.length == 2 && args[0].equals("fx") && args[1].equals("analyzer")) {
+        if (args.length == 1 && args[0].equals("fx")) {
             MainApp.uInterface = factory.create(TypeUInterface.git);
             MainApp.viewInterface = new StatsRepositoryController();
             MainApp.viewInterface.setUInterface(MainApp.uInterface);
             launch(args);
-        } else if (args.length == 2 && args[0].equals("c") && args[1].equals("analyzer")) {
+        } else if (args.length == 1 && args[0].equals("c")) {
             MainApp.uInterface = factory.create(TypeUInterface.git);
             MainApp.viewInterface = new ConsoleViewInterface(MainApp.uInterface);
             MainApp.viewInterface.start();

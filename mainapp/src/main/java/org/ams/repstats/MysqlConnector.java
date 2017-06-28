@@ -13,7 +13,6 @@ import java.sql.*;
  * Date: 20.04.2017
  * Time: 0:38
  */
-
 public class MysqlConnector {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnector.class); ///< ссылка на логер
